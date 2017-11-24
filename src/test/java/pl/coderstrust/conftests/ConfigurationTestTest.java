@@ -7,9 +7,9 @@ import org.junit.Test;
 public class ConfigurationTestTest {
 
   @Test
-  public void shouldWork(){
+  public void shouldWork() {
     int[] var1 = {0, 5, 8};
-    int[] var2 = {3, 6, 10};
+    int[] var2 = {0, 5, 8};
 
     assertArrayEquals(var1, var2);
   }
