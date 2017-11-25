@@ -1,4 +1,4 @@
-package pl.coderstrust.conftests;
+package pl.coderstrust.toberemoved;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,12 +8,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(JUnitParamsRunner.class)
-public class TestConfigTestFibonacci {
+public class ConfigTestFibonacciTest {
   
   @Test
   public static void shouldUseDefaultConstructor() {
     //    given
-    String expectedObjectName = "class pl.coderstrust.conftests.ConfigTestFibonacci";
+    String expectedObjectName = "class pl.coderstrust.toberemoved.ConfigTestFibonacci";
     
     //    when
     Object createdByDefaultConstructor = new ConfigTestFibonacci();
