@@ -21,7 +21,7 @@ public class InvoiceBook {
   
   @Override
   public String toString() {
-    return "InvoiceBook/"
+    return this.getClass().getSimpleName()
         + invoices;
   }
 }

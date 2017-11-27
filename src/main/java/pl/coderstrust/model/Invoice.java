@@ -1,7 +1,5 @@
 package pl.coderstrust.model;
 
-import pl.coderstrust.db.impl.InvoiceId;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +7,7 @@ import java.util.List;
 
 public class Invoice {
   
-  private InvoiceId id;
+  private InvoiceId invoiceId;
   private LocalDate date;
   private Company seller;
   private Company buyer;
@@ -19,7 +17,7 @@ public class Invoice {
   
   public Invoice(LocalDate date, Company seller, Company buyer,
       Item[] items, Vat vat) {
-    this.id = new InvoiceId();
+    this.invoiceId = new InvoiceId();
     this.date = date;
     this.seller = seller;
     this.buyer = buyer;
@@ -29,12 +27,11 @@ public class Invoice {
   
   @Override
   public String toString() {
-    return "\nInvoice:{"
-        + "id:" + id
+    return "\n"
+        + invoiceId
         + ", date=" + date
         + ", seller=" + seller
         + ", buyer=" + buyer
-        + ", items=" + items
-        + '}';
+        + ", items=" + items;
   }
 }
