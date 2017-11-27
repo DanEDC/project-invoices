@@ -70,10 +70,8 @@ public class InMemoryDatabase implements Database {
   
   @Override
   public String toString() {
-    return "InMemory{"
+    return "\nInMemory{"
         + invoices
-        + ", invoiceIdCandidate="
-        + invoiceCounter
         + '}';
   }
 }

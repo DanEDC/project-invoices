@@ -1,12 +1,12 @@
 package pl.coderstrust.model;
 
-public class InvoiceItem {
+public class Item {
 
   private String description;
   private double value;
   private Vat vat;
   
-  public InvoiceItem(String description, double value, Vat vat) {
+  public Item(String description, double value, Vat vat) {
     this.description = description;
     this.value = value;
     this.vat = vat;
@@ -17,11 +17,11 @@ public class InvoiceItem {
     if (this == object) {
       return true;
     }
-    if (!(object instanceof InvoiceItem)) {
+    if (!(object instanceof Item)) {
       return false;
     }
     
-    InvoiceItem that = (InvoiceItem) object;
+    Item that = (Item) object;
     
     if (Double.compare(that.value, value) != 0) {
       return false;
@@ -45,9 +45,8 @@ public class InvoiceItem {
   
   @Override
   public String toString() {
-    return "InvoiceItem{"
-        + "description='"
-        + description + '\''
+    return "Item{"
+        + description
         + ", value=" + value
         + ", vat=" + vat + '}';
   }

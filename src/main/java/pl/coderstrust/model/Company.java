@@ -54,7 +54,7 @@ public class Company {
   @Override
   public String toString() {
     return "\"" + name + "\""
-        + ", vatId='"
+        + ", vatId="
         + vatId;
   }
 }

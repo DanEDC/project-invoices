@@ -12,18 +12,25 @@ public class Main {
     Company myself = new Company("MateDev", "123456789");
     Company favouriteComputerSeller = new Company("Optimus", "234543098");
     
-    InvoiceItem[] items = {new InvoiceItem("DellXPS15", 10000, Vat.vat23)};
+    Item[] items = {new Item("DellXPS15", 10000, Vat.vat23),new Item("DellXPS15", 10000, Vat.vat23)};
     
+    Invoice i1 = new Invoice(LocalDate.now(),
+        favouriteComputerSeller,
+        myself, items, Vat.vat23);
+    Invoice i2 = new Invoice(LocalDate.now(),
+        favouriteComputerSeller,
+        myself, items, Vat.vat23);
+  
     invoices2017.addInvoice(
-        new Invoice(LocalDate.now(),
-            favouriteComputerSeller,
-            myself, items, Vat.vat23));
+        i1);
     invoices2017.addInvoice(
-        new Invoice(LocalDate.now(),
-            favouriteComputerSeller,
-            myself, items, Vat.vat23));
+        i2);
     
+    invoices2017.removeInvoice(i1);
     System.out.println(invoices2017);
+  
+
     
   }
 }
+

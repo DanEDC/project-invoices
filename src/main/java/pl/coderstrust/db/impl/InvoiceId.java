@@ -1,10 +1,21 @@
 package pl.coderstrust.db.impl;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class InvoiceId {
   
-  private static int id = 0;
+  /**
+   * Mateusz Dzielinski code copied. Source : https://stackoverflow.com/questions/25852227/implementing-class-with-unique-identification-number
+   */
+  private static final AtomicInteger nextId = new AtomicInteger();
+  
+  private final int id = nextId.getAndIncrement();
   
   public InvoiceId() {
-    id = id++;
+  }
+  
+  @Override
+  public String toString() {
+    return "*" + id;
   }
 }
