@@ -10,8 +10,8 @@ public enum Vat {
   
   private final BigDecimal vat;
   
-  Vat(BigDecimal Vat) {
-    this.vat = Vat;
+  Vat(BigDecimal vat) {
+    this.vat = vat;
   }
   
   @Override
