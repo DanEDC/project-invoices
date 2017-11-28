@@ -70,8 +70,8 @@ public class InMemoryDatabase implements Database {
   
   @Override
   public String toString() {
-    return "\nInMemory{"
-        + invoices
-        + '}';
+    return "\n"
+        + this.getClass().getSimpleName()
+        + invoices;
   }
 }

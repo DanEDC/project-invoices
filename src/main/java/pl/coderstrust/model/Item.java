@@ -1,12 +1,14 @@
 package pl.coderstrust.model;
 
 public class Item {
-
+  
+  private ItemId itemId;
   private String description;
   private double value;
   private Vat vat;
   
   public Item(String description, double value, Vat vat) {
+    this.itemId = new ItemId();
     this.description = description;
     this.value = value;
     this.vat = vat;
@@ -45,9 +47,9 @@ public class Item {
   
   @Override
   public String toString() {
-    return "Item{"
-        + description
+    return itemId
+        + ", name=" + description
         + ", value=" + value
-        + ", vat=" + vat + '}';
+        + ", vat=" + vat;
   }
 }

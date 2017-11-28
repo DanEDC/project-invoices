@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import junitparams.JUnitParamsRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import pl.coderstrust.Main;
 
 @RunWith(JUnitParamsRunner.class)
 public class MainTest {
