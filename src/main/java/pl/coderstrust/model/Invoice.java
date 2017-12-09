@@ -2,7 +2,7 @@ package pl.coderstrust.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class Invoice {
   
@@ -11,10 +11,10 @@ public class Invoice {
   private Company seller;
   private Company buyer;
   
-  private List<Item> items = new ArrayList<>();
+  private Collection<Item> items = new ArrayList<>();
   
   public Invoice(LocalDate date, Company seller, Company buyer,
-      List<Item> items) {
+      Collection<Item> items) {
     this.invoiceId = null;
     this.date = date;
     this.seller = seller;
@@ -42,7 +42,7 @@ public class Invoice {
     return buyer;
   }
   
-  public List<Item> getItems() {
+  public Collection<Item> getItems() {
     return items;
   }
   
