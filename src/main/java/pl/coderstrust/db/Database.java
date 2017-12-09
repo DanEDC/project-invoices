@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface Database {
   
-  Integer nextInvoiceId();
+  Integer getNextInvoiceId();
   
   boolean saveInvoice(Invoice invoice);
   
-  Invoice removeInvoice(Integer invoiceId);
-  
   Invoice getInvoice(Integer invoiceId);
   
-  List<Invoice> listInvoices(Database db);
+  List<Invoice> listInvoices();
+  
+  boolean removeInvoice(Integer invoiceId);
   
   
 }
