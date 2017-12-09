@@ -2,15 +2,19 @@ package pl.coderstrust.db;
 
 import pl.coderstrust.model.Invoice;
 
+import java.util.List;
+
 public interface Database {
   
-  /**
-   * In memory - to be implemented saving into file.
-   */
+  Integer nextInvoiceId();
   
   boolean saveInvoice(Invoice invoice);
   
-  boolean removeInvoice(Invoice invoice);
+  Invoice removeInvoice(Integer invoiceId);
+  
+  Invoice getInvoice(Integer invoiceId);
+  
+  List<Invoice> listInvoices(Database db);
   
   
 }

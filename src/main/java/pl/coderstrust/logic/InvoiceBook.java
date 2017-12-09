@@ -1,22 +1,22 @@
 package pl.coderstrust.logic;
 
-import pl.coderstrust.db.impl.InMemoryDatabase;
+import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 public class InvoiceBook {
   
-  private InMemoryDatabase invoices;
+  private Database invoices;
   
-  public InvoiceBook() {
-    this.invoices = new InMemoryDatabase();
+  public InvoiceBook(Database db) {
+    this.invoices = db;
   }
   
   public void addInvoice(Invoice invoice) {
     invoices.saveInvoice(invoice);
   }
   
-  public void removeInvoice(Invoice invoice) {
-    invoices.removeInvoice(invoice);
+  public void removeInvoice(Integer invoiceId) {
+    invoices.removeInvoice(invoiceId);
   }
   
   @Override
@@ -24,4 +24,6 @@ public class InvoiceBook {
     return this.getClass().getSimpleName()
         + invoices;
   }
+  
+  
 }
