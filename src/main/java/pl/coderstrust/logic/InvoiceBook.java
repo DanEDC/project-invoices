@@ -2,6 +2,7 @@ package pl.coderstrust.logic;
 
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.model.Item;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,13 +18,18 @@ public class InvoiceBook {
   
   public void saveInvoice(Invoice invoice) {
     invoice.setInvoiceId(database.getNextInvoiceId());
+    {
+      Integer itemId = 1;
+      for (Item item : invoice.getItems()) {
+        item.setItemId(itemId);
+        itemId++;
+      }
+    }
     database.saveInvoice(invoice);
   }
   
   public void saveInvoices(Collection<Invoice> invoices) {
-    for (Invoice invoice : invoices) {
-      saveInvoice(invoice);
-    }
+    invoices.forEach(this::saveInvoice);
   }
   
   public Invoice getInvoice(Integer invoiceId) {
@@ -36,7 +42,7 @@ public class InvoiceBook {
   
   public List<Invoice> getInvoices(Collection<Integer> orderedInvoicesId) {
     List<Invoice> list = new ArrayList<>();
-    orderedInvoicesId.forEach(id -> list.add(database.getInvoice(id)));
+    orderedInvoicesId.forEach(id -> list.add(this.getInvoice(id)));
     return list;
   }
   
@@ -45,7 +51,7 @@ public class InvoiceBook {
   }
   
   public void removeInvoices(Collection<Integer> toBeRemovedInvoicesId) {
-    toBeRemovedInvoicesId.forEach(id -> database.removeInvoice(id));
+    toBeRemovedInvoicesId.forEach(this::removeInvoice);
   }
   
   @Override
@@ -65,7 +71,8 @@ public class InvoiceBook {
     
     InvoiceBook that = (InvoiceBook) object;
   
-    return database != null ? database.equals(that.database) : that.database == null;
+    return database != null ? database.equals(
+        that.database) : that.database == null;
   }
   
   @Override

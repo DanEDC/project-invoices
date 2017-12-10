@@ -20,6 +20,7 @@ class FileHelper {
   void overwrite(File file, String string) {
     try (PrintWriter printWriter = new PrintWriter(file)) {
       printWriter.print(string);
+      printWriter.close();
     } catch (FileNotFoundException e1) {
       e1.printStackTrace();
     }

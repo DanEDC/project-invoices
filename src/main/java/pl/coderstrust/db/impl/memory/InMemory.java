@@ -5,22 +5,16 @@ import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class InMemory implements Database {
   
-  
   private List<Invoice> inMemory = new ArrayList<>();
-  private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
-  
-  public InMemory(List<Invoice> inMemory) {
-    this.inMemory = inMemory;
-  }
+  private Integer invoiceId = 0;
   
   @Override
   public final Integer getNextInvoiceId() {
-    invoiceId.getAndSet(invoiceId.get() + 1);
-    return invoiceId.get();
+    invoiceId++;
+    return invoiceId;
   }
   
   
@@ -75,14 +69,13 @@ public class InMemory implements Database {
         : that.inMemory != null) {
       return false;
     }
-    return invoiceId.get() != null ? invoiceId.get().equals(that.invoiceId.get()) : that.invoiceId
-        .get() == null;
+    return invoiceId != null ? invoiceId.equals(that.invoiceId) : that.invoiceId == null;
   }
   
   @Override
   public int hashCode() {
     int result = inMemory != null ? inMemory.hashCode() : 0;
-    result = 31 * result + (invoiceId.get() != null ? invoiceId.get().hashCode() : 0);
+    result = 31 * result + (invoiceId != null ? invoiceId.hashCode() : 0);
     return result;
   }
 }

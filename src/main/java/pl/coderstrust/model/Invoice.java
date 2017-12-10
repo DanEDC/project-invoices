@@ -3,6 +3,7 @@ package pl.coderstrust.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Invoice {
   
@@ -11,19 +12,19 @@ public class Invoice {
   private Company seller;
   private Company buyer;
   
-  private Collection<Item> items = new ArrayList<>();
+  private List<Item> items = new ArrayList<>();
   
   public Invoice(LocalDate date, Company seller, Company buyer,
-      Collection<Item> items) {
+      List<Item> items) {
     this.invoiceId = null;
     this.date = date;
     this.seller = seller;
     this.buyer = buyer;
     this.items.addAll(items);
+  
   }
   
   public final void setInvoiceId(Integer invoiceId) {
-    System.out.print(invoiceId + "*");
     this.invoiceId = invoiceId;
   }
   
@@ -47,6 +48,12 @@ public class Invoice {
     return items;
   }
   
+  //  private Collection<Item> setItemId() {
+//    for (int i=0; i<items.size();i++) {
+//      items.iterator().next().setItemId(i+1);
+//    }
+//    return items;
+//  }
   @Override
   public String toString() {
     return "\n"
