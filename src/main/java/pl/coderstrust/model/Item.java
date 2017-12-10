@@ -48,8 +48,8 @@ public class Item {
   @Override
   public String toString() {
     return itemId
-        + ", name=" + description
-        + ", value=" + value
-        + ", vat=" + vat;
+        + ":" + description
+        + "," + value
+        + "$," + vat + "%";
   }
 }

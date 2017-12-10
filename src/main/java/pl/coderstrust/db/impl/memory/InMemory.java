@@ -4,32 +4,31 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class InMemory implements Database {
   
   
   private List<Invoice> inMemory = new ArrayList<>();
-  private Integer invoiceId = 0;
+  private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
+  
+  public InMemory(List<Invoice> inMemory) {
+    this.inMemory = inMemory;
+  }
   
   @Override
-  public Integer getNextInvoiceId() {
-    return ++invoiceId;
+  public final Integer getNextInvoiceId() {
+    invoiceId.getAndSet(invoiceId.get() + 1);
+    return invoiceId.get();
   }
   
   
   @Override
   public boolean saveInvoice(Invoice invoice) {
-    invoice.setInvoiceId(getNextInvoiceId());
     return inMemory.add(invoice);
   }
   
-  @Override
-  public boolean saveInvoices(Collection<Invoice> invoices) {
-    invoices.forEach(i -> i.setInvoiceId(getNextInvoiceId()));
-    return this.inMemory.addAll(invoices);
-  }
   
   @Override
   public Invoice getInvoice(Integer invoiceId) {
@@ -44,27 +43,14 @@ public class InMemory implements Database {
   }
   
   @Override
-  public List<Invoice> getInvoices(Collection<Integer> orderedInvoicesId) {
-    List<Invoice> list = new ArrayList<>();
-    orderedInvoicesId.forEach(id -> list.add(this.getInvoice(id)));
-    return list;
+  public List<Invoice> getAllInvoices() {
+    return inMemory;
   }
+  
   
   @Override
   public boolean removeInvoice(Integer invoiceId) {
     return inMemory.remove(getInvoice(invoiceId));
-  }
-  
-  @Override
-  public boolean[] removeInvoices(Collection<Integer> toBeRemovedInvoicesId) {
-    boolean[] result = new boolean[toBeRemovedInvoicesId.size()];
-    int itr = 0;
-    for (Integer id : toBeRemovedInvoicesId) {
-      result[itr] = this.removeInvoice(id);
-      itr++;
-    }
-  
-    return result;
   }
   
   
@@ -89,13 +75,14 @@ public class InMemory implements Database {
         : that.inMemory != null) {
       return false;
     }
-    return invoiceId != null ? invoiceId.equals(that.invoiceId) : that.invoiceId == null;
+    return invoiceId.get() != null ? invoiceId.get().equals(that.invoiceId.get()) : that.invoiceId
+        .get() == null;
   }
   
   @Override
   public int hashCode() {
     int result = inMemory != null ? inMemory.hashCode() : 0;
-    result = 31 * result + (invoiceId != null ? invoiceId.hashCode() : 0);
+    result = 31 * result + (invoiceId.get() != null ? invoiceId.get().hashCode() : 0);
     return result;
   }
 }

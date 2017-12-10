@@ -3,49 +3,55 @@ package pl.coderstrust.logic;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class InvoiceBook {
   
-  private Database invoiceBook;
+  private Database database;
   
   public InvoiceBook(Database database) {
-    this.invoiceBook = database;
+    this.database = database;
   }
   
   public void saveInvoice(Invoice invoice) {
-    invoiceBook.saveInvoice(invoice);
+    invoice.setInvoiceId(database.getNextInvoiceId());
+    database.saveInvoice(invoice);
   }
   
   public void saveInvoices(Collection<Invoice> invoices) {
-    this.invoiceBook.saveInvoices(invoices);
+    for (Invoice invoice : invoices) {
+      saveInvoice(invoice);
+    }
   }
   
   public Invoice getInvoice(Integer invoiceId) {
-    return invoiceBook.getInvoice(invoiceId);
+    return database.getInvoice(invoiceId);
+  }
+  
+  public List<Invoice> getAllInvoices() {
+    return database.getAllInvoices();
   }
   
   public List<Invoice> getInvoices(Collection<Integer> orderedInvoicesId) {
-    return invoiceBook.getInvoices(orderedInvoicesId);
+    List<Invoice> list = new ArrayList<>();
+    orderedInvoicesId.forEach(id -> list.add(database.getInvoice(id)));
+    return list;
   }
   
   public void removeInvoice(Integer invoiceId) {
-    invoiceBook.removeInvoice(invoiceId);
+    database.removeInvoice(invoiceId);
   }
   
   public void removeInvoices(Collection<Integer> toBeRemovedInvoicesId) {
-    invoiceBook.removeInvoices(toBeRemovedInvoicesId);
-  }
-  
-  public Database getInvoiceBook() {
-    return invoiceBook;
+    toBeRemovedInvoicesId.forEach(id -> database.removeInvoice(id));
   }
   
   @Override
   public String toString() {
     return this.getClass().getSimpleName()
-        + invoiceBook;
+        + database;
   }
   
   @Override
@@ -59,11 +65,11 @@ public class InvoiceBook {
     
     InvoiceBook that = (InvoiceBook) object;
   
-    return invoiceBook != null ? invoiceBook.equals(that.invoiceBook) : that.invoiceBook == null;
+    return database != null ? database.equals(that.database) : that.database == null;
   }
   
   @Override
   public int hashCode() {
-    return invoiceBook != null ? invoiceBook.hashCode() : 0;
+    return database != null ? database.hashCode() : 0;
   }
 }

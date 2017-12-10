@@ -23,7 +23,8 @@ public class Invoice {
   }
   
   public final void setInvoiceId(Integer invoiceId) {
-    this.invoiceId = invoiceId ;
+    System.out.print(invoiceId + "*");
+    this.invoiceId = invoiceId;
   }
   
   public Integer getInvoiceId() {
@@ -50,9 +51,9 @@ public class Invoice {
   public String toString() {
     return "\n"
         + invoiceId
-        + ", date=" + date
-        + ", seller=" + seller
-        + ", buyer=" + buyer
-        + ", items=" + items;
+        + "," + date
+        + "," + seller
+        + "->" + buyer
+        + ":" + items;
   }
 }

@@ -2,7 +2,6 @@ package pl.coderstrust.db;
 
 import pl.coderstrust.model.Invoice;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface Database {
@@ -11,15 +10,12 @@ public interface Database {
   
   boolean saveInvoice(Invoice invoice);
   
-  boolean saveInvoices(Collection<Invoice> invoices);
-  
   Invoice getInvoice(Integer invoiceId);
   
-  List<Invoice> getInvoices(Collection<Integer> orderedInvoicesId);
+  List<Invoice> getAllInvoices();
   
   boolean removeInvoice(Integer invoiceId);
   
-  boolean[] removeInvoices(Collection<Integer> toBeRemovedInvoicesId);
   
   
 }
