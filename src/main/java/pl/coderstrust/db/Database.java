@@ -15,9 +15,11 @@ public interface Database {
   
   Invoice getInvoice(Integer invoiceId);
   
-  List<Invoice> getInvoicesList();
+  List<Invoice> getInvoices(Collection<Integer> orderedInvoicesId);
   
   boolean removeInvoice(Integer invoiceId);
+  
+  boolean[] removeInvoices(Collection<Integer> toBeRemovedInvoicesId);
   
   
 }

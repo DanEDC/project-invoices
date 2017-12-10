@@ -3,44 +3,70 @@ package pl.coderstrust.logic;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class InvoiceBook {
   
-  private Database invoices;
+  private Database invoiceBook;
   
-  public InvoiceBook(Database db) {
-    this.invoices = db;
+  public InvoiceBook(Database database) {
+    this.invoiceBook = database;
   }
   
   public void saveInvoice(Invoice invoice) {
-    System.out.println(invoices.saveInvoice(invoice));
+    System.out.println(invoiceBook.saveInvoice(invoice));
   }
   
   public void saveInvoices(Collection<Invoice> invoices) {
-    System.out.println(this.invoices.saveInvoices(invoices));
+    System.out.println(this.invoiceBook.saveInvoices(invoices));
+  }
+  
+  public Invoice getInvoice(Integer invoiceId) {
+    return invoiceBook.getInvoice(invoiceId);
+  }
+  
+  public List<Invoice> getInvoices(Collection<Integer> orderedInvoicesId) {
+    return invoiceBook.getInvoices(orderedInvoicesId);
   }
   
   public void removeInvoice(Integer invoiceId) {
-    System.out.println(invoices.removeInvoice(invoiceId));
+    System.out.println(invoiceBook.removeInvoice(invoiceId));
+  }
+  
+  public void removeInvoices(Collection<Integer> toBeRemovedInvoicesId) {
+    System.out.println(Arrays.toString(
+        invoiceBook.removeInvoices(toBeRemovedInvoicesId)));
+    /*condition if not found should be here*/
+  }
+  
+  public Database getInvoiceBook() {
+    return invoiceBook;
   }
   
   @Override
   public String toString() {
     return this.getClass().getSimpleName()
-        + invoices;
+        + invoiceBook;
   }
-  /*
-  *   Integer getNextInvoiceId();
   
-  boolean saveInvoice(Invoice invoice);
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (!(object instanceof InvoiceBook)) {
+      return false;
+    }
+    
+    InvoiceBook that = (InvoiceBook) object;
+    
+    return invoiceBook != null ? invoiceBook.equals(that.invoiceBook) : that.invoiceBook == null;
+  }
   
-  boolean saveInvoices(Collection<Invoice> invoices);
-  
-  Invoice getInvoice(Integer invoiceId);
-  
-  List<Invoice> getInvoicesList();
-  
-  boolean removeInvoice(Integer invoiceId);*/
-  
+  @Override
+  public int hashCode() {
+    return invoiceBook != null ? invoiceBook.hashCode() : 0;
+  }
 }
