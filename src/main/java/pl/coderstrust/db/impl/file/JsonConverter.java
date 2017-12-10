@@ -2,7 +2,6 @@ package pl.coderstrust.db.impl.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import pl.coderstrust.model.InvoiceId;
 
 import java.io.IOException;
 
@@ -16,7 +15,8 @@ class JsonConverter {
     return objectMapper.writeValueAsString(object);
   }
   
-  InvoiceId jsonToObject(String string) throws IOException {
-    return objectMapper.readValue(string, InvoiceId.class);
+  Object jsonToObject(String string) throws IOException {
+    return objectMapper.readValue(string, Object.class);
   }
 }
+

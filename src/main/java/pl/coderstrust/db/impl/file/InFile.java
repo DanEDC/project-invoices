@@ -59,7 +59,15 @@ public class InFile implements Database {
   
   @Override
   public Invoice getInvoice(Integer invoiceId) {
-    return null;
+    Invoice invoice = null;
+    String jsonString = fileHelper.readObject(inFile);
+    System.out.println(jsonString);
+    try {
+      invoice = (Invoice) jsonConverter.jsonToObject(jsonString);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return invoice;
   }
   
   @Override

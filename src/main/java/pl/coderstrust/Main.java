@@ -8,6 +8,7 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.Item;
 import pl.coderstrust.model.Vat;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,11 @@ public class Main {
   
   
   
+  }
+  
+  private static void testRead(Database database){
+    System.out.println(database.getInvoice(1));
+    
   }
   
   private static void testSave(Database database) {
