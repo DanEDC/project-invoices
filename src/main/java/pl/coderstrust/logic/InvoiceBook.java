@@ -3,7 +3,6 @@ package pl.coderstrust.logic;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,11 +15,11 @@ public class InvoiceBook {
   }
   
   public void saveInvoice(Invoice invoice) {
-    System.out.println(invoiceBook.saveInvoice(invoice));
+    invoiceBook.saveInvoice(invoice);
   }
   
   public void saveInvoices(Collection<Invoice> invoices) {
-    System.out.println(this.invoiceBook.saveInvoices(invoices));
+    this.invoiceBook.saveInvoices(invoices);
   }
   
   public Invoice getInvoice(Integer invoiceId) {
@@ -32,13 +31,11 @@ public class InvoiceBook {
   }
   
   public void removeInvoice(Integer invoiceId) {
-    System.out.println(invoiceBook.removeInvoice(invoiceId));
+    invoiceBook.removeInvoice(invoiceId);
   }
   
   public void removeInvoices(Collection<Integer> toBeRemovedInvoicesId) {
-    System.out.println(Arrays.toString(
-        invoiceBook.removeInvoices(toBeRemovedInvoicesId)));
-    /*condition if not found should be here*/
+    invoiceBook.removeInvoices(toBeRemovedInvoicesId);
   }
   
   public Database getInvoiceBook() {
@@ -61,7 +58,7 @@ public class InvoiceBook {
     }
     
     InvoiceBook that = (InvoiceBook) object;
-    
+  
     return invoiceBook != null ? invoiceBook.equals(that.invoiceBook) : that.invoiceBook == null;
   }
   

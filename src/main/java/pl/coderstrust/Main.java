@@ -59,7 +59,10 @@ public class Main {
     System.out.println("");
     System.out.println(ib.getInvoice(2));
     System.out.println(ib);
+    System.out.println("");
+    System.out.println("Rem invoices:" + list);
     ib.removeInvoices(list);
+    System.out.println("");
     System.out.println(ib);
     ib.saveInvoices(invoices);
     System.out.println(ib);
