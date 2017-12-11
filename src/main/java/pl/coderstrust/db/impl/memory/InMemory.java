@@ -8,7 +8,7 @@ import java.util.List;
 
 public class InMemory implements Database {
   
-  private List<Invoice> inMemory = new ArrayList<>();
+  private List<Invoice> database = new ArrayList<>();
   private Integer invoiceId = 0;
   
   @Override
@@ -20,14 +20,14 @@ public class InMemory implements Database {
   
   @Override
   public boolean saveInvoice(Invoice invoice) {
-    return inMemory.add(invoice);
+    return database.add(invoice);
   }
   
   
   @Override
   public Invoice getInvoice(Integer invoiceId) {
     Invoice invoice = null;
-    for (Invoice candidate : inMemory) {
+    for (Invoice candidate : database) {
       if (candidate.getInvoiceId().equals(invoiceId)) {
         invoice = candidate;
         break;
@@ -38,20 +38,20 @@ public class InMemory implements Database {
   
   @Override
   public List<Invoice> getAllInvoices() {
-    return inMemory;
+    return database;
   }
   
   
   @Override
   public boolean removeInvoice(Integer invoiceId) {
-    return inMemory.remove(getInvoice(invoiceId));
+    return database.remove(getInvoice(invoiceId));
   }
   
   
   @Override
   public String toString() {
-    return "InMemory\tinMemory:\n"
-        + inMemory;
+    return "InMemory\tdatabase:\n"
+        + database;
   }
   
   @Override
@@ -65,8 +65,8 @@ public class InMemory implements Database {
     
     InMemory that = (InMemory) object;
   
-    if (inMemory != null ? !inMemory.equals(that.inMemory)
-        : that.inMemory != null) {
+    if (database != null ? !database.equals(that.database)
+        : that.database != null) {
       return false;
     }
     return invoiceId != null ? invoiceId.equals(that.invoiceId) : that.invoiceId == null;
@@ -74,7 +74,7 @@ public class InMemory implements Database {
   
   @Override
   public int hashCode() {
-    int result = inMemory != null ? inMemory.hashCode() : 0;
+    int result = database != null ? database.hashCode() : 0;
     result = 31 * result + (invoiceId != null ? invoiceId.hashCode() : 0);
     return result;
   }

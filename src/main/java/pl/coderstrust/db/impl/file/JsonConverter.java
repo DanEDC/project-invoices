@@ -1,7 +1,9 @@
 package pl.coderstrust.db.impl.file;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import pl.coderstrust.model.Invoice;
 
 import java.io.IOException;
 
@@ -10,13 +12,35 @@ class JsonConverter {
   private ObjectMapper objectMapper = new ObjectMapper();
   
   
-  String objectToJson(Object object) throws IOException {
+  String objectToJson(Object object) {
+    String json = null;
     objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-    return objectMapper.writeValueAsString(object);
+    try {
+      json = objectMapper.writeValueAsString(object);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+    return json;
   }
   
-  Object jsonToObject(String string) throws IOException {
-    return objectMapper.readValue(string, Object.class);
+  Invoice jsonToInvoice(byte[] bytes) {
+    Invoice invoice = null;
+    try {
+      invoice = objectMapper.readValue(bytes, Invoice.class);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return invoice;
+  }
+  
+  Object jsonToObject(byte[] bytes) {
+    Object object = null;
+    try {
+      object = objectMapper.readValue(bytes, Object.class);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return object;
   }
 }
 

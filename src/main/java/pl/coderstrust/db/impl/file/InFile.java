@@ -4,7 +4,6 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -12,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class InFile implements Database {
   
   private String defaultInFileName = "InFile-Invoices" + LocalDate.now().getYear();
-  private File inFile = new File(defaultInFileName);
+  private File inFileDb = new File(defaultInFileName);
   private String inFileAssistingName = defaultInFileName + "_id";
   private File inFileId = new File(inFileAssistingName);
   private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
@@ -21,51 +20,45 @@ public class InFile implements Database {
   
   
   public InFile() {
-    System.out.println(inFile.getName());
+    System.out.println(inFileDb.getName());
     System.out.println(inFileId.getName());
   }
   
-  public InFile(String inFileName) {
-    this.inFile = new File(inFileName + LocalDate.now().getYear());
-    this.inFileId = new File(inFileName + LocalDate.now().getYear() + "_id");
-    
-    
-  }
   
   @Override
   public Integer getNextInvoiceId() {
+    Integer nextId;
+  
     if (inFileId.exists()) {
-      return Integer.parseInt(fileHelper.readObject(inFileId)) + 1;
+      String id = (fileHelper.readAsStringList(inFileId).get(0));
+      nextId = Integer.parseInt(id);
     } else {
-      invoiceId.getAndSet(invoiceId.get() + 1);
-      return invoiceId.get();
+      nextId = invoiceId.get();
     }
+    nextId++;
+    return nextId;
   }
   
   @Override
   public boolean saveInvoice(Invoice invoice) {
+    String invoiceAsString = jsonConverter.objectToJson(invoice);
+    fileHelper.appendEndLine(inFileDb, invoiceAsString);
   
-    try {
-      fileHelper.append(
-          inFile, jsonConverter.objectToJson(invoice));
-    
-      fileHelper.overwrite(
-          inFileId, jsonConverter.objectToJson(invoice.getInvoiceId()));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    String idAsString = jsonConverter.objectToJson(invoice.getInvoiceId());
+    fileHelper.overwriteFirstLine(inFileId, idAsString);
     return false;
   }
   
   @Override
   public Invoice getInvoice(Integer invoiceId) {
     Invoice invoice = null;
-    String jsonString = fileHelper.readObject(inFile);
-    System.out.println(jsonString);
-    try {
-      invoice = (Invoice) jsonConverter.jsonToObject(jsonString);
-    } catch (IOException e) {
-      e.printStackTrace();
+    List<byte[]> stringList = fileHelper.readAsListOfByteArray(inFileDb);
+    for (byte[] aStringList : stringList) {
+      Invoice candidate = (Invoice) jsonConverter.jsonToObject(aStringList);
+      if (candidate.getInvoiceId().equals(invoiceId)) {
+        invoice = candidate;
+        break;
+      }
     }
     return invoice;
   }

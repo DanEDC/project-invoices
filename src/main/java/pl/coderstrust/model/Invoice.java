@@ -14,6 +14,18 @@ public class Invoice {
   
   private List<Item> items = new ArrayList<>();
   
+  public Invoice() {
+  }
+  
+  public Invoice(Integer invoiceId, LocalDate date, Company seller,
+      Company buyer, List<Item> items) {
+    this.invoiceId = invoiceId;
+    this.date = date;
+    this.seller = seller;
+    this.buyer = buyer;
+    this.items = items;
+  }
+  
   public Invoice(LocalDate date, Company seller, Company buyer,
       List<Item> items) {
     this.invoiceId = null;
