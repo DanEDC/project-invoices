@@ -16,8 +16,10 @@ public class Main {
   
   public static void main(String[] args) {
     Database database = new InFile();
-    System.out.println(database.getInvoice(1));
 //    testSave(database);
+    System.out.println(database.getAllInvoices());
+//    database.removeInvoice(1);
+//    System.out.println(database.getAllInvoices());
 //    testRead(database);
   
   
@@ -63,8 +65,7 @@ public class Main {
     Invoice i6 = new Invoice(LocalDate.now(), Sel, Mat, items3);
     Invoice i7 = new Invoice(LocalDate.now(), Sel, Mat, items1);
     Invoice i8 = new Invoice(LocalDate.now(), Sel, Mat, items3);
-    Invoice i9 = new Invoice(LocalDate.now(), Sel, Mat, items3);
-    
+  
     List<Invoice> invoices1 = new ArrayList<>();
     invoices1.add(i2);
     invoices1.add(i3);

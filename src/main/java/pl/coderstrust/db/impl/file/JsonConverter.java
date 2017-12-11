@@ -3,15 +3,16 @@ package pl.coderstrust.db.impl.file;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import pl.coderstrust.model.Invoice;
 
 import java.io.IOException;
 
 class JsonConverter {
   
-  private ObjectMapper objectMapper = new ObjectMapper();
-  
-  
+  private ObjectMapper objectMapper = new ObjectMapper()
+      .registerModule(new JavaTimeModule());
+
   String objectToJson(Object object) {
     String json = null;
     objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -53,4 +54,3 @@ class JsonConverter {
     return object;
   }
 }
-

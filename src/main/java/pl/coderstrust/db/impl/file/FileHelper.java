@@ -21,6 +21,15 @@ class FileHelper {
     }
   }
   
+  void overwriteWholeFile(File file, List<String> strings) {
+    try (PrintWriter outputStream = new PrintWriter(
+        new FileOutputStream(file, false))) {
+      outputStream.println(strings);
+    } catch (FileNotFoundException e1) {
+      e1.printStackTrace();
+    }
+  }
+  
   void overwriteFirstLine(File file, String string) {
     try (PrintWriter printWriter = new PrintWriter(file)) {
       printWriter.print(string);

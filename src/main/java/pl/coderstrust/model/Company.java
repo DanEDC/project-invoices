@@ -5,6 +5,9 @@ public class Company {
   private String name;
   private String vatId;
   
+  public Company() {
+  }
+  
   public Company(String name, String vatId) {
     this.name = name;
     this.vatId = vatId;

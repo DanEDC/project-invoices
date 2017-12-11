@@ -5,6 +5,7 @@ import pl.coderstrust.model.Invoice;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -66,7 +67,13 @@ public class InFile implements Database {
   
   @Override
   public List<Invoice> getAllInvoices() {
-    return null;
+    List<String> stringList = fileHelper.readAsStringList(inFileDb);
+    List<Invoice> invoices = new ArrayList<>();
+    for (String string : stringList) {
+      Invoice invoice = jsonConverter.jsonStringToInvoice(string);
+      invoices.add(invoice);
+    }
+    return invoices;
   }
   
   @Override
