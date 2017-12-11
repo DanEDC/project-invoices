@@ -44,10 +44,10 @@ public class InFile implements Database {
   @Override
   public boolean saveInvoice(Invoice invoice) {
     String invoiceAsString = jsonConverter.objectToJson(invoice);
-    fileHelper.appendEndLine(inFileDb, invoiceAsString);
+    fileHelper.appendFile(inFileDb, invoiceAsString);
   
     String idAsString = jsonConverter.objectToJson(invoice.getInvoiceId());
-    fileHelper.overwriteFirstLine(inFileId, idAsString);
+    fileHelper.overwriteFile(inFileId, idAsString);
     return true;
   }
   
@@ -78,6 +78,22 @@ public class InFile implements Database {
   
   @Override
   public boolean removeInvoice(Integer invoiceId) {
-    return false;
+    List<String> inputStringList = fileHelper.readAsStringList(inFileDb);
+    List<String> outputStringList = new ArrayList<>();
+    boolean invoiceDeleted = false;
+  
+    for (String string : inputStringList) {
+      Invoice candidate = jsonConverter.jsonStringToInvoice(string);
+      if (candidate.getInvoiceId().equals(invoiceId)) {
+        invoiceDeleted = true;
+      } else {
+        outputStringList.add(string);
+      }
+    }
+    if (invoiceDeleted) {
+      fileHelper.clearFile(inFileDb);
+      outputStringList.forEach(s -> fileHelper.appendFile(inFileDb, s));
+    }
+    return invoiceDeleted;
   }
 }

@@ -12,7 +12,7 @@ import java.util.Scanner;
 class FileHelper {
   
   
-  void appendEndLine(File file, String string) {
+  void appendFile(File file, String string) {
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, true))) {
       outputStream.println(string);
@@ -21,22 +21,25 @@ class FileHelper {
     }
   }
   
-  void overwriteWholeFile(File file, List<String> strings) {
+  void overwriteFile(File file, String stringList) {
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, false))) {
-      outputStream.println(strings);
+      outputStream.println(stringList);
     } catch (FileNotFoundException e1) {
       e1.printStackTrace();
     }
   }
   
-  void overwriteFirstLine(File file, String string) {
-    try (PrintWriter printWriter = new PrintWriter(file)) {
-      printWriter.print(string);
+  boolean clearFile(File file) {
+    boolean fileCleared = false;
+    try {
+      PrintWriter printWriter = new PrintWriter(file.getPath());
       printWriter.close();
-    } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
+      fileCleared = true;
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
     }
+    return fileCleared;
   }
   
   List<byte[]> readAsListOfByteArray(File file) {
