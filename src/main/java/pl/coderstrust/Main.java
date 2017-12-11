@@ -17,18 +17,18 @@ public class Main {
   
   public static void main(String[] args) {
   
-    List<Integer> list1 = new ArrayList<>();
-    list1.add(5);
-    list1.add(6);
-    list1.add(10);
-    list1.add(0);
+//    List<Integer> list1 = new ArrayList<>();
+//    list1.add(5);
+//    list1.add(6);
+//    list1.add(10);
+//    list1.add(0);
   
     InvoiceBook database = new InvoiceBook(new InFile());
   
     testSave(database);
     testSave(database);
     System.out.println(database.getAllInvoices());
-    System.out.println(Arrays.toString(database.removeInvoices(list1)));
+//    System.out.println(Arrays.toString(database.removeInvoices(list1)));
     System.out.println(database.getAllInvoices());
 //    System.out.println(database.getAllInvoices());
 //    testRead(database);
