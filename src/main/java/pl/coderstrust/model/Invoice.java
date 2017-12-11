@@ -60,6 +60,22 @@ public class Invoice {
     return items;
   }
   
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
+  
+  public void setSeller(Company seller) {
+    this.seller = seller;
+  }
+  
+  public void setBuyer(Company buyer) {
+    this.buyer = buyer;
+  }
+  
+  public void setItems(List<Item> items) {
+    this.items = items;
+  }
+  
   //  private Collection<Item> setItemId() {
 //    for (int i=0; i<items.size();i++) {
 //      items.iterator().next().setItemId(i+1);

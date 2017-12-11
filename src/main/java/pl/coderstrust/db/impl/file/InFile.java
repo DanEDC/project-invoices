@@ -12,16 +12,17 @@ public class InFile implements Database {
   
   private String defaultInFileName = "InFile-Invoices" + LocalDate.now().getYear();
   private File inFileDb = new File(defaultInFileName);
+  
   private String inFileAssistingName = defaultInFileName + "_id";
   private File inFileId = new File(inFileAssistingName);
+  
   private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
+  
   private FileHelper fileHelper = new FileHelper();
   private JsonConverter jsonConverter = new JsonConverter();
   
   
   public InFile() {
-    System.out.println(inFileDb.getName());
-    System.out.println(inFileId.getName());
   }
   
   
@@ -46,15 +47,15 @@ public class InFile implements Database {
   
     String idAsString = jsonConverter.objectToJson(invoice.getInvoiceId());
     fileHelper.overwriteFirstLine(inFileId, idAsString);
-    return false;
+    return true;
   }
   
   @Override
   public Invoice getInvoice(Integer invoiceId) {
     Invoice invoice = null;
-    List<byte[]> stringList = fileHelper.readAsListOfByteArray(inFileDb);
-    for (byte[] aStringList : stringList) {
-      Invoice candidate = (Invoice) jsonConverter.jsonToObject(aStringList);
+    List<String> stringList = fileHelper.readAsStringList(inFileDb);
+    for (String string : stringList) {
+      Invoice candidate = jsonConverter.jsonStringToInvoice(string);
       if (candidate.getInvoiceId().equals(invoiceId)) {
         invoice = candidate;
         break;

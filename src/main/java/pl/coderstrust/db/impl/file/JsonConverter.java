@@ -23,10 +23,20 @@ class JsonConverter {
     return json;
   }
   
-  Invoice jsonToInvoice(byte[] bytes) {
+  Invoice jsonBytesToInvoice(byte[] bytes) {
     Invoice invoice = null;
     try {
       invoice = objectMapper.readValue(bytes, Invoice.class);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return invoice;
+  }
+  
+  Invoice jsonStringToInvoice(String string) {
+    Invoice invoice = null;
+    try {
+      invoice = objectMapper.readValue(string, Invoice.class);
     } catch (IOException e) {
       e.printStackTrace();
     }

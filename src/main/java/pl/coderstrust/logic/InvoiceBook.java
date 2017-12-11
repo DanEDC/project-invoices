@@ -18,13 +18,13 @@ public class InvoiceBook {
   
   public void saveInvoice(Invoice invoice) {
     invoice.setInvoiceId(database.getNextInvoiceId());
-    {
-      Integer itemId = 1;
-      for (Item item : invoice.getItems()) {
-        item.setItemId(itemId);
-        itemId++;
-      }
-    }
+//    {
+//      Integer itemId = 1;
+//      for (Item item : invoice.getItems()) {
+//        item.setItemId(itemId);
+//        itemId++;
+//      }
+//    }
     database.saveInvoice(invoice);
   }
   

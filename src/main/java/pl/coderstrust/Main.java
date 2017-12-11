@@ -16,8 +16,8 @@ public class Main {
   
   public static void main(String[] args) {
     Database database = new InFile();
-//    System.out.println(database.getInvoice(1));
-    testSave(database);
+    System.out.println(database.getInvoice(1));
+//    testSave(database);
 //    testRead(database);
   
   
