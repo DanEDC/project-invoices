@@ -2,16 +2,36 @@ package pl.coderstrust.model;
 
 public class Item {
   
-  private ItemId itemId;
+  private Integer itemId;
   private String description;
   private double value;
   private Vat vat;
   
   public Item(String description, double value, Vat vat) {
-    this.itemId = new ItemId();
+    this.itemId = null;
     this.description = description;
     this.value = value;
     this.vat = vat;
+  }
+  
+  public Integer getItemId() {
+    return itemId;
+  }
+  
+  public final void setItemId(Integer itemId) {
+    this.itemId = itemId;
+  }
+  
+  public String getDescription() {
+    return description;
+  }
+  
+  public double getValue() {
+    return value;
+  }
+  
+  public Vat getVat() {
+    return vat;
   }
   
   @Override
@@ -48,8 +68,8 @@ public class Item {
   @Override
   public String toString() {
     return itemId
-        + ", name=" + description
-        + ", value=" + value
-        + ", vat=" + vat;
+        + ":" + description
+        + "," + value
+        + "$," + vat + "%";
   }
 }

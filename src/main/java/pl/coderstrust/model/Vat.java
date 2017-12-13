@@ -18,4 +18,8 @@ public enum Vat {
   public String toString() {
     return vat + "";
   }
+  
+  public BigDecimal getVat() {
+    return vat;
+  }
 }

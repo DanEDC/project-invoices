@@ -2,36 +2,93 @@ package pl.coderstrust.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class Invoice {
   
-  private InvoiceId invoiceId;
+  private Integer invoiceId;
   private LocalDate date;
   private Company seller;
   private Company buyer;
   
   private List<Item> items = new ArrayList<>();
-  private Vat vat;
   
-  public Invoice(LocalDate date, Company seller, Company buyer,
-      Item[] items, Vat vat) {
-    this.invoiceId = new InvoiceId();
+  public Invoice() {
+  }
+  
+  public Invoice(Integer invoiceId, LocalDate date, Company seller,
+      Company buyer, List<Item> items) {
+    this.invoiceId = invoiceId;
     this.date = date;
     this.seller = seller;
     this.buyer = buyer;
-    this.items.addAll(Arrays.asList(items));
-    this.vat = vat;
+    this.items = items;
   }
   
+  public Invoice(LocalDate date, Company seller, Company buyer,
+      List<Item> items) {
+    this.invoiceId = null;
+    this.date = date;
+    this.seller = seller;
+    this.buyer = buyer;
+    this.items.addAll(items);
+  
+  }
+  
+  public final void setInvoiceId(Integer invoiceId) {
+    this.invoiceId = invoiceId;
+  }
+  
+  public Integer getInvoiceId() {
+    return invoiceId;
+  }
+  
+  public LocalDate getDate() {
+    return date;
+  }
+  
+  public Company getSeller() {
+    return seller;
+  }
+  
+  public Company getBuyer() {
+    return buyer;
+  }
+  
+  public Collection<Item> getItems() {
+    return items;
+  }
+  
+  public void setDate(LocalDate date) {
+    this.date = date;
+  }
+  
+  public void setSeller(Company seller) {
+    this.seller = seller;
+  }
+  
+  public void setBuyer(Company buyer) {
+    this.buyer = buyer;
+  }
+  
+  public void setItems(List<Item> items) {
+    this.items = items;
+  }
+  
+  //  private Collection<Item> setItemId() {
+//    for (int i=0; i<items.size();i++) {
+//      items.iterator().next().setItemId(i+1);
+//    }
+//    return items;
+//  }
   @Override
   public String toString() {
     return "\n"
         + invoiceId
-        + ", date=" + date
-        + ", seller=" + seller
-        + ", buyer=" + buyer
-        + ", items=" + items;
+        + "," + date
+        + "," + seller
+        + "->" + buyer
+        + ":" + items;
   }
 }
