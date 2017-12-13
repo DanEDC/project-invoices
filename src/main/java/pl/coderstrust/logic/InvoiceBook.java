@@ -2,7 +2,6 @@ package pl.coderstrust.logic;
 
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.model.Item;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,13 +17,6 @@ public class InvoiceBook {
   
   public void saveInvoice(Invoice invoice) {
     invoice.setInvoiceId(database.getNextInvoiceId());
-//    {
-//      Integer itemId = 1;
-//      for (Item item : invoice.getItems()) {
-//        item.setItemId(itemId);
-//        itemId++;
-//      }
-//    }
     database.saveInvoice(invoice);
   }
   
@@ -46,12 +38,18 @@ public class InvoiceBook {
     return list;
   }
   
-  public void removeInvoice(Integer invoiceId) {
-    database.removeInvoice(invoiceId);
+  public boolean removeInvoice(Integer invoiceId) {
+    return database.removeInvoice(invoiceId);
   }
   
-  public void removeInvoices(Collection<Integer> toBeRemovedInvoicesId) {
-    toBeRemovedInvoicesId.forEach(this::removeInvoice);
+  public boolean[] removeInvoices(Collection<Integer> toBeRemovedInvoicesId) {
+    boolean[] results = new boolean[toBeRemovedInvoicesId.size()];
+    int i = 0;
+    for (Integer integer : toBeRemovedInvoicesId) {
+      results[i] = this.removeInvoice(integer);
+      i++;
+    }
+    return results;
   }
   
   @Override

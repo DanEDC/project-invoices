@@ -15,20 +15,32 @@ import java.util.List;
 public class Main {
   
   public static void main(String[] args) {
-    Database database = new InFile();
-    System.out.println(database.getInvoice(1));
-//    testSave(database);
+  
+//    List<Integer> list1 = new ArrayList<>();
+//    list1.add(5);
+//    list1.add(6);
+//    list1.add(10);
+//    list1.add(0);
+  
+    InvoiceBook database = new InvoiceBook(new InFile());
+  
+    testSave(database);
+    testSave(database);
+    System.out.println(database.getAllInvoices());
+//    System.out.println(Arrays.toString(database.removeInvoices(list1)));
+    System.out.println(database.getAllInvoices());
+//    System.out.println(database.getAllInvoices());
 //    testRead(database);
   
   
   }
   
-  private static void testRead(Database database){
+  private static void testRead(InvoiceBook database) {
     System.out.println(database.getInvoice(1));
     
   }
   
-  private static void testSave(Database database) {
+  private static void testSave(InvoiceBook ib) {
     List<Integer> list = new ArrayList<>();
     list.add(1);
     list.add(4);
@@ -36,7 +48,6 @@ public class Main {
     list.add(5);
     list.add(6);
     
-    InvoiceBook ib = new InvoiceBook(database);
     
     System.out.println(ib);
     Company Mat = new Company("MD", "123");
@@ -63,8 +74,7 @@ public class Main {
     Invoice i6 = new Invoice(LocalDate.now(), Sel, Mat, items3);
     Invoice i7 = new Invoice(LocalDate.now(), Sel, Mat, items1);
     Invoice i8 = new Invoice(LocalDate.now(), Sel, Mat, items3);
-    Invoice i9 = new Invoice(LocalDate.now(), Sel, Mat, items3);
-    
+  
     List<Invoice> invoices1 = new ArrayList<>();
     invoices1.add(i2);
     invoices1.add(i3);
@@ -77,18 +87,12 @@ public class Main {
     invoices2.add(i8);
     
     ib.saveInvoice(i1);
-    System.out.println(ib);
     ib.saveInvoices(invoices1);
-    System.out.println(ib);
     ib.saveInvoices(invoices2);
-    System.out.println(ib);
-    System.out.println("");
-    System.out.println("\n1\n");
     ib.saveInvoices(invoices3);
-    System.out.println(ib);
   }
   
-  private static void testSaveGet(Database database) {
+  private static void testSaveGet(InvoiceBook ib) {
     List<Integer> list = new ArrayList<>();
     list.add(1);
     list.add(4);
@@ -96,7 +100,6 @@ public class Main {
     list.add(5);
     list.add(6);
     
-    InvoiceBook ib = new InvoiceBook(database);
     
     System.out.println(ib);
     Company Mat = new Company("MD", "123");

@@ -7,6 +7,9 @@ public class Item {
   private double value;
   private Vat vat;
   
+  public Item() {
+  }
+  
   public Item(String description, double value, Vat vat) {
     this.itemId = null;
     this.description = description;
