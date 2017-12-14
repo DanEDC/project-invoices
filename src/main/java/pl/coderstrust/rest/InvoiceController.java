@@ -12,19 +12,26 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/invoices")
 public class InvoiceController {
-  /*service here!!*///TODO
-  InvoiceBook invoiceBook = new InvoiceBook(new InFile());
   
+  InvoiceBook invoiceBook = new InvoiceBook(new InFile());
+
+//  @Autowired//TODO
+//  public InvoiceController(InvoiceBook invoiceBook) {
+//    this.invoiceBook = invoiceBook;
+//  }
+  
+  @RequestMapping("/invoices")
   @GetMapping
   public List<Invoice> getInvoices() {
     return invoiceBook.getAllInvoices();
   }
   
-  @GetMapping(value = "/{id}")
+  @RequestMapping(value = "/invoices/{id}")
+  @GetMapping
   public Invoice getInvoice(@PathVariable int id) {
     return invoiceBook.getInvoice(id);
   }
   
 }
+

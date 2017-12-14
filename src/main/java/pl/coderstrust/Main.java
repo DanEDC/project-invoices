@@ -26,9 +26,9 @@ public class Main {
   
     testSave(database);
     testSave(database);
-    System.out.println(database.getAllInvoices());
+//    System.out.println(database.getAllInvoices());
 //    System.out.println(Arrays.toString(database.removeInvoices(list1)));
-    System.out.println(database.getAllInvoices());
+//    System.out.println(database.getAllInvoices());
 //    System.out.println(database.getAllInvoices());
 //    testRead(database);
   
