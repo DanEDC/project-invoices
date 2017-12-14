@@ -67,6 +67,4 @@ class FileHelper {
     }
     return stringList;
   }
-  
-  
 }
