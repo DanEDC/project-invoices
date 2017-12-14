@@ -1,36 +1,39 @@
 package pl.coderstrust.db.impl.file;
 
-import pl.coderstrust.db.Database;
-import pl.coderstrust.model.Invoice;
-
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+import pl.coderstrust.db.Database;
+import pl.coderstrust.model.Invoice;
 
+@Service
+@Primary
 public class InFile implements Database {
-  
+
   private String defaultInFileName = "InFile-Invoices" + LocalDate.now().getYear();
   private File inFileDb = new File(defaultInFileName);
-  
+
   private String inFileAssistingName = defaultInFileName + "_id";
   private File inFileId = new File(inFileAssistingName);
-  
+
   private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
-  
+
   private FileHelper fileHelper = new FileHelper();
   private JsonConverter jsonConverter = new JsonConverter();
-  
-  
+
+
   public InFile() {
   }
-  
-  
+
+
   @Override
   public Integer getNextInvoiceId() {
     Integer nextId;
-  
+
     if (inFileId.exists()) {
       String id = (fileHelper.readAsStringList(inFileId).get(0));
       nextId = Integer.parseInt(id);
@@ -40,17 +43,17 @@ public class InFile implements Database {
     nextId++;
     return nextId;
   }
-  
+
   @Override
   public boolean saveInvoice(Invoice invoice) {
     String invoiceAsString = jsonConverter.objectToJson(invoice);
     fileHelper.appendFile(inFileDb, invoiceAsString);
-  
+
     String idAsString = jsonConverter.objectToJson(invoice.getInvoiceId());
     fileHelper.overwriteFile(inFileId, idAsString);
     return true;
   }
-  
+
   @Override
   public Invoice getInvoice(Integer invoiceId) {
     Invoice invoice = null;
@@ -64,7 +67,7 @@ public class InFile implements Database {
     }
     return invoice;
   }
-  
+
   @Override
   public List<Invoice> getAllInvoices() {
     List<String> stringList = fileHelper.readAsStringList(inFileDb);
@@ -75,13 +78,13 @@ public class InFile implements Database {
     }
     return invoices;
   }
-  
+
   @Override
   public boolean removeInvoice(Integer invoiceId) {
     List<String> inputStringList = fileHelper.readAsStringList(inFileDb);
     List<String> outputStringList = new ArrayList<>();
     boolean invoiceDeleted = false;
-  
+
     for (String string : inputStringList) {
       Invoice candidate = jsonConverter.jsonStringToInvoice(string);
       if (candidate.getInvoiceId().equals(invoiceId)) {

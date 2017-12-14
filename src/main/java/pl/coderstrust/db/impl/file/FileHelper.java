@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Scanner;
 
 class FileHelper {
-  
-  
+
+
   void appendFile(File file, String string) {
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, true))) {
@@ -20,7 +20,7 @@ class FileHelper {
       e1.printStackTrace();
     }
   }
-  
+
   void overwriteFile(File file, String stringList) {
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, false))) {
@@ -29,7 +29,7 @@ class FileHelper {
       e1.printStackTrace();
     }
   }
-  
+
   boolean clearFile(File file) {
     boolean fileCleared = false;
     try {
@@ -41,7 +41,7 @@ class FileHelper {
     }
     return fileCleared;
   }
-  
+
   List<byte[]> readAsListOfByteArray(File file) {
     List<byte[]> listOfBytes = new ArrayList<>();
     try {
@@ -54,7 +54,7 @@ class FileHelper {
     }
     return listOfBytes;
   }
-  
+
   List<String> readAsStringList(File file) {
     List<String> stringList = new ArrayList<>();
     try {
@@ -67,4 +67,5 @@ class FileHelper {
     }
     return stringList;
   }
+
 }

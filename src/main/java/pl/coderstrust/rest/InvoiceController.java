@@ -8,27 +8,23 @@ import pl.coderstrust.db.impl.file.InFile;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
 
-import java.util.List;
-
 
 @RestController
 public class InvoiceController {
-  
-  InvoiceBook invoiceBook = new InvoiceBook(new InFile());
+import java.util.List;
 
-//  @Autowired//TODO
-//  public InvoiceController(InvoiceBook invoiceBook) {
-//    this.invoiceBook = invoiceBook;
-//  }
+  @Autowired
+  public InvoiceController(InvoiceBook invoiceBook) {
+    this.invoiceBook = invoiceBook;
+  }
   
   @RequestMapping("/invoices")
   @GetMapping
   public List<Invoice> getInvoices() {
     return invoiceBook.getAllInvoices();
   }
-  
-  @RequestMapping(value = "/invoices/{id}")
-  @GetMapping
+
+  @GetMapping(value = "/invoices/{id}")
   public Invoice getInvoice(@PathVariable int id) {
     return invoiceBook.getInvoice(id);
   }
