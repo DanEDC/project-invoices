@@ -9,29 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
 
-//OD MATEUSZA:
-//@RestController
-//@RequestMapping("/invoices")
-//public class InvoiceController {
-//  /*service here!!*///TODO
-//  InvoiceBook invoiceBook = new InvoiceBook(new InFile());
-//
-//  @GetMapping
-//  public List<Invoice> getInvoices() {
-//    return invoiceBook.getAllInvoices();
-//  }
-//
-//  @GetMapping(value = "/{id}")
-//  public Invoice getInvoice(@PathVariable int id) {
-//    return invoiceBook.getInvoice(id);
-//  }
 @RestController
 public class InvoiceController {
 
   private InvoiceBook invoiceBook;
 
   @Autowired
-  public InvoiceController( InvoiceBook invoiceBook) {
+  public InvoiceController(InvoiceBook invoiceBook) {
     this.invoiceBook = invoiceBook;
   }
 
@@ -40,7 +24,7 @@ public class InvoiceController {
     return invoiceBook.getAllInvoices();
   }
 
-  @GetMapping(value = "/{id}")
+  @GetMapping(value = "/invoices/{id}")
   public Invoice getInvoice(@PathVariable int id) {
     return invoiceBook.getInvoice(id);
 

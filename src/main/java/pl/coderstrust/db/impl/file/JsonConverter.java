@@ -4,12 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.IOException;
 import pl.coderstrust.model.Invoice;
 
-import java.io.IOException;
-
 class JsonConverter {
-  
+
   private ObjectMapper objectMapper = new ObjectMapper()
       .registerModule(new JavaTimeModule());
 
@@ -23,7 +22,7 @@ class JsonConverter {
     }
     return json;
   }
-  
+
   Invoice jsonBytesToInvoice(byte[] bytes) {
     Invoice invoice = null;
     try {
@@ -33,7 +32,7 @@ class JsonConverter {
     }
     return invoice;
   }
-  
+
   Invoice jsonStringToInvoice(String string) {
     Invoice invoice = null;
     try {
@@ -43,7 +42,7 @@ class JsonConverter {
     }
     return invoice;
   }
-  
+
   Object jsonToObject(byte[] bytes) {
     Object object = null;
     try {
