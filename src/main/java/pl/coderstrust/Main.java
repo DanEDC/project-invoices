@@ -11,6 +11,7 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.Item;
 import pl.coderstrust.model.Vat;
 
+
 public class Main {
 
   public static void main(String[] args) {
@@ -25,9 +26,9 @@ public class Main {
 
     testSave(database);
     testSave(database);
-    System.out.println(database.getAllInvoices());
+//    System.out.println(database.getAllInvoices());
 //    System.out.println(Arrays.toString(database.removeInvoices(list1)));
-    System.out.println(database.getAllInvoices());
+//    System.out.println(database.getAllInvoices());
 //    System.out.println(database.getAllInvoices());
 //    testRead(database);
 
