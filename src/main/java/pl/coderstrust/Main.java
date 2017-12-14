@@ -2,6 +2,7 @@ package pl.coderstrust;
 
 import pl.coderstrust.db.Database;
 import pl.coderstrust.db.impl.file.InFile;
+import pl.coderstrust.db.impl.memory.InMemory;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
@@ -22,7 +23,7 @@ public class Main {
 //    list1.add(10);
 //    list1.add(0);
   
-    InvoiceBook database = new InvoiceBook(new InFile());
+    InvoiceBook database = new InvoiceBook(new InMemory());
   
     testSave(database);
     testSave(database);
@@ -31,8 +32,9 @@ public class Main {
 //    System.out.println(database.getAllInvoices());
 //    System.out.println(database.getAllInvoices());
 //    testRead(database);
-  
-  
+    System.out.println("Get all\n\n\n");
+    System.out.println(database.getAllInvoices());
+    
   }
   
   private static void testRead(InvoiceBook database) {
