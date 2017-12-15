@@ -1,14 +1,14 @@
 package pl.coderstrust.db.impl.file;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Primary
@@ -22,13 +22,13 @@ public class InFile implements Database {
 
   private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
 
-  private FileHelper fileHelper = new FileHelper();
-  private JsonConverter jsonConverter = new JsonConverter(new ObjectMapper());
+  private FileHelper fileHelper;
+  private JsonConverter jsonConverter;
 
-
-  public InFile() {
+  public InFile(FileHelper fileHelper, JsonConverter jsonConverter) {
+    this.fileHelper = fileHelper;
+    this.jsonConverter = jsonConverter;
   }
-
 
   @Override
   public Integer getNextInvoiceId() {

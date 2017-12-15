@@ -3,16 +3,18 @@ package pl.coderstrust.db.impl.file;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.IOException;
+import org.springframework.stereotype.Service;
 import pl.coderstrust.model.Invoice;
 
+import java.io.IOException;
+
+@Service
 class JsonConverter {
 
   private ObjectMapper objectMapper;
 
   public JsonConverter(ObjectMapper objectMapper) {
-    this.objectMapper = objectMapper.registerModules(new JavaTimeModule());
+    this.objectMapper = objectMapper;
   }
 
   String objectToJson(Object object) {
