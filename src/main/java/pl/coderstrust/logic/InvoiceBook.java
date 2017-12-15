@@ -33,7 +33,7 @@ public class InvoiceBook {
     return database.getAllInvoices();
   }
 
-  public List<Invoice> getInvoices(Collection<Integer> orderedInvoicesId) {
+  public List<Invoice> getListOfInvoiceById(Collection<Integer> orderedInvoicesId) {
     List<Invoice> list = new ArrayList<>();
     orderedInvoicesId.forEach(id -> list.add(this.getInvoice(id)));
     return list;

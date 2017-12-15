@@ -14,11 +14,17 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
 @RunWith(JUnitParamsRunner.class)
 public class InvoiceBookTest {
+  
+  /**
+   * Invoice in tests should be a mock?
+   */
+  private boolean invoiceIsMock = true;
   
   @Test
   public static void shouldUseDefaultConstructor() {
@@ -34,8 +40,15 @@ public class InvoiceBookTest {
     assertEquals(expectedObjectName.toString(), resultObjectName);
   }
   
-  private static List<Invoice> generateListOf0toNMockInvoices(int n) {
-    Invoice invoice = mock(Invoice.class);
+  
+  /**
+   * supporting method - generate List<Invoice> of random # of elements from 0 to n.
+   *
+   * @param n - max number of elements
+   * @return - list of mock or null Invoices
+   */
+  private static List<Invoice> generateListOf0toNInvoices(int n, boolean isMock) {
+    Invoice invoice = getInvoice(isMock);
     List<Invoice> invoices = new ArrayList<>();
     for (int i = 0; i < (int) (Math.random() * n); i++) {
       invoices.add(invoice);
@@ -43,13 +56,25 @@ public class InvoiceBookTest {
     return invoices;
   }
   
+  private static Invoice getInvoice(boolean isMock) {
+    Invoice invoice;
+    if (isMock) {
+      return invoice = mock(Invoice.class);
+    } else {
+      return invoice = new Invoice();
+    }
+  }
+  
+  /**
+   * This method is only tested to use saveInvoice a given number of times.
+   */
   @Test
-  public void saveInvoices() throws Exception {
+  public void saveInvoices() {
     //    given
     final Database database = mock(Database.class);
     final InvoiceBook invoiceBook = new InvoiceBook(database);
-    final Invoice invoice = mock(Invoice.class);
-    List<Invoice> invoices = generateListOf0toNMockInvoices(10);
+    final Invoice invoice = getInvoice(invoiceIsMock);
+    List<Invoice> invoices = generateListOf0toNInvoices(10, invoiceIsMock);
     
     //    when
     invoiceBook.saveInvoices(invoices);
@@ -59,47 +84,50 @@ public class InvoiceBookTest {
   }
   
   @Test
-  public void getInvoice() throws Exception {
+  public void getInvoice() {
     //    given
     final Database database = mock(Database.class);
     final InvoiceBook invoiceBook = new InvoiceBook(database);
-    final Invoice expectedInvoice = mock(Invoice.class);
-    Integer invoiceId = (int) (Math.random() * 10);
-    when(database.getInvoice(invoiceId)).thenReturn(expectedInvoice);
-    
+    final Invoice expectedInvoice = getInvoice(invoiceIsMock);
+    Integer existingInvoiceId = (int) (Math.random() * 10);
+    when(database.getInvoice(existingInvoiceId)).thenReturn(expectedInvoice);
+  
     //    when
-    Invoice actualInvoice = invoiceBook.getInvoice(invoiceId);
-    
+    Invoice actualInvoice = invoiceBook.getInvoice(existingInvoiceId);
+  
     //    then
     Assert.assertEquals(expectedInvoice, actualInvoice);
-    verify(database).getInvoice(invoiceId);
+    verify(database).getInvoice(existingInvoiceId);
   }
   
-  
   @Test
-  public void getAllInvoices() throws Exception {
-    
+  public void getAllInvoices() {
+  
     //given
     final Database database = mock(Database.class);
     InvoiceBook invoiceBook = new InvoiceBook(database);
-    List<Invoice> expectedListOfInvoices = generateListOf0toNMockInvoices(20);
+    List<Invoice> expectedListOfInvoices = generateListOf0toNInvoices(20,
+        invoiceIsMock);
     when(database.getAllInvoices()).thenReturn(expectedListOfInvoices);
-    
+  
     //when
     List<Invoice> actualListOfInvoices = invoiceBook.getAllInvoices();
-    
+  
     //then
     assertEquals(expectedListOfInvoices, actualListOfInvoices);
   }
 
   @Test
-  public void getInvoices() throws Exception {
+  public void removeInvoice() throws Exception {
+    //given
+    final Database database = mock(Database.class);
+    InvoiceBook invoiceBook = new InvoiceBook(database);
+    
+    //when
+    database.removeInvoice()
+    
   }
 
-//  @Test
-//  public void removeInvoice() throws Exception {
-//  }
-//
 //  @Test
 //  public void removeInvoices() throws Exception {
 //  }
@@ -109,7 +137,7 @@ public class InvoiceBookTest {
     //    given
     final Database database = mock(Database.class);
     final InvoiceBook invoiceBook = new InvoiceBook(database);
-    final Invoice invoice = mock(Invoice.class);
+    final Invoice invoice = getInvoice(invoiceIsMock);
     //    when
     invoiceBook.saveInvoice(invoice);
     //    then
@@ -117,5 +145,17 @@ public class InvoiceBookTest {
     verify(database).saveInvoice(invoice);
   }
   
-  
+  @Test
+  public void getListOfInvoiceById(Collection<Integer> orderedInvoicesId) {
+    //given
+    final Database database = mock(Database.class);
+    InvoiceBook invoiceBook = new InvoiceBook(database);
+    List<Invoice> expectedListOfInvoices = generateListOf0toNInvoices(20, invoiceIsMock);
+    
+    //when
+    List<Invoice> actualListOfInvoices = invoiceBook.getAllInvoices();
+    
+    //then
+    assertEquals(expectedListOfInvoices, actualListOfInvoices);
+  }
 }
