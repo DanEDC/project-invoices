@@ -10,7 +10,10 @@ import java.io.IOException;
 
 class JsonConverter {
 
-  private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+  private ObjectMapper objectMapper;
+  public JsonConverter(ObjectMapper objectMapper) {
+    this.objectMapper = objectMapper.registerModules(new JavaTimeModule());
+  }
 
   String objectToJson(Object object) {
     String json = null;

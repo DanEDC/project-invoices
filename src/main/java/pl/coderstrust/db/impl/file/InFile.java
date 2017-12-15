@@ -1,5 +1,6 @@
 package pl.coderstrust.db.impl.file;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
@@ -23,7 +24,7 @@ public class InFile implements Database {
   private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
 
   private FileHelper fileHelper = new FileHelper();
-  private JsonConverter jsonConverter = new JsonConverter();
+  private JsonConverter jsonConverter = new JsonConverter(new ObjectMapper());
 
 
   public InFile() {
