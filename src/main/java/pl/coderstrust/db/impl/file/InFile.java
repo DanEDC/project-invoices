@@ -1,15 +1,14 @@
 package pl.coderstrust.db.impl.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
-import pl.coderstrust.db.Database;
-import pl.coderstrust.model.Invoice;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+import pl.coderstrust.db.Database;
+import pl.coderstrust.model.Invoice;
 
 @Service
 @Primary
