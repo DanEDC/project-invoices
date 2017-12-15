@@ -1,10 +1,11 @@
 package pl.coderstrust.db.impl.memory;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class InMemory implements Database {
@@ -14,8 +15,7 @@ public class InMemory implements Database {
 
   @Override
   public final Integer getNextInvoiceId() {
-    invoiceId++;
-    return invoiceId;
+    return invoiceId++;
   }
 
 

@@ -1,20 +1,21 @@
 package pl.coderstrust.db.impl.file;
 
-import java.io.File;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
 @Service
 @Primary
 public class InFile implements Database {
 
-  private String defaultInFileName = "InFile-Invoices" + LocalDate.now().getYear();
+  private String defaultInFileName = "InFile-Invoices"; //+ LocalDate.now().getYear();
   private File inFileDb = new File(defaultInFileName);
 
   private String inFileAssistingName = defaultInFileName + "_id";
@@ -23,7 +24,7 @@ public class InFile implements Database {
   private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
 
   private FileHelper fileHelper = new FileHelper();
-  private JsonConverter jsonConverter = new JsonConverter();
+  private JsonConverter jsonConverter = new JsonConverter(new ObjectMapper());
 
 
   public InFile() {
@@ -41,6 +42,10 @@ public class InFile implements Database {
       nextId = invoiceId.get();
     }
     nextId++;
+
+    String idAsString = jsonConverter.objectToJson(nextId);
+    fileHelper.overwriteFile(inFileId, idAsString);
+
     return nextId;
   }
 
@@ -48,9 +53,6 @@ public class InFile implements Database {
   public boolean saveInvoice(Invoice invoice) {
     String invoiceAsString = jsonConverter.objectToJson(invoice);
     fileHelper.appendFile(inFileDb, invoiceAsString);
-
-    String idAsString = jsonConverter.objectToJson(invoice.getInvoiceId());
-    fileHelper.overwriteFile(inFileId, idAsString);
     return true;
   }
 
