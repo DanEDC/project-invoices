@@ -4,13 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.IOException;
 import pl.coderstrust.model.Invoice;
+
+import java.io.IOException;
 
 class JsonConverter {
 
-  private ObjectMapper objectMapper = new ObjectMapper()
-      .registerModule(new JavaTimeModule());
+  private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
   String objectToJson(Object object) {
     String json = null;
