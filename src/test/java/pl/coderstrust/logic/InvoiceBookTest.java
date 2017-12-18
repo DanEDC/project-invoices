@@ -50,7 +50,7 @@ public class InvoiceBookTest {
   private static List<Invoice> generateListOf0toNInvoices(int n, boolean isMock) {
     Invoice invoice = getInvoice(isMock);
     List<Invoice> invoices = new ArrayList<>();
-    for (int i = 0; i < (int) (Math.random() * n); i++) {
+    for (int i = 0; i < n; i++) {
       invoices.add(invoice);
     }
     return invoices;
@@ -65,22 +65,55 @@ public class InvoiceBookTest {
     }
   }
   
-  /**
-   * This method is only tested to use saveInvoice a given number of times.
-   */
   @Test
-  public void saveInvoices() {
+  public void saveInvoice() throws Exception {
     //    given
     final Database database = mock(Database.class);
     final InvoiceBook invoiceBook = new InvoiceBook(database);
     final Invoice invoice = getInvoice(invoiceIsMock);
+    //    when
+    invoiceBook.saveInvoice(invoice);
+    //    then
+    verify(database).getNextInvoiceId();
+    verify(database).saveInvoice(invoice);
+  }
+  
+  /**
+   * This method is only tested to use saveInvoice a given number of times.
+   */
+  @Test
+  public void saveInvoices0() {
+    //    given
+    final Database database = mock(Database.class);
+    final InvoiceBook invoiceBook = new InvoiceBook(database);
+    
+    
+    List<Invoice> invoices = generateListOf0toNInvoices(0, invoiceIsMock);
+    
+    //    when
+    invoiceBook.saveInvoices(invoices);
+    //    then
+    for(Invoice invoice:invoices){
+      verify(database, times(invoices.size())).getNextInvoiceId();
+      verify(database, times(invoices.size())).saveInvoice(invoice);
+    }
+  }
+  @Test
+  public void saveInvoices10() {
+    //    given
+    final Database database = mock(Database.class);
+    final InvoiceBook invoiceBook = new InvoiceBook(database);
+    
+    
     List<Invoice> invoices = generateListOf0toNInvoices(10, invoiceIsMock);
     
     //    when
     invoiceBook.saveInvoices(invoices);
     //    then
-    verify(database, times(invoices.size())).getNextInvoiceId();
-    verify(database, times(invoices.size())).saveInvoice(invoice);
+    for(Invoice invoice:invoices){
+      verify(database, times(invoices.size())).getNextInvoiceId();
+      verify(database, times(invoices.size())).saveInvoice(invoice);
+    }
   }
   
   @Test
@@ -119,12 +152,12 @@ public class InvoiceBookTest {
 
   @Test
   public void removeInvoice() throws Exception {
-    //given
-    final Database database = mock(Database.class);
-    InvoiceBook invoiceBook = new InvoiceBook(database);
-    
-    //when
-    database.removeInvoice()
+//    //given
+//    final Database database = mock(Database.class);
+//    InvoiceBook invoiceBook = new InvoiceBook(database);
+//
+//    //when
+//    database.removeInvoice()
     
   }
 
@@ -132,18 +165,7 @@ public class InvoiceBookTest {
 //  public void removeInvoices() throws Exception {
 //  }
   
-  @Test
-  public void saveInvoice() throws Exception {
-    //    given
-    final Database database = mock(Database.class);
-    final InvoiceBook invoiceBook = new InvoiceBook(database);
-    final Invoice invoice = getInvoice(invoiceIsMock);
-    //    when
-    invoiceBook.saveInvoice(invoice);
-    //    then
-    verify(database).getNextInvoiceId();
-    verify(database).saveInvoice(invoice);
-  }
+
   
   @Test
   public void getListOfInvoiceById(Collection<Integer> orderedInvoicesId) {
