@@ -43,7 +43,7 @@ public class InvoiceBook {
     return database.removeInvoice(invoiceId);
   }
 
-  public boolean[] removeInvoices(Collection<Integer> toBeRemovedInvoicesId) {
+  public boolean[] removeInvoicesById(Collection<Integer> toBeRemovedInvoicesId) {
     boolean[] results = new boolean[toBeRemovedInvoicesId.size()];
     int i = 0;
     for (Integer integer : toBeRemovedInvoicesId) {
