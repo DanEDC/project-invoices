@@ -53,29 +53,29 @@ public class InvoiceBook {
     return results;
   }
 
-//  @Override
-//  public String toString() {
-//    return this.getClass().getSimpleName()
-//        + database;
-//  }
-//
-//  @Override
-//  public boolean equals(Object object) {
-//    if (this == object) {
-//      return true;
-//    }
-//    if (!(object instanceof InvoiceBook)) {
-//      return false;
-//    }
-//
-//    InvoiceBook that = (InvoiceBook) object;
-//
-//    return database != null ? database.equals(
-//        that.database) : that.database == null;
-//  }
-//
-//  @Override
-//  public int hashCode() {
-//    return database != null ? database.hashCode() : 0;
-//  }
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName()
+        + database;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (!(object instanceof InvoiceBook)) {
+      return false;
+    }
+
+    InvoiceBook that = (InvoiceBook) object;
+
+    return database != null ? database.equals(
+        that.database) : that.database == null;
+  }
+
+  @Override
+  public int hashCode() {
+    return database != null ? database.hashCode() : 0;
+  }
 }
