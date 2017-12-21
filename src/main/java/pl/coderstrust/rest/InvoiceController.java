@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
@@ -34,10 +35,10 @@ public class InvoiceController {
   public Invoice getInvoice(@PathVariable int id) {
     return invoiceBook.getInvoice(id);
   }
-
+  
   @PostMapping(value = "/invoices")
-  public int saveInvoice(Invoice invoice) {
-    return 0;
+  public void createInv(@RequestBody Invoice invoice) {
+    invoiceBook.saveInvoice(invoice);
   }
 
   //NOT working, in development
