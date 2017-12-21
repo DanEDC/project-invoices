@@ -81,6 +81,7 @@ public class InvoiceBookTest {
   
   /**
    * This method is only tested to use saveInvoice a given number of times.
+   * For randomly generated values add "Description" in assert.
    */
   @Test
   public void shouldUseSave0Invoices() {
@@ -89,7 +90,7 @@ public class InvoiceBookTest {
     final InvoiceBook invoiceBook = new InvoiceBook(database);
     
     
-    List<Invoice> invoices = generateListOf0toNInvoices(0, invoiceIsMock);
+    List<Invoice> invoices = generateListOf0toNInvoices(10, invoiceIsMock);
     
     //    when
     invoiceBook.saveInvoices(invoices);
@@ -98,6 +99,8 @@ public class InvoiceBookTest {
       verify(database, times(invoices.size())).getNextInvoiceId();
       verify(database, times(invoices.size())).saveInvoice(invoice);
     }
+    
+    
   }
   @Test
   public void shouldUseSave10Invoices() {
