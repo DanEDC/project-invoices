@@ -35,16 +35,15 @@ public class InvoiceController {
   public Invoice getInvoice(@PathVariable int id) {
     return invoiceBook.getInvoice(id);
   }
-  
+
   @PostMapping(value = "/invoices")
   public void createInv(@RequestBody Invoice invoice) {
     invoiceBook.saveInvoice(invoice);
   }
 
-  //NOT working, in development
   @DeleteMapping(value = "/invoices{id}")
-  public int removeInvoice(@PathVariable int id) {
-    return 0;
+  public boolean removeInvoice(@PathVariable int id) {
+    return invoiceBook.removeInvoice(id);
   }
 
 }
