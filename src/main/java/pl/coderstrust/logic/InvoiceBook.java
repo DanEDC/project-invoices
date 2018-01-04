@@ -46,10 +46,10 @@ public class InvoiceBook {
 
   public boolean[] removeInvoicesById(Collection<Integer> toBeRemovedInvoicesId) {
     boolean[] results = new boolean[toBeRemovedInvoicesId.size()];
-    int i = 0;
+    int resultPosition = 0;
     for (Integer integer : toBeRemovedInvoicesId) {
-      results[i] = this.removeInvoice(integer);
-      i++;
+      results[resultPosition] = this.removeInvoice(integer);
+      resultPosition++;
     }
     return results;
   }

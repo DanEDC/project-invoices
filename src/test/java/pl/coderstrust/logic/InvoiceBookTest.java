@@ -43,15 +43,15 @@ public class InvoiceBookTest {
 
 
   /**
-   * supporting method - generate List<Invoice> of random # of elements from 0 to n.
+   * supporting method - generate List of Invoices with given number of elements.
    *
-   * @param n - max number of elements
+   * @param number - number of elements
    * @return - list of mock or null Invoices
    */
-  private static List<Invoice> generateListOf0toNInvoices(int n, boolean isMock) {
+  private static List<Invoice> generateListOf0toNInvoices(int number, boolean isMock) {
     Invoice invoice = getInvoice(isMock);
     List<Invoice> invoices = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < number; i++) {
       invoices.add(invoice);
     }
     return invoices;
