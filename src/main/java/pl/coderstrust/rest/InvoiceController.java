@@ -41,7 +41,7 @@ public class InvoiceController {
     invoiceBook.saveInvoice(invoice);
   }
 
-  @DeleteMapping(value = "/invoices{id}")
+  @DeleteMapping(value = "/invoices/{id}")
   public boolean removeInvoice(@PathVariable int id) {
     return invoiceBook.removeInvoice(id);
   }
