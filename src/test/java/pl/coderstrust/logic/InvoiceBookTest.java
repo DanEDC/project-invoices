@@ -2,6 +2,9 @@ package pl.coderstrust.logic;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -9,7 +12,6 @@ import static org.mockito.Mockito.when;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.db.Database;
@@ -30,15 +32,15 @@ public class InvoiceBookTest {
   
   /**
    * supporting method - generate List<Invoice> of random #
-   * of elements from 0 to n.
+   * of elements from 0 to number.
    *
-   * @param n - max number of elements
+   * @param number - max number of elements
    * @return - list of mock or null Invoices
    */
-  private static List<Invoice> generateListOfNInvoices(int n, boolean isMock) {
+  private static List<Invoice> generateListOfNInvoices(int number, boolean isMock) {
     Invoice invoice = getInvoice(isMock);
     List<Invoice> invoices = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < number; i++) {
       invoices.add(invoice);
     }
     return invoices;
@@ -90,11 +92,11 @@ public class InvoiceBookTest {
     final Database database = mock(Database.class);
     final InvoiceBook invoiceBook = new InvoiceBook(database);
     
-    
     List<Invoice> invoices = generateListOfNInvoices(number, invoiceIsMock);
     
     //    when
     invoiceBook.saveInvoices(invoices);
+  
     //    then
     for(Invoice invoice:invoices){
       verify(database, times(invoices.size())).getNextInvoiceId();
@@ -113,16 +115,16 @@ public class InvoiceBookTest {
     Integer existingInvoiceId = 1 + (int) (Math.random() * 10);
     
     when(database.getInvoice(existingInvoiceId)).thenReturn(expectedInvoice);
-    when(database.getInvoice(0)).thenReturn(null);
+    when(database.getInvoice(nonExistingInvoiceId)).thenReturn(null);
   
     //    when
     Invoice actualInvoiceWhenExists = invoiceBook.getInvoice(existingInvoiceId);
     Invoice actualInvoiceWhenNotExists = invoiceBook.getInvoice(nonExistingInvoiceId);
   
     //    then
-    Assert.assertEquals(expectedInvoice, actualInvoiceWhenExists);
+    assertEquals(expectedInvoice, actualInvoiceWhenExists);
     verify(database, times(1)).getInvoice(existingInvoiceId);
-    Assert.assertEquals(null, actualInvoiceWhenNotExists);
+    assertNull(actualInvoiceWhenNotExists);
     verify(database, times(1)).getInvoice(nonExistingInvoiceId);
   }
   
@@ -159,8 +161,8 @@ public class InvoiceBookTest {
     boolean expectedTrue = invoiceBook.removeInvoice(existingInvoiceId1);
   
     //then
-    assertEquals(false, expectedFalse);
-    assertEquals(true, expectedTrue);
+    assertFalse(expectedFalse);
+    assertTrue(expectedTrue);
   
     verify(database).removeInvoice(nonExistingInvoiceId0);
     verify(database).removeInvoice(existingInvoiceId1);
@@ -187,8 +189,8 @@ public class InvoiceBookTest {
     //then
     assertArrayEquals(expectedResult, actualResult);
     assertEquals(2, actualResult.length);
-    assertEquals(false, actualResult[0]);
-    assertEquals(true, actualResult[1]);
+    assertFalse(actualResult[0]);
+    assertTrue(actualResult[1]);
     verify(database).removeInvoice(0);
     verify(database).removeInvoice(1);
   }
@@ -217,7 +219,7 @@ public class InvoiceBookTest {
     assertEquals(expectedListOfInvoices,actualListOfInvoices);
     assertEquals(2,actualListOfInvoices.size());
     assertEquals(invoice,actualListOfInvoices.get(1));
-    assertEquals(null,actualListOfInvoices.get(0));
+    assertNull(actualListOfInvoices.get(0));
     verify(database).getInvoice(0);
     verify(database).getInvoice(1);
   }
@@ -256,10 +258,10 @@ public class InvoiceBookTest {
     boolean equals4 = invoiceBook.equals(invoiceBook);
     
     //then
-    assertEquals(true, equals1);
-    assertEquals(true, equals4);
-    assertEquals(false, equals2);
-    assertEquals(false, equals3);
+    assertTrue(equals1);
+    assertTrue(equals4);
+    assertFalse(equals2);
+    assertFalse(equals3);
     
   }
   
@@ -282,8 +284,8 @@ public class InvoiceBookTest {
     //then
     assertEquals(databaseHashcode, invoiceBookHashCode);
     assertEquals(database1Hashcode, invoiceBook1HashCode);
-    assertEquals(false, invoiceBookHashCode == invoiceBook1HashCode);
-    assertEquals(false, databaseHashcode == database1Hashcode);
+    assertFalse(invoiceBookHashCode == invoiceBook1HashCode);
+    assertFalse(databaseHashcode == database1Hashcode);
     
   }
 }
