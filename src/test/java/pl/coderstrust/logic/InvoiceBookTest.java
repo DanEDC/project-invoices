@@ -31,8 +31,7 @@ public class InvoiceBookTest {
   private boolean invoiceIsMock = false;
   
   /**
-   * supporting method - generate List<Invoice> of random #
-   * of elements from 0 to number.
+   * supporting method - generate List of Invoices with given number of elements.
    *
    * @param number - max number of elements
    * @return - list of mock or null Invoices
@@ -98,7 +97,7 @@ public class InvoiceBookTest {
     invoiceBook.saveInvoices(invoices);
   
     //    then
-    for(Invoice invoice:invoices){
+    for (Invoice invoice : invoices) {
       verify(database, times(invoices.size())).getNextInvoiceId();
       verify(database, times(invoices.size())).saveInvoice(invoice);
     }
@@ -133,8 +132,8 @@ public class InvoiceBookTest {
   
     //given
     final Database database = mock(Database.class);
-    InvoiceBook invoiceBook = new InvoiceBook(database);
-    List<Invoice> expectedListOfInvoices = generateListOfNInvoices(20,
+    final InvoiceBook invoiceBook = new InvoiceBook(database);
+    final List<Invoice> expectedListOfInvoices = generateListOfNInvoices(20,
         invoiceIsMock);
     when(database.getAllInvoices()).thenReturn(expectedListOfInvoices);
   
@@ -148,8 +147,8 @@ public class InvoiceBookTest {
   @Test
   public void shouldRemoveInvoice() {
     //given
-    int nonExistingInvoiceId0 = 0;
-    int existingInvoiceId1 = 1;
+    final int nonExistingInvoiceId0 = 0;
+    final int existingInvoiceId1 = 1;
   
     Database database = mock(Database.class);
     InvoiceBook invoiceBook = new InvoiceBook(database);
@@ -229,7 +228,7 @@ public class InvoiceBookTest {
     //given
     final Database database = mock(Database.class);
     final InvoiceBook invoiceBook = new InvoiceBook(database);
-    String expectedToString = InvoiceBook.class.getSimpleName() + "DatabaseToString";
+    final String expectedToString = InvoiceBook.class.getSimpleName() + "DatabaseToString";
     
     when(database.toString()).thenReturn("DatabaseToString");
     
@@ -243,9 +242,9 @@ public class InvoiceBookTest {
   @Test
   public void shouldTestEquals() {
     //given
-    Database database = mock(Database.class);
-    Database database2 = mock(Database.class);
-    Object object = mock(Object.class);
+    final Database database = mock(Database.class);
+    final Database database2 = mock(Database.class);
+    final Object object = mock(Object.class);
     
     InvoiceBook invoiceBook = new InvoiceBook(database);
     InvoiceBook invoiceBook1 = new InvoiceBook(database);
@@ -255,11 +254,9 @@ public class InvoiceBookTest {
     boolean equals1 = invoiceBook.equals(invoiceBook1);
     boolean equals2 = invoiceBook.equals(invoiceBook2);
     boolean equals3 = invoiceBook.equals(object);
-    boolean equals4 = invoiceBook.equals(invoiceBook);
     
     //then
     assertTrue(equals1);
-    assertTrue(equals4);
     assertFalse(equals2);
     assertFalse(equals3);
     
