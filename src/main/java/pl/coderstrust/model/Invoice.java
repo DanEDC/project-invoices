@@ -75,13 +75,7 @@ public class Invoice {
   public void setItems(List<Item> items) {
     this.items = items;
   }
-
-  //  private Collection<Item> setItemId() {
-//    for (int i=0; i<items.size();i++) {
-//      items.iterator().next().setItemId(i+1);
-//    }
-//    return items;
-//  }
+  
   @Override
   public String toString() {
     return "\n"
