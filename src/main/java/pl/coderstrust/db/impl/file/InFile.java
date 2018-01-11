@@ -6,6 +6,7 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -14,7 +15,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @Primary
 public class InFile implements Database {
 
-  private String defaultInFileName = "InFile-Invoices"; //+ LocalDate.now().getYear();
+  
+  private String defaultInFileName = LocalDate.now().getYear()+"/"+LocalDate.now().getMonthValue()+"InFile-Invoices";
   private File inFileDb = new File(defaultInFileName);
 
   private String inFileAssistingName = defaultInFileName + "_id";

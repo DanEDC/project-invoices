@@ -32,7 +32,7 @@ public class ApplicationTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().contentType("application/json;charset=UTF-8"))
-        .andExpect(jsonPath("$", hasSize(67)))
+        .andExpect(jsonPath("$", hasSize(66)))
         .andExpect(jsonPath("$[0].invoiceId", is(1)))
         .andExpect(jsonPath("$[1].date", is("2017-12-13")))
         .andExpect(jsonPath("$[2].seller.name", is("Op")))
