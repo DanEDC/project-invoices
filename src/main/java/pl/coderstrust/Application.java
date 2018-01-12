@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 /**
+ * Use this URL in a browser to run Szwagier:
  * http://localhost:8080/swagger-ui.html#/
  */
 @SpringBootApplication
