@@ -14,9 +14,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 @Primary
 public class InFile implements Database {
-
   
-  private String defaultInFileName = LocalDate.now().getYear()+"/"+LocalDate.now().getMonthValue()+"InFile-Invoices";
+  
+  private String defaultInFileName = LocalDate.now().getYear()
+      + "/" + LocalDate.now().getMonthValue() + "InFile-Invoices";
   private File inFileDb = new File(defaultInFileName);
 
   private String inFileAssistingName = defaultInFileName + "_id";
