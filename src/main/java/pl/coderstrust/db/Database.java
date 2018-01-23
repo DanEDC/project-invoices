@@ -10,11 +10,16 @@ public interface Database {
 
   boolean saveInvoice(Invoice invoice);
 
-  Invoice getInvoice(Integer invoiceId);
+  Invoice getInvoiceById(Integer invoiceId);
 
   List<Invoice> getAllInvoices();
-
-  boolean removeInvoice(Integer invoiceId);
-
-
+  
+  Invoice removeInvoiceById(Integer invoiceId);
+  
+  List<Invoice> removeAllInvoices();
+  
+  List<Integer> getAllIds();
+  
+  boolean dropDatabase();
+  
 }
