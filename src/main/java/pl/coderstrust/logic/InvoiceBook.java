@@ -64,9 +64,39 @@ public class InvoiceBook {
   public Invoice getInvoiceById(Integer invoiceId) {
     return database.getInvoiceById(invoiceId);
   }
-
-  public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to){
-   return database.getInvoicesFromDateToDate(from,to);
+  
+  public List<Invoice> getInvoicesFromDateToDate(String from, String to) throws Exception {
+    LocalDate dateFrom, dateTo;
+    int fromDay, fromMonth, fromYear, toDay, toMonth, toYear;
+    if (from.length() == to.length()) {
+      
+      
+      switch (from.length()) {
+        case 0:
+          dateFrom = dateTo = LocalDate.now();
+          break;
+        case 2:
+          fromDay = Integer.parseInt(from);
+          fromMonth = LocalDate.now().getMonthValue();
+          fromYear = LocalDate.now().getYear();
+          
+          toDay = Integer.parseInt(to);
+          toMonth = LocalDate.now().getMonthValue();
+          toYear = LocalDate.now().getYear();
+          break;
+          
+          break;
+        case 5:
+          fromDay = Integer.parseInt((from.replaceAll("^\\d\\d\\p{Punct}*","")));
+          fromMonth = Integer.parseInt((from.replaceAll("\\p{Punct}*\\d\\d","")));
+          
+          toDay = Integer.parseInt(to);
+          
+      }
+    } else {
+      throw new Exception(
+          "Wrong or incompatibile date format. \"DD\" or \"MM-DD\" or \"YYYY-MM-DD\".");
+    }
   }
   
   public List<Invoice> getAllInvoices() {
