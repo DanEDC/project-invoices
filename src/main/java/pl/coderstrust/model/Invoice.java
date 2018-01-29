@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Invoice {
+public class Invoice implements Comparable<LocalDate> {
 
   private Integer invoiceId;
   private LocalDate date;
@@ -17,14 +17,7 @@ public class Invoice {
   public Invoice() {
   }
 
-  public Invoice(Integer invoiceId, LocalDate date, Company seller,
-      Company buyer, List<Item> items) {
-    this.invoiceId = invoiceId;
-    this.date = date;
-    this.seller = seller;
-    this.buyer = buyer;
-    this.items = items;
-  }
+
 
   public Invoice(LocalDate date, Company seller, Company buyer,
       List<Item> items) {
@@ -84,5 +77,13 @@ public class Invoice {
         + "," + seller
         + "->" + buyer
         + ":" + items;
+  }
+  
+  @Override
+  public int compareTo(LocalDate o) {
+    int year = this.getDate().getYear();
+    int month = this.getDate().getMonthValue();
+    int day= this.getDate().getDayOfMonth();
+    return day+month*100+year*100*100;
   }
 }
