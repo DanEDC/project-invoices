@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.stereotype.Service;
+import pl.coderstrust.config.ObjectMapperProvider;
 import pl.coderstrust.model.Invoice;
 
 import java.io.IOException;
@@ -12,9 +13,9 @@ import java.io.IOException;
 class JsonConverter {
 
   private ObjectMapper objectMapper;
-
-  public JsonConverter(ObjectMapper objectMapper) {
-    this.objectMapper = objectMapper;
+  
+  public JsonConverter(ObjectMapperProvider objectMapperProvider) {
+    this.objectMapper = objectMapperProvider.objectMapper();
   }
 
   String objectToJson(Object object) {
@@ -28,7 +29,7 @@ class JsonConverter {
     return json;
   }
 
-  Invoice jsonBytesToInvoice(byte[] bytes) {
+  Invoice bytesToInvoice(byte[] bytes) {
     Invoice invoice = null;
     try {
       invoice = objectMapper.readValue(bytes, Invoice.class);
@@ -38,7 +39,7 @@ class JsonConverter {
     return invoice;
   }
 
-  Invoice jsonStringToInvoice(String string) {
+  Invoice stringToInvoice(String string) {
     Invoice invoice = null;
     try {
       invoice = objectMapper.readValue(string, Invoice.class);
@@ -48,7 +49,7 @@ class JsonConverter {
     return invoice;
   }
 
-  Object jsonToObject(byte[] bytes) {
+  Object bytesToObject(byte[] bytes) {
     Object object = null;
     try {
       object = objectMapper.readValue(bytes, Object.class);
