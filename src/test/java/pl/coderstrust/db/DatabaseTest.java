@@ -11,7 +11,9 @@ import org.junit.runner.RunWith;
 import pl.coderstrust.helpers.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RunWith(JUnitParamsRunner.class)
@@ -54,7 +56,7 @@ public abstract class DatabaseTest {
       assertEquals(expected2,invoice2Id);
       assertEquals(expected3,invoice3Id);
   
-      database.dropDatabase();
+      assertTrue(database.dropDatabase());
     }
   }
   
@@ -71,7 +73,7 @@ public abstract class DatabaseTest {
     
     // then
     assertTrue(result);
-    database.dropDatabase();
+    assertTrue(database.dropDatabase());
   
   }
   
@@ -91,7 +93,52 @@ public abstract class DatabaseTest {
           database.getInvoiceById((loop + 1)).getInvoiceId());
       assertEquals(invoices.get(loop).toString(), database.getInvoiceById(loop + 1).toString());
     }
-    database.dropDatabase();
+    assertTrue(database.dropDatabase());
+  }
+  
+  
+  @Test
+  @Parameters({"0", "1", "3", "7", "12", "33"})
+  public void shouldGetDateFromInvoice(int number) {
+    //given
+    List<Invoice> invoices = invGen.generateListOfNInvoices(number, invoiceIsMock);
+    List<LocalDate> localDateList = invGen.setRandomDates(LocalDate.now(), invoices);
+    Database database = provideImplementation();
+    setIdAndSaveInvoice(invoices, database);
+    List<LocalDate> localDateListFromInv = new ArrayList<>();
+    List<Invoice> invoiceList = database.getAllInvoices();
+    
+    // when
+    invoiceList.forEach(invoice -> localDateListFromInv.add(invoice.getDate()));
+    
+    // then
+    assertEquals(localDateListFromInv, localDateList);
+    assertTrue(database.dropDatabase());
+  }
+  
+  @Test
+  @Parameters({"1", "3", "7", "12", "33", "50"})
+  public void shouldGetInvoicesByDate(int number) {
+    //given
+    List<Invoice> invoices = invGen.generateListOfNInvoices(number, invoiceIsMock);
+    List<LocalDate> localDateList = invGen.setRandomDates(LocalDate.now(), invoices);
+    Database database = provideImplementation();
+    setIdAndSaveInvoice(invoices, database);
+    
+    LocalDate oldestDate = Collections.min(localDateList);
+    LocalDate latestDate = Collections.max(localDateList);
+    
+    
+    // when
+    List<Invoice> shouldGetAll = database.getInvoicesFromDateToDate(oldestDate, latestDate);
+    List<Invoice> shouldGetNone = database.getInvoicesFromDateToDate(latestDate, oldestDate);
+    
+    // then
+    assertEquals(database.getAllInvoices().toString(), shouldGetAll.toString());
+    if (!oldestDate.equals(latestDate)) {
+      assertEquals(new ArrayList<Invoice>(), shouldGetNone);
+    }
+    assertTrue(database.dropDatabase());
   }
   
   @Test
@@ -109,7 +156,7 @@ public abstract class DatabaseTest {
     // then
     assertEquals(invoices.size(), invoicesAll.size());
     assertEquals(invoices.toString(), invoicesAll.toString());
-    database.dropDatabase();
+    assertTrue(database.dropDatabase());
   
   }
   
@@ -137,7 +184,7 @@ public abstract class DatabaseTest {
       assertNull(shouldBeNull);
       assertEquals(database.getAllInvoices().size(), number);
     }
-    database.dropDatabase();
+    assertTrue(database.dropDatabase());
   }
   
   /**
@@ -162,7 +209,7 @@ public abstract class DatabaseTest {
       assertEquals(database.getAllInvoices().size(), number - id);
       assertEquals(toBeRemovedInvoice.toString(), removedInvoice.toString());
     }
-    database.dropDatabase();
+    assertTrue(database.dropDatabase());
   }
   
   @Test
@@ -180,20 +227,20 @@ public abstract class DatabaseTest {
     //then
     assertEquals(invoices.toString(),removedInvoices.toString());
     assertEquals(0,database.getAllInvoices().size());
-    database.dropDatabase();
+//    assertTrue(database.dropDatabase());
   }
   
-  @Test
-  public void dropDatabase() {
-    // given
-    Database database = provideImplementation();
-    // when
-    boolean result = database.dropDatabase();
-    
-    // then
-    assertTrue(result);
-    assertTrue(database.getAllInvoices().isEmpty() || database.getAllInvoices() == null);
-  }
+//  @Test
+//  public void dropDatabase() {
+//    // given
+//    Database database = provideImplementation();
+//    // when
+//    boolean result = database.dropDatabase();
+//
+//    // then
+//    assertTrue(result);
+//    assertTrue(database.getAllInvoices().isEmpty() || database.getAllInvoices() == null);
+//  }
   
   /**
    * Supporting methods
@@ -205,5 +252,4 @@ public abstract class DatabaseTest {
       database.saveInvoice(invoice);
     }
   }
-
 }

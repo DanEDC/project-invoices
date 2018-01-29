@@ -13,7 +13,6 @@ import java.util.List;
 
 public class InvoiceGenerator {
   
-  
   /**
    * supporting method - generate List of Invoices with given number of elements.
    *
@@ -22,10 +21,36 @@ public class InvoiceGenerator {
    */
   public List<Invoice> generateListOfNInvoices(int number, boolean invoiceIsMock) {
     List<Invoice> invoices = new ArrayList<>();
+  
     for (int i = 0; i < number; i++) {
-      invoices.add(getInvoice(invoiceIsMock));
+      Invoice invoice = getInvoice(invoiceIsMock);
+      invoices.add(invoice);
     }
     return invoices;
+  }
+  
+  public List<LocalDate> setRandomDates(LocalDate date, List<Invoice> invoiceList) {
+    LocalDate tmpDate;
+    List<LocalDate> localDates = new ArrayList<>();
+    for (Invoice invoice : invoiceList) {
+      int randomBase = (int) (Math.random() * 365);
+      if (randomBase % 3 == 0) {
+        tmpDate = date.minusDays(randomBase);
+        localDates.add(tmpDate);
+        invoice.setDate(tmpDate);
+      } else if (randomBase % 3 == 1) {
+        tmpDate = date.minusWeeks(randomBase);
+        localDates.add(tmpDate);
+        invoice.setDate(tmpDate);
+      } else if (randomBase % 3 == 2) {
+        tmpDate = date.minusMonths(randomBase);
+        localDates.add(tmpDate);
+        invoice.setDate(tmpDate);
+      } else {
+        return null;
+      }
+    }
+    return localDates;
   }
   
   public Invoice getInvoice(boolean invoiceIsMock) {
