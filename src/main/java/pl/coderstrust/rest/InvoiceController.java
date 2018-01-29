@@ -40,7 +40,7 @@ public class InvoiceController {
   }
   
   @GetMapping(value = "/invoices/{Dates: form, to}")
-  public List<Invoice> getInvoicesFromDateToDate(@PathVariable LocalDate from, LocalDate to) {
+  public List<Invoice> getInvoicesFromDateToDate(@PathVariable String from, String to) {
     return invoiceBook.getInvoicesFromDateToDate(from,to);
   }
   

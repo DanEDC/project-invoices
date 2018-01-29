@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,39 +66,7 @@ public class InvoiceBook {
     return database.getInvoiceById(invoiceId);
   }
   
-  public List<Invoice> getInvoicesFromDateToDate(String from, String to) throws Exception {
-    LocalDate dateFrom, dateTo;
-    int fromDay, fromMonth, fromYear, toDay, toMonth, toYear;
-    if (from.length() == to.length()) {
-      
-      
-      switch (from.length()) {
-        case 0:
-          dateFrom = dateTo = LocalDate.now();
-          break;
-        case 2:
-          fromDay = Integer.parseInt(from);
-          fromMonth = LocalDate.now().getMonthValue();
-          fromYear = LocalDate.now().getYear();
-          
-          toDay = Integer.parseInt(to);
-          toMonth = LocalDate.now().getMonthValue();
-          toYear = LocalDate.now().getYear();
-          break;
-          
-          break;
-        case 5:
-          fromDay = Integer.parseInt((from.replaceAll("^\\d\\d\\p{Punct}*","")));
-          fromMonth = Integer.parseInt((from.replaceAll("\\p{Punct}*\\d\\d","")));
-          
-          toDay = Integer.parseInt(to);
-          
-      }
-    } else {
-      throw new Exception(
-          "Wrong or incompatibile date format. \"DD\" or \"MM-DD\" or \"YYYY-MM-DD\".");
-    }
-  }
+
   
   public List<Invoice> getAllInvoices() {
     return database.getAllInvoices();
@@ -154,4 +123,27 @@ public class InvoiceBook {
   public int hashCode() {
     return database != null ? database.hashCode() : 0;
   }
+  
+  public List<Invoice> getInvoicesFromDateToDate(String fromDate, String toDate){
+    LocalDate dateFrom = parseDate(fromDate);
+    LocalDate dateTo = parseDate(toDate);
+    return database.getInvoicesFromDateToDate(dateFrom,dateTo);
+  }
+  
+  /**
+   * Method modified fom example:
+   * https://stackoverflow.com/questions/2149680/regex-date-format-validation-on-java
+   */
+  public static LocalDate parseDate(String text) {
+    if (text == null || !text.matches("^\\d{4}-[01]\\d-[0-3]\\d$")) {
+      return null;
+    }
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    df.setLenient(false);
+    return LocalDate.of(
+        Integer.parseInt(text.substring(0, 3))
+        , Integer.parseInt(text.substring(4, 5))
+        , Integer.parseInt(text.substring(6, 7)));
+  }
+  
 }
