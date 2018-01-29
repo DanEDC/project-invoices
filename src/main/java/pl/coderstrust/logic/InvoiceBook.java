@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,6 +65,10 @@ public class InvoiceBook {
     return database.getInvoiceById(invoiceId);
   }
 
+  public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to){
+   return database.getInvoicesFromDateToDate(from,to);
+  }
+  
   public List<Invoice> getAllInvoices() {
     return database.getAllInvoices();
   }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class Invoice implements Comparable<LocalDate> {
 
@@ -80,10 +81,30 @@ public class Invoice implements Comparable<LocalDate> {
   }
   
   @Override
-  public int compareTo(LocalDate o) {
-    int year = this.getDate().getYear();
-    int month = this.getDate().getMonthValue();
-    int day= this.getDate().getDayOfMonth();
-    return day+month*100+year*100*100;
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Invoice)) {
+      return false;
+    }
+    Invoice invoice = (Invoice) o;
+    return Objects.equals(getInvoiceId(), invoice.getInvoiceId()) &&
+        Objects.equals(getDate(), invoice.getDate()) &&
+        Objects.equals(getSeller(), invoice.getSeller()) &&
+        Objects.equals(getBuyer(), invoice.getBuyer()) &&
+        Objects.equals(getItems(), invoice.getItems());
+  }
+  
+  @Override
+  public int hashCode() {
+    
+    return Objects.hash(getInvoiceId(), getDate(), getSeller(), getBuyer(), getItems());
+  }
+  
+ 
+  @Override
+  public int compareTo(LocalDate date) {
+    return this.getDate().compareTo(date);
   }
 }

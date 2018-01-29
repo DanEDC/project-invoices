@@ -6,6 +6,7 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -90,6 +91,18 @@ public class InFile implements Database {
     } else {
       return null;
     }
+  }
+  
+  @Override//TODO: optimize this method, so it reads only files from given range of dates (not ALL!)
+  public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to) {
+    List<Invoice> resultList = new ArrayList<>();
+    List<Invoice> candidateList = this.getAllInvoices();
+    for (Invoice invoice : candidateList) {
+      if (invoice.compareTo(from) >= 0 && invoice.compareTo(to) <= 0) {
+        resultList.add(invoice);
+      }
+    }
+    return resultList;
   }
   
   @Override

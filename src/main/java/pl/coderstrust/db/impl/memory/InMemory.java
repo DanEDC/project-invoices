@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +38,18 @@ public class InMemory implements Database {
     }
     return invoice;
   }
-
+  
+  @Override
+  public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to) {
+    List<Invoice> invoices = new ArrayList<>();
+    for(Invoice invoice:database){
+      if(invoice.compareTo(from)>=0 && invoice.compareTo(to)<=0){
+        invoices.add(invoice);
+      }
+    }
+    return invoices;
+  }
+  
   @Override
   public List<Invoice> getAllInvoices() {
     return database;

@@ -2,6 +2,7 @@ package pl.coderstrust.db;
 
 import pl.coderstrust.model.Invoice;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface Database {
@@ -11,6 +12,8 @@ public interface Database {
   boolean saveInvoice(Invoice invoice);
 
   Invoice getInvoiceById(Integer invoiceId);
+  
+  List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to);
 
   List<Invoice> getAllInvoices();
   
