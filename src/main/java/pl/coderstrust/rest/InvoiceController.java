@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,7 +38,12 @@ public class InvoiceController {
   public Invoice getInvoiceById(@PathVariable int id) {
     return invoiceBook.getInvoiceById(id);
   }
-
+  
+  @GetMapping(value = "/invoices/{Dates: form, to}")
+  public List<Invoice> getInvoicesFromDateToDate(@PathVariable LocalDate from, LocalDate to) {
+    return invoiceBook.getInvoicesFromDateToDate(from,to);
+  }
+  
   @PostMapping(value = "/invoices")
   public Integer saveInvoice(@RequestBody Invoice invoice) {
     return invoiceBook.saveInvoice(invoice);
