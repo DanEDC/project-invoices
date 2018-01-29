@@ -205,15 +205,5 @@ public abstract class DatabaseTest {
       database.saveInvoice(invoice);
     }
   }
-  
-  private List<String> getTrim(List<Invoice> invoices) {
-    List<String> trimmedInvoices = new ArrayList<>();
-    invoices.forEach(invoice -> trimmedInvoices.add(getTrim(invoice)));
-    return trimmedInvoices;
-  }
-  
-  
-  private String getTrim(Invoice invoice) {
-    return invoice.toString().trim();
-  }
+
 }
