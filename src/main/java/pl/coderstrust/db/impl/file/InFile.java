@@ -13,14 +13,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
-@ConditionalOnProperty(prefix = "pathOfDatabase", havingValue = "_inFileDb")
+@ConditionalOnProperty(name = "pl.coderstrust.db.impl.file.databasePath", havingValue = "_inFileDb")
 public class InFile implements Database {
   
   private final AtomicReference<Integer> invoiceId =
       new AtomicReference<>(0);
-  
-  @Value("${pathOfDatabase}")
-  private static String pathOfDatabase;
   
   
   private final String path;
@@ -38,27 +35,16 @@ public class InFile implements Database {
   
   public InFile(FileHelper fileHelper,
       FileNameManager fileNameManager,
-      JsonConverter jsonConverter) {
+      JsonConverter jsonConverter,
+      @Value("${pl.coderstrust.db.impl.file.databasePath}") String path) {
   
-    this.path = pathOfDatabase;
+    this.path = path;
     this.database = new File(this.path);
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
   }
-
-  //TODO this constructor was used for InFileTest. It's usage
-  //TODO should be replaced with proper Application
-  //  public InFile(FileHelper fileHelper,
-  //      FileNameManager fileNameManager,
-  //      JsonConverter jsonConverter, String path) {
-  //
-  //    this.path = path;
-  //    this.database = new File(this.path);
-  //    this.fileHelper = fileHelper;
-  //    this.fileNameManager = fileNameManager;
-  //    this.jsonConverter = jsonConverter;
-  //  }
+  
   
   @Override
   public Integer getNextInvoiceId() {

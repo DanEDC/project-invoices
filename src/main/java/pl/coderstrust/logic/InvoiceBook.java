@@ -142,10 +142,8 @@ public class InvoiceBook {
     return database != null ? database.hashCode() : 0;
   }
   
-  public List<Invoice> getInvoicesFromDateToDate(Date since, Date to) {
-    LocalDate localSince = since.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    LocalDate localTo = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    return database.getInvoicesFromDateToDate(localSince, localTo);
+  public List<Invoice> getInvoicesFromDateToDate(LocalDate since, LocalDate to) {
+    return database.getInvoicesFromDateToDate(since, to);
   }
   
   

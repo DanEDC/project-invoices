@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Api(value = "/invoices", description = "Operations on invoices")
@@ -29,8 +30,8 @@ public class InvoiceController {
   public InvoiceController(InvoiceBook invoiceBook) {
     this.invoiceBook = invoiceBook;
   }
-
-  @GetMapping(value = "id>0: single | 0 all")
+  
+  @GetMapping(value = "id>0: single | 0 all")//TODO  fix this!
   public List<Invoice> getAllInvoices() {
     return invoiceBook.getAllInvoices();
   }
@@ -40,10 +41,11 @@ public class InvoiceController {
     return invoiceBook.getInvoiceById(id);
   }
   
-  @GetMapping(value = "/invoices/getByDate/{since,to}")
+  //TODO query param
+  @GetMapping(value = "/invoices/")
   public List<Invoice> getInvoicesFromDateToDate(
-      @PathVariable("since") @DateTimeFormat(pattern = "yyyy-MM-dd") Date since,
-      @PathVariable("to") @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) {
+      @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
+      @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
     return invoiceBook.getInvoicesFromDateToDate(since, to);
   }
   
