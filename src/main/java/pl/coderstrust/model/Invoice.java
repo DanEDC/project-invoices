@@ -81,6 +81,9 @@ public class Invoice implements Comparable<LocalDate> {
   
   @Override
   public int compareTo(LocalDate o) {
-    return (int)o.toEpochDay();
+    int year = this.getDate().getYear();
+    int month = this.getDate().getMonthValue();
+    int day= this.getDate().getDayOfMonth();
+    return day+month*100+year*100*100;
   }
 }
