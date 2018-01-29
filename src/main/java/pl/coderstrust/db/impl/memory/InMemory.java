@@ -5,6 +5,7 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -15,7 +16,7 @@ public class InMemory implements Database {
 
   @Override
   public final Integer getNextInvoiceId() {
-    return invoiceId++;
+    return ++invoiceId;
   }
 
 
@@ -26,7 +27,7 @@ public class InMemory implements Database {
 
 
   @Override
-  public Invoice getInvoice(Integer invoiceId) {
+  public Invoice getInvoiceById(Integer invoiceId) {
     Invoice invoice = null;
     for (Invoice candidate : database) {
       if (candidate.getInvoiceId().equals(invoiceId)) {
@@ -44,11 +45,34 @@ public class InMemory implements Database {
 
 
   @Override
-  public boolean removeInvoice(Integer invoiceId) {
-    return database.remove(getInvoice(invoiceId));
+  public Invoice removeInvoiceById(Integer invoiceId) {
+    int index = database.indexOf(this.getInvoiceById(invoiceId));
+    return database.remove(index);
   }
-
-
+  
+  @Override
+  public List<Invoice> removeAllInvoices() {
+    List<Integer> idList = this.getAllIds();
+    List<Invoice> removedInvoices = new ArrayList<>();
+    idList.forEach(integer -> removedInvoices.add(this.removeInvoiceById(integer)));
+    return removedInvoices;
+  }
+  
+  @Override
+  public List<Integer> getAllIds() {
+    List<Integer> idList = new ArrayList<>();
+    database.forEach(invoice -> idList.add(invoice.getInvoiceId()));
+    Collections.sort(idList);
+    return idList;
+  }
+  
+  @Override
+  public boolean dropDatabase() {
+    this.removeAllInvoices();
+    return this.getAllInvoices().size() == 0;
+  }
+  
+  
   @Override
   public String toString() {
     return "InMemory\tdatabase:\n"
