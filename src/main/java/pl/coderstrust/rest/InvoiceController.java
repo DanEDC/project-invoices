@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
 
+import java.util.Collection;
 import java.util.List;
 
 @Api(value = "/invoices", description = "Operations on invoices")
 
 @RestController
+@SuppressWarnings("unused")
 public class InvoiceController {
 
 
@@ -26,25 +28,35 @@ public class InvoiceController {
     this.invoiceBook = invoiceBook;
   }
 
-  @GetMapping(value = "/invoices")
-  public List<Invoice> getInvoices() {
+  @GetMapping(value = "id>0: single | 0 all")
+  public List<Invoice> getAllInvoices() {
     return invoiceBook.getAllInvoices();
   }
 
   @GetMapping(value = "/invoices/{id}")
-  public Invoice getInvoice(@PathVariable int id) {
-    return invoiceBook.getInvoice(id);
+  public Invoice getInvoiceById(@PathVariable int id) {
+    return invoiceBook.getInvoiceById(id);
   }
 
   @PostMapping(value = "/invoices")
-  public void createInv(@RequestBody Invoice invoice) {
-    invoiceBook.saveInvoice(invoice);
+  public Integer saveInvoice(@RequestBody Invoice invoice) {
+    return invoiceBook.saveInvoice(invoice);
+  }
+  
+  @PostMapping(value = "/invoices/invoicesList")
+  public List<Integer> saveInvoices(@RequestBody Collection<Invoice> invoices) {
+    return invoiceBook.saveInvoices(invoices);
   }
 
   @DeleteMapping(value = "/invoices/{id}")
-  public boolean removeInvoice(@PathVariable int id) {
+  public Invoice removeInvoice(@PathVariable int id) {
     return invoiceBook.removeInvoice(id);
   }
-
+  
+  @DeleteMapping(value = "/invoices/")
+  public boolean dropDatabase() {
+    return invoiceBook.dropDatabase();
+  }
+  
 }
 
