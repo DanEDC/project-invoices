@@ -1,6 +1,7 @@
 package pl.coderstrust.db.impl.file;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
@@ -11,12 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Primary
 @Service
+@ConditionalOnProperty(prefix = "pathOfDatabase", havingValue = "_inFileDb")
 public class InFile implements Database {
   
   private final AtomicReference<Integer> invoiceId =
       new AtomicReference<>(0);
+  
+  @Value("${pathOfDatabase}")
+  private static String pathOfDatabase;
+  
   
   private final String path;
   private final File database;
@@ -34,8 +39,8 @@ public class InFile implements Database {
   public InFile(FileHelper fileHelper,
       FileNameManager fileNameManager,
       JsonConverter jsonConverter) {
-    
-    this.path = "_inFileDb";
+  
+    this.path = pathOfDatabase;
     this.database = new File(this.path);
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;

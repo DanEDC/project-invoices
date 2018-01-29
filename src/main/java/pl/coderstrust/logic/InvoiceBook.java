@@ -4,10 +4,11 @@ import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -78,6 +79,23 @@ public class InvoiceBook {
     return list;
   }
   
+  /**
+   * Method modified fom example:
+   * https://stackoverflow.com/questions/2149680/regex-date-format-validation-on-java
+   */
+  public static LocalDate parseDate(String date) {
+    System.out.println(date);
+    String[] dateSlitted = date.split("-");
+    int year = Integer.parseInt(dateSlitted[0]);
+    System.out.println(year);
+    int month = Integer.parseInt(dateSlitted[1]);
+    System.out.println(month);
+    int day = Integer.parseInt(dateSlitted[2]);
+    System.out.println(day);
+    return LocalDate.of(year, month, day);
+    
+  }
+  
   public Invoice removeInvoice(Integer invoiceId) {
     return database.removeInvoiceById(invoiceId);
   }
@@ -124,26 +142,11 @@ public class InvoiceBook {
     return database != null ? database.hashCode() : 0;
   }
   
-  public List<Invoice> getInvoicesFromDateToDate(String fromDate, String toDate){
-    LocalDate dateFrom = parseDate(fromDate);
-    LocalDate dateTo = parseDate(toDate);
-    return database.getInvoicesFromDateToDate(dateFrom,dateTo);
+  public List<Invoice> getInvoicesFromDateToDate(Date since, Date to) {
+    LocalDate localSince = since.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    LocalDate localTo = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    return database.getInvoicesFromDateToDate(localSince, localTo);
   }
   
-  /**
-   * Method modified fom example:
-   * https://stackoverflow.com/questions/2149680/regex-date-format-validation-on-java
-   */
-  public static LocalDate parseDate(String text) {
-    if (text == null || !text.matches("^\\d{4}-[01]\\d-[0-3]\\d$")) {
-      return null;
-    }
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    df.setLenient(false);
-    return LocalDate.of(
-        Integer.parseInt(text.substring(0, 3))
-        , Integer.parseInt(text.substring(4, 5))
-        , Integer.parseInt(text.substring(6, 7)));
-  }
   
 }

@@ -2,6 +2,7 @@ package pl.coderstrust.rest;
 
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
 
-import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Api(value = "/invoices", description = "Operations on invoices")
@@ -39,9 +40,11 @@ public class InvoiceController {
     return invoiceBook.getInvoiceById(id);
   }
   
-  @GetMapping(value = "/invoices/{Dates: form, to}")
-  public List<Invoice> getInvoicesFromDateToDate(@PathVariable String from, String to) {
-    return invoiceBook.getInvoicesFromDateToDate(from,to);
+  @GetMapping(value = "/invoices/getByDate/{since,to}")
+  public List<Invoice> getInvoicesFromDateToDate(
+      @PathVariable("since") @DateTimeFormat(pattern = "yyyy-MM-dd") Date since,
+      @PathVariable("to") @DateTimeFormat(pattern = "yyyy-MM-dd") Date to) {
+    return invoiceBook.getInvoicesFromDateToDate(since, to);
   }
   
   @PostMapping(value = "/invoices")

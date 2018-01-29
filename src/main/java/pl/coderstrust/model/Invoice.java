@@ -81,19 +81,19 @@ public class Invoice implements Comparable<LocalDate> {
   }
   
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object object) {
+    if (this == object) {
       return true;
     }
-    if (!(o instanceof Invoice)) {
+    if (!(object instanceof Invoice)) {
       return false;
     }
-    Invoice invoice = (Invoice) o;
-    return Objects.equals(getInvoiceId(), invoice.getInvoiceId()) &&
-        Objects.equals(getDate(), invoice.getDate()) &&
-        Objects.equals(getSeller(), invoice.getSeller()) &&
-        Objects.equals(getBuyer(), invoice.getBuyer()) &&
-        Objects.equals(getItems(), invoice.getItems());
+    Invoice invoice = (Invoice) object;
+    return Objects.equals(getInvoiceId(), invoice.getInvoiceId())
+        && Objects.equals(getDate(), invoice.getDate())
+        && Objects.equals(getSeller(), invoice.getSeller())
+        && Objects.equals(getBuyer(), invoice.getBuyer())
+        && Objects.equals(getItems(), invoice.getItems());
   }
   
   @Override

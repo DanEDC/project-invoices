@@ -42,8 +42,8 @@ public class InMemory implements Database {
   @Override
   public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to) {
     List<Invoice> invoices = new ArrayList<>();
-    for(Invoice invoice:database){
-      if(invoice.compareTo(from)>=0 && invoice.compareTo(to)<=0){
+    for (Invoice invoice : database) {
+      if (invoice.compareTo(from) >= 0 && invoice.compareTo(to) <= 0) {
         invoices.add(invoice);
       }
     }
