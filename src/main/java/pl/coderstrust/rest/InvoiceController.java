@@ -31,7 +31,7 @@ public class InvoiceController {
     this.invoiceBook = invoiceBook;
   }
   
-  @GetMapping(value = "id>0: single | 0 all")//TODO  fix this!
+  @GetMapping(value = "/invoices")
   public List<Invoice> getAllInvoices() {
     return invoiceBook.getAllInvoices();
   }
@@ -41,7 +41,6 @@ public class InvoiceController {
     return invoiceBook.getInvoiceById(id);
   }
   
-  //TODO query param
   @GetMapping(value = "/invoices/")
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
