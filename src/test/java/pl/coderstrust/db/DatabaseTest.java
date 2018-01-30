@@ -10,10 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.helpers.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import java.util.List;
 
 @RunWith(JUnitParamsRunner.class)
