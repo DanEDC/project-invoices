@@ -3,6 +3,7 @@ package pl.coderstrust.rest;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.coderstrust.config.EmailServiceImpl;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
 
@@ -25,10 +27,12 @@ public class InvoiceController {
 
 
   private InvoiceBook invoiceBook;
+  private EmailServiceImpl invMessage;
 
   @Autowired
-  public InvoiceController(InvoiceBook invoiceBook) {
+  public InvoiceController(InvoiceBook invoiceBook, EmailServiceImpl invMessage) {
     this.invoiceBook = invoiceBook;
+    this.invMessage = invMessage;
   }
   
   @GetMapping(value = "/invoices")
@@ -50,6 +54,8 @@ public class InvoiceController {
   
   @PostMapping(value = "/invoices")
   public Integer saveInvoice(@RequestBody Invoice invoice) {
+    invMessage.sendSimpleMessage("mna@g.pl", "Invoice Added", "Invoice ID: " + invoice.getInvoiceId() + "\n- Buyer: " + invoice.getBuyer() +
+        "\n- Seller: " + invoice.getSeller() + "\n- Items:\n" + invoice.getItems());
     return invoiceBook.saveInvoice(invoice);
   }
   
@@ -66,6 +72,14 @@ public class InvoiceController {
   @DeleteMapping(value = "/invoices/")
   public List<Invoice> removeAllInvoices() {
     return invoiceBook.removeAllInvoices();
+  }
+
+  @Scheduled(cron = "0 5 0 * * ?")
+  public void sendSchEm() {
+
+    String dayMessage = "Day " + LocalDate.now().minusDays(1) + ": " + invoiceBook.getInvNum(LocalDate.now().minusDays(1)) + " invoices added.";
+
+    invMessage.sendSimpleMessage("mna@g.pl", "Yesterday Summary - Invoices", dayMessage);
   }
 }
 
