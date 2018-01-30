@@ -64,6 +64,11 @@ public class InvoiceController {
   }
   
   @DeleteMapping(value = "/invoices/")
+  public List<Invoice> removeAllInvoices() {
+    return invoiceBook.removeAllInvoices();
+  }
+  
+  @DeleteMapping(value = "/invoices/Drop")
   public boolean dropDatabase() {
     return invoiceBook.dropDatabase();
   }
