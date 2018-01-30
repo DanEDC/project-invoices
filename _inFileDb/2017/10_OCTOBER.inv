@@ -1,4 +1,3 @@
 {"invoiceId":14,"date":"2017-10-13","seller":{"name":"Op","vatId":"987"},"buyer":{"name":"MD","vatId":"123"},"items":[{"itemId":null,"description":"Wood","value":5.0,"vat":"vat5"}]}
-{"invoiceId":15,"date":"2017-10-13","seller":{"name":"Op","vatId":"987"},"buyer":{"name":"MD","vatId":"123"},"items":[{"itemId":null,"description":"Wood","value":5.0,"vat":"vat5"}]}
 {"invoiceId":16,"date":"2017-10-13","seller":{"name":"Op","vatId":"987"},"buyer":{"name":"MD","vatId":"123"},"items":[{"itemId":null,"description":"Wood","value":5.0,"vat":"vat5"}]}
 {"invoiceId":17,"date":"2017-10-13","seller":{"name":"Op","vatId":"987"},"buyer":{"name":"MD","vatId":"123"},"items":[{"itemId":null,"description":"Wood","value":5.0,"vat":"vat5"}]}
