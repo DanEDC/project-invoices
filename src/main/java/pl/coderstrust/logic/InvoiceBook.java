@@ -100,6 +100,7 @@ public class InvoiceBook {
     return database.removeInvoiceById(invoiceId);
   }
   
+
   public List<Invoice> removeAllInvoices() {
     return database.removeAllInvoices();
   }

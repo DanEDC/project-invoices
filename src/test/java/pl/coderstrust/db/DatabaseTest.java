@@ -10,10 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.helpers.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import java.util.List;
 
 @RunWith(JUnitParamsRunner.class)
@@ -95,8 +95,7 @@ public abstract class DatabaseTest {
     }
     database.dropDatabase();
   }
-  
-  
+    
   @Test
   @Parameters({"0", "1", "3", "7", "12", "33"})
   public void shouldGetDateFromInvoice(int number) {
@@ -145,6 +144,7 @@ public abstract class DatabaseTest {
     database.dropDatabase();
   }
   
+
   @Test
   @Parameters({"0", "1", "3", "7", "12", "33"})
   public void shouldGiveIdSaveAndReturnAllInvoices(int number) {

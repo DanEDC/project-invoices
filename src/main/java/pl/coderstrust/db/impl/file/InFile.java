@@ -7,13 +7,14 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+
 @Service
 @ConditionalOnProperty(name = "pl.coderstrust.db.impl.file.databasePath", havingValue = "_inFileDb")
+
 public class InFile implements Database {
   
   private final AtomicReference<Integer> invoiceId =
@@ -39,12 +40,12 @@ public class InFile implements Database {
       @Value("${pl.coderstrust.db.impl.file.databasePath}") String path) {
   
     this.path = path;
+
     this.database = new File(this.path);
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
   }
-  
   
   @Override
   public Integer getNextInvoiceId() {
@@ -94,6 +95,7 @@ public class InFile implements Database {
       }
     }
     return resultList;
+
   }
   
   @Override
@@ -225,6 +227,7 @@ public class InFile implements Database {
         theFile = candidate;
       }
     }
+
     return theFile;
   }
   
