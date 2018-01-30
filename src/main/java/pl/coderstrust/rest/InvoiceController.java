@@ -67,11 +67,5 @@ public class InvoiceController {
   public List<Invoice> removeAllInvoices() {
     return invoiceBook.removeAllInvoices();
   }
-  
-  @DeleteMapping(value = "/invoices/Drop")
-  public boolean dropDatabase() {
-    return invoiceBook.dropDatabase();
-  }
-  
 }
 
