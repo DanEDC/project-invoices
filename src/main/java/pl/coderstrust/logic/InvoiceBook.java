@@ -16,18 +16,52 @@ public class InvoiceBook {
   public InvoiceBook(Database database) {
     this.database = database;
   }
-
-  public void saveInvoice(Invoice invoice) {
-    invoice.setInvoiceId(database.getNextInvoiceId());
-    database.saveInvoice(invoice);
+  
+  
+  /**
+   * Application-end methods - distributing request to
+   * proper methods.
+   */
+  
+  //TODO if this method can't work as universal get, then remove!
+  public List<Invoice> getInvoice(List<Integer> ids) {
+    if (ids.size() == 1) {
+      int id = ids.get(0);
+      switch (id) {
+        case 0:
+          return this.getAllInvoices();
+        default:
+          List<Invoice> invoices = new ArrayList<>();
+          invoices.add(this.getInvoiceById(id));
+          return invoices;
+      }
+    } else {
+      return this.getListOfInvoiceById(ids);
+    }
   }
-
-  public void saveInvoices(Collection<Invoice> invoices) {
-    invoices.forEach(this::saveInvoice);
+  
+  public Integer saveInvoice(Invoice invoice) {
+    Integer id = database.getNextInvoiceId();
+    invoice.setInvoiceId(id);
+    if (database.saveInvoice(invoice)) {
+      System.out.println("Invoice saved");
+      return id;
+    } else {
+      System.out.println("Invoice not saved");
+      return 0;
+    }
   }
-
-  public Invoice getInvoice(Integer invoiceId) {
-    return database.getInvoice(invoiceId);
+  
+  public List<Integer> saveInvoices(Collection<Invoice> invoices) {
+    List<Integer> ids = new ArrayList<>();
+    for (Invoice invoice : invoices) {
+      ids.add(saveInvoice(invoice));
+    }
+    return ids;
+  }
+  
+  public Invoice getInvoiceById(Integer invoiceId) {
+    return database.getInvoiceById(invoiceId);
   }
 
   public List<Invoice> getAllInvoices() {
@@ -36,22 +70,28 @@ public class InvoiceBook {
 
   public List<Invoice> getListOfInvoiceById(Collection<Integer> orderedInvoicesId) {
     List<Invoice> list = new ArrayList<>();
-    orderedInvoicesId.forEach(id -> list.add(this.getInvoice(id)));
+    orderedInvoicesId.forEach(id -> list.add(this.getInvoiceById(id)));
     return list;
   }
-
-  public boolean removeInvoice(Integer invoiceId) {
-    return database.removeInvoice(invoiceId);
+  
+  public Invoice removeInvoice(Integer invoiceId) {
+    return database.removeInvoiceById(invoiceId);
   }
-
-  public boolean[] removeInvoicesById(Collection<Integer> toBeRemovedInvoicesId) {
-    boolean[] results = new boolean[toBeRemovedInvoicesId.size()];
-    int resultPosition = 0;
+  
+  public List<Invoice> removeAllInvoices() {
+    return database.removeAllInvoices();
+  }
+  
+  public List<Invoice> removeInvoicesById(Collection<Integer> toBeRemovedInvoicesId) {
+    List<Invoice> results = new ArrayList<>();
     for (Integer integer : toBeRemovedInvoicesId) {
-      results[resultPosition] = this.removeInvoice(integer);
-      resultPosition++;
+      results.add(this.removeInvoice(integer));
     }
     return results;
+  }
+  
+  public boolean dropDatabase() {
+    return database.dropDatabase();
   }
 
   @Override

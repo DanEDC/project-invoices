@@ -6,37 +6,60 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Service
 @Primary
+@Service
 public class InFile implements Database {
   
+  private final AtomicReference<Integer> invoiceId =
+      new AtomicReference<>(0);
   
-  private String defaultInFileName = LocalDate.now().getYear()
-      + "/" + LocalDate.now().getMonthValue() + "InFile-Invoices";
-  private File inFileDb = new File(defaultInFileName);
+  private final String path;
+  private final File database;
+  private File inFileId;
 
-  private String inFileAssistingName = defaultInFileName + "_id";
-  private File inFileId = new File(inFileAssistingName);
-
-  private final AtomicReference<Integer> invoiceId = new AtomicReference<>(0);
-
+  
+  /**
+   * Supporting classes
+   */
   private FileHelper fileHelper;
+  private FileNameManager fileNameManager;
   private JsonConverter jsonConverter;
-
-  public InFile(FileHelper fileHelper, JsonConverter jsonConverter) {
+  
+  
+  public InFile(FileHelper fileHelper,
+      FileNameManager fileNameManager,
+      JsonConverter jsonConverter) {
+    
+    this.path = "_inFileDb";
+    this.database = new File(this.path);
     this.fileHelper = fileHelper;
+    this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
   }
 
+  //TODO this constructor was used for InFileTest. It's usage
+  //TODO should be replaced with proper Application
+  //  public InFile(FileHelper fileHelper,
+  //      FileNameManager fileNameManager,
+  //      JsonConverter jsonConverter, String path) {
+  //
+  //    this.path = path;
+  //    this.database = new File(this.path);
+  //    this.fileHelper = fileHelper;
+  //    this.fileNameManager = fileNameManager;
+  //    this.jsonConverter = jsonConverter;
+  //  }
+  
   @Override
   public Integer getNextInvoiceId() {
+    fileHelper.createNewDir(path);
+    inFileId = new File(path + "\\LastID.txt");
+    
     Integer nextId;
-
     if (inFileId.exists()) {
       String id = (fileHelper.readAsStringList(inFileId).get(0));
       nextId = Integer.parseInt(id);
@@ -44,63 +67,180 @@ public class InFile implements Database {
       nextId = invoiceId.get();
     }
     nextId++;
-
+    
     String idAsString = jsonConverter.objectToJson(nextId);
     fileHelper.overwriteFile(inFileId, idAsString);
-
+    
     return nextId;
   }
-
+  
   @Override
   public boolean saveInvoice(Invoice invoice) {
+    File invoicesFile = getFileByInvoice(invoice);
     String invoiceAsString = jsonConverter.objectToJson(invoice);
-    fileHelper.appendFile(inFileDb, invoiceAsString);
+    fileHelper.appendFile(invoicesFile, invoiceAsString);
     return true;
   }
-
+  
   @Override
-  public Invoice getInvoice(Integer invoiceId) {
-    Invoice invoice = null;
-    List<String> stringList = fileHelper.readAsStringList(inFileDb);
+  public Invoice getInvoiceById(Integer invoiceId) {
+    File file = findFileByInvoiceId(invoiceId);
+    if (file != null) {
+      return getInvoiceFromFile(invoiceId, file);
+    } else {
+      return null;
+    }
+  }
+  
+  @Override
+  public List<Invoice> getAllInvoices() {
+    List<File> fileList = fileHelper.listSubDirContent(database);
+  
+    List<String> stringList = new ArrayList<>();
+    fileList.forEach(file -> stringList.addAll(fileHelper.readAsStringList(file)));
+  
+    List<Invoice> invoices = new ArrayList<>();
+    stringList.forEach(s -> invoices.add(jsonConverter.stringToInvoice(s)));
+    return invoices;
+  }
+  
+  @Override
+  public Invoice removeInvoiceById(Integer invoiceId) {
+    Invoice invoice = this.getInvoiceById(invoiceId);
+    if (invoice != null) {
+      if (removeInvoiceFromFile(getFileByInvoice(invoice), invoiceId)) {
+        return invoice;
+      }
+    }
+    return null;
+  }
+  
+  @Override
+  public List<Invoice> removeAllInvoices() {
+    List<Invoice> invoices = this.getAllInvoices();
+    deleteAllInvoiceFiles();
+    return invoices;
+  }
+  
+  @Override
+  public List<Integer> getAllIds() {
+    List<Invoice> invoices = this.getAllInvoices();
+    List<Integer> idList = new ArrayList<>();
+    invoices.forEach(invoice -> idList.add(invoice.getInvoiceId()));
+    return idList;
+  }
+  
+  @Override
+  public boolean dropDatabase() {
+    this.removeAllInvoices();
+    File[] files = database.listFiles();
+    deleteFiles(files);
+    return database.delete();
+  }
+  
+  /**
+   * Supporting Methods
+   */
+  private boolean removeInvoiceFromFile(File file, Integer invoiceId) {
+    boolean result = false;
+    List<String> stringList = fileHelper.readAsStringList(file);
     for (String string : stringList) {
-      Invoice candidate = jsonConverter.jsonStringToInvoice(string);
+      if (jsonConverter.stringToInvoice(string).getInvoiceId().equals(invoiceId)) {
+        stringList.remove(string);
+        result = fileHelper.clearFile(file);
+        fileHelper.appendFile(file, stringList);
+        break;
+      }
+    }
+    return result;
+  }
+  
+  private File getFileByInvoice(Invoice invoice) {
+    String dir = path + "\\" + fileNameManager.getFileLocation(invoice);
+    fileHelper.createNewDir(dir);
+    return new File(dir + "\\" + fileNameManager.getFileName(invoice));
+  }
+  
+  private boolean deleteAllInvoiceFiles() {
+    List<File> fileList = fileHelper.listSubDirContent(database);
+    fileList.forEach(file -> fileHelper.clearFile(file));
+    fileList.forEach(file -> fileHelper.deleteFile(file));
+    File[] files = fileHelper.listDirContent(database, 1);
+    return files == null || !deleteDirectoriesIfEmpty(files);
+  }
+  
+  private boolean deleteDirectoriesIfEmpty(File[] files) {
+    if (files != null) {
+      for (File file : files) {
+        if (fileHelper.deleteDirectoryIfEmpty(file)) {
+          System.out.println("INFO directory " + file + " deleted!");
+        } else {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  private void deleteFiles(File[] files) {
+    if (files != null) {
+      for (File file : files) {
+        if (file.delete()) {
+          System.out.println("File " + file + " deleted.");
+        }
+      }
+    }
+  }
+  
+  
+  private Invoice getInvoiceFromFile(Integer invoiceId, File file) {
+    Invoice invoice = null;
+    List<String> stringList = fileHelper.readAsStringList(file);
+    for (String string : stringList) {
+      Invoice candidate = jsonConverter.stringToInvoice(string);
       if (candidate.getInvoiceId().equals(invoiceId)) {
         invoice = candidate;
         break;
       }
     }
+    if (invoice == null) {
+      System.out.println("404 not found");
+    }
     return invoice;
   }
-
-  @Override
-  public List<Invoice> getAllInvoices() {
-    List<String> stringList = fileHelper.readAsStringList(inFileDb);
-    List<Invoice> invoices = new ArrayList<>();
-    for (String string : stringList) {
-      Invoice invoice = jsonConverter.jsonStringToInvoice(string);
-      invoices.add(invoice);
-    }
-    return invoices;
+  
+  private File findFileByInvoiceId(Integer invoiceId) {
+    List<File> fileList = fileHelper.listSubDirContent(database);
+    return findFileByInvoiceId(fileList, invoiceId);
   }
-
-  @Override
-  public boolean removeInvoice(Integer invoiceId) {
-    List<String> inputStringList = fileHelper.readAsStringList(inFileDb);
-    List<String> outputStringList = new ArrayList<>();
-    boolean invoiceDeleted = false;
-
-    for (String string : inputStringList) {
-      Invoice candidate = jsonConverter.jsonStringToInvoice(string);
-      if (candidate.getInvoiceId().equals(invoiceId)) {
-        invoiceDeleted = true;
-      } else {
-        outputStringList.add(string);
+  
+  private File findFileByInvoiceId(List<File> listOfFiles, Integer invoiceId) {
+    File theFile = null;
+    for (File candidate : listOfFiles) {
+      if (findIdInFile(candidate, invoiceId)) {
+        theFile = candidate;
       }
     }
-    if (invoiceDeleted) {
-      fileHelper.clearFile(inFileDb);
-      outputStringList.forEach(s -> fileHelper.appendFile(inFileDb, s));
+    return theFile;
+  }
+  
+  private boolean findIdInFile(File file, Integer invoiceId) {
+    boolean answer;
+    List<String> stringList = fileHelper.readAsStringList(file);
+    answer = findIdInJsonList(invoiceId, stringList);
+    return answer;
+  }
+  
+  private boolean findIdInJsonList(Integer invoiceId, List<String> stringList) {
+    Integer candidateId;
+    boolean answer = false;
+    for (String string : stringList) {
+      candidateId = jsonConverter.stringToInvoice(string).getInvoiceId();
+      if (candidateId.equals(invoiceId)) {
+        answer = true;
+        break;
+      }
     }
-    return invoiceDeleted;
+    return answer;
   }
 }
