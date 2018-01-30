@@ -1,6 +1,7 @@
 package pl.coderstrust.db.impl.file;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
@@ -10,12 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Primary
+
 @Service
+@ConditionalOnProperty(name = "pl.coderstrust.db.impl.file.databasePath", havingValue = "_inFileDb")
+
 public class InFile implements Database {
   
   private final AtomicReference<Integer> invoiceId =
       new AtomicReference<>(0);
+  
   
   private final String path;
   private final File database;
@@ -32,27 +36,16 @@ public class InFile implements Database {
   
   public InFile(FileHelper fileHelper,
       FileNameManager fileNameManager,
-      JsonConverter jsonConverter) {
-    
-    this.path = "_inFileDb";
+      JsonConverter jsonConverter,
+      @Value("${pl.coderstrust.db.impl.file.databasePath}") String path) {
+  
+    this.path = path;
+
     this.database = new File(this.path);
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
   }
-
-  //TODO this constructor was used for InFileTest. It's usage
-  //TODO should be replaced with proper Application
-  //  public InFile(FileHelper fileHelper,
-  //      FileNameManager fileNameManager,
-  //      JsonConverter jsonConverter, String path) {
-  //
-  //    this.path = path;
-  //    this.database = new File(this.path);
-  //    this.fileHelper = fileHelper;
-  //    this.fileNameManager = fileNameManager;
-  //    this.jsonConverter = jsonConverter;
-  //  }
   
   @Override
   public Integer getNextInvoiceId() {
@@ -90,6 +83,19 @@ public class InFile implements Database {
     } else {
       return null;
     }
+  }
+  
+  @Override//TODO: optimize this method, so it reads only files from given range of dates (not ALL!)
+  public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to) {
+    List<Invoice> resultList = new ArrayList<>();
+    List<Invoice> candidateList = this.getAllInvoices();
+    for (Invoice invoice : candidateList) {
+      if (invoice.compareTo(from) >= 0 && invoice.compareTo(to) <= 0) {
+        resultList.add(invoice);
+      }
+    }
+    return resultList;
+
   }
   
   @Override
@@ -221,6 +227,7 @@ public class InFile implements Database {
         theFile = candidate;
       }
     }
+
     return theFile;
   }
   

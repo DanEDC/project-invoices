@@ -10,8 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.helpers.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import java.util.List;
 
 @RunWith(JUnitParamsRunner.class)
@@ -93,7 +95,56 @@ public abstract class DatabaseTest {
     }
     database.dropDatabase();
   }
+    
+  @Test
+  @Parameters({"0", "1", "3", "7", "12", "33"})
+  public void shouldGetDateFromInvoice(int number) {
+    //given
+    List<Invoice> invoices = invGen.generateListOfNInvoices(number, invoiceIsMock);
+    List<LocalDate> localDateList = invGen.setRandomDates(LocalDate.now(), invoices);
+    Collections.sort(localDateList);
+    
+    Database database = provideImplementation();
+    setIdAndSaveInvoice(invoices, database);
+    
+    List<LocalDate> localDateListFromInv = new ArrayList<>();
+    List<Invoice> invoiceList = database.getAllInvoices();
+    
+    // when
+    invoiceList.forEach(invoice -> localDateListFromInv.add(invoice.getDate()));
+    Collections.sort(localDateListFromInv);
+    
+    // then
+    assertEquals(localDateListFromInv, localDateList);
+    database.dropDatabase();
+  }
   
+  @Test
+  @Parameters({"1", "3", "7", "12", "33", "50"})
+  public void shouldGetInvoicesByDate(int number) {
+    //given
+    List<Invoice> invoices = invGen.generateListOfNInvoices(number, invoiceIsMock);
+    List<LocalDate> localDateList = invGen.setRandomDates(LocalDate.now(), invoices);
+    Database database = provideImplementation();
+    setIdAndSaveInvoice(invoices, database);
+    
+    LocalDate oldestDate = Collections.min(localDateList);
+    LocalDate latestDate = Collections.max(localDateList);
+    
+    
+    // when
+    List<Invoice> shouldGetAll = database.getInvoicesFromDateToDate(oldestDate, latestDate);
+    List<Invoice> shouldGetNone = database.getInvoicesFromDateToDate(latestDate, oldestDate);
+    
+    // then
+    assertEquals(database.getAllInvoices().toString(), shouldGetAll.toString());
+    if (!oldestDate.equals(latestDate)) {
+      assertEquals(new ArrayList<Invoice>(), shouldGetNone);
+    }
+    database.dropDatabase();
+  }
+  
+
   @Test
   @Parameters({"0", "1", "3", "7", "12", "33"})
   public void shouldGiveIdSaveAndReturnAllInvoices(int number) {
@@ -167,7 +218,7 @@ public abstract class DatabaseTest {
   
   @Test
   @Parameters({"0", "1", "3", "7", "12", "33"})
-  public void removeAllInvoices(int number) { //TODO
+  public void removeAllInvoices(int number) {
     //given
     List<Invoice> invoices = invGen.generateListOfNInvoices(number, invoiceIsMock);
     Database database = provideImplementation();
@@ -191,7 +242,6 @@ public abstract class DatabaseTest {
     boolean result = database.dropDatabase();
     
     // then
-    assertTrue(result);
     assertTrue(database.getAllInvoices().isEmpty() || database.getAllInvoices() == null);
   }
   
@@ -204,16 +254,5 @@ public abstract class DatabaseTest {
       invoice.setInvoiceId(database.getNextInvoiceId());
       database.saveInvoice(invoice);
     }
-  }
-  
-  private List<String> getTrim(List<Invoice> invoices) {
-    List<String> trimmedInvoices = new ArrayList<>();
-    invoices.forEach(invoice -> trimmedInvoices.add(getTrim(invoice)));
-    return trimmedInvoices;
-  }
-  
-  
-  private String getTrim(Invoice invoice) {
-    return invoice.toString().trim();
   }
 }

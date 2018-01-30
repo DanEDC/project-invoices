@@ -4,8 +4,11 @@ import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -63,7 +66,9 @@ public class InvoiceBook {
   public Invoice getInvoiceById(Integer invoiceId) {
     return database.getInvoiceById(invoiceId);
   }
+  
 
+  
   public List<Invoice> getAllInvoices() {
     return database.getAllInvoices();
   }
@@ -74,10 +79,28 @@ public class InvoiceBook {
     return list;
   }
   
+  /**
+   * Method modified fom example:
+   * https://stackoverflow.com/questions/2149680/regex-date-format-validation-on-java
+   */
+  public static LocalDate parseDate(String date) {
+    System.out.println(date);
+    String[] dateSlitted = date.split("-");
+    int year = Integer.parseInt(dateSlitted[0]);
+    System.out.println(year);
+    int month = Integer.parseInt(dateSlitted[1]);
+    System.out.println(month);
+    int day = Integer.parseInt(dateSlitted[2]);
+    System.out.println(day);
+    return LocalDate.of(year, month, day);
+    
+  }
+  
   public Invoice removeInvoice(Integer invoiceId) {
     return database.removeInvoiceById(invoiceId);
   }
   
+
   public List<Invoice> removeAllInvoices() {
     return database.removeAllInvoices();
   }
@@ -119,4 +142,10 @@ public class InvoiceBook {
   public int hashCode() {
     return database != null ? database.hashCode() : 0;
   }
+  
+  public List<Invoice> getInvoicesFromDateToDate(LocalDate since, LocalDate to) {
+    return database.getInvoicesFromDateToDate(since, to);
+  }
+  
+  
 }
