@@ -5,7 +5,6 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.db.DatabaseTest;
 
 public class InFileTest extends DatabaseTest { //TODO - use AppParams
-//TODO                      for selecting separate path for this test
   @Override
   public Database provideImplementation() {
     String path = "src\\test\\resources\\_InFileTest";

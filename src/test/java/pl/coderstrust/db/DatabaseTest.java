@@ -242,7 +242,6 @@ public abstract class DatabaseTest {
     boolean result = database.dropDatabase();
     
     // then
-//    assertTrue(result);
     assertTrue(database.getAllInvoices().isEmpty() || database.getAllInvoices() == null);
   }
   
