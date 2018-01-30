@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
-@ConditionalOnProperty(name = "pl.coderstrust.db.impl.file.databasePath", havingValue = "_inFileDb")
+@ConditionalOnProperty(name = "pl.coderstrust.db.impl.DatabaseImpl", havingValue = "inFile")
 
 public class InFile implements Database {
   

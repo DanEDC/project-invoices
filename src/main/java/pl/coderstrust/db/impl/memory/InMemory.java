@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Repository
-@ConditionalOnProperty(name = "pl.coderstrust.db.impl.file.databasePath", havingValue = "inMemory")
+@ConditionalOnProperty(name = "pl.coderstrust.db.impl.DatabaseImpl", havingValue = "inMemory")
 public class InMemory implements Database {
 
   private List<Invoice> database = new ArrayList<>();
