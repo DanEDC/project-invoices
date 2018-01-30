@@ -5,10 +5,8 @@ import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,29 +16,6 @@ public class InvoiceBook {
 
   public InvoiceBook(Database database) {
     this.database = database;
-  }
-  
-  
-  /**
-   * Application-end methods - distributing request to
-   * proper methods.
-   */
-  
-  //TODO if this method can't work as universal get, then remove!
-  public List<Invoice> getInvoice(List<Integer> ids) {
-    if (ids.size() == 1) {
-      int id = ids.get(0);
-      switch (id) {
-        case 0:
-          return this.getAllInvoices();
-        default:
-          List<Invoice> invoices = new ArrayList<>();
-          invoices.add(this.getInvoiceById(id));
-          return invoices;
-      }
-    } else {
-      return this.getListOfInvoiceById(ids);
-    }
   }
   
   public Integer saveInvoice(Invoice invoice) {
@@ -67,8 +42,6 @@ public class InvoiceBook {
     return database.getInvoiceById(invoiceId);
   }
   
-
-  
   public List<Invoice> getAllInvoices() {
     return database.getAllInvoices();
   }
@@ -79,27 +52,9 @@ public class InvoiceBook {
     return list;
   }
   
-  /**
-   * Method modified fom example:
-   * https://stackoverflow.com/questions/2149680/regex-date-format-validation-on-java
-   */
-  public static LocalDate parseDate(String date) {
-    System.out.println(date);
-    String[] dateSlitted = date.split("-");
-    int year = Integer.parseInt(dateSlitted[0]);
-    System.out.println(year);
-    int month = Integer.parseInt(dateSlitted[1]);
-    System.out.println(month);
-    int day = Integer.parseInt(dateSlitted[2]);
-    System.out.println(day);
-    return LocalDate.of(year, month, day);
-    
-  }
-  
   public Invoice removeInvoice(Integer invoiceId) {
     return database.removeInvoiceById(invoiceId);
   }
-  
 
   public List<Invoice> removeAllInvoices() {
     return database.removeAllInvoices();
@@ -113,10 +68,6 @@ public class InvoiceBook {
     return results;
   }
   
-  public boolean dropDatabase() {
-    return database.dropDatabase();
-  }
-
   @Override
   public String toString() {
     return this.getClass().getSimpleName()

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
-import java.time.LocalDate;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -64,9 +64,8 @@ public class InvoiceController {
   }
   
   @DeleteMapping(value = "/invoices/")
-  public boolean dropDatabase() {
-    return invoiceBook.dropDatabase();
+  public List<Invoice> removeAllInvoices() {
+    return invoiceBook.removeAllInvoices();
   }
-  
 }
 
