@@ -50,7 +50,7 @@ class FileHelper {
         new FileOutputStream(file, true))) {
       outputStream.println(string);
     } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
+      logger.warn("Not able to append " + string + " into file " + file, e1);
     }
   }
   
@@ -61,7 +61,8 @@ class FileHelper {
         outputStream.println(string);
       }
     } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
+      logger.warn("Not able to append " + stringList + " into file " + file, e1);
+  
     }
   }
   
@@ -71,7 +72,7 @@ class FileHelper {
         new FileOutputStream(file, false))) {
       outputStream.println(string);
     } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
+      logger.warn("Not able to overwrite " + string + " into file " + file, e1);
     }
   }
   
@@ -82,7 +83,7 @@ class FileHelper {
       System.out.println("Info: file  " + file + " emptied");
       return true;
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      logger.warn("Not able to clear file " + file, e);
       return false;
     }
   }
@@ -90,7 +91,7 @@ class FileHelper {
   boolean deleteFile(File file) {
     try {
       if (file.delete()) {
-        System.out.println(file.getName() + " deleted!");
+        logger.info("File " + file + " deleted");
         if (file.isDirectory()) {
           dirSet.remove(file);
         } else if (file.isFile()) {
@@ -98,22 +99,24 @@ class FileHelper {
         }
         return true;
       } else {
-        System.out.println("Delete operation failed.");
+        logger.warn("Not able to delete file " + file);
         return false;
       }
     } catch (Exception e) {
+      logger.error("Not able to locate file or delete it  " + file, e);
       e.printStackTrace();
       return false;
     }
   }
   
-  boolean deleteParentDirectoryIfEmpty(File file) {
-    File parentDir = new File(file.getParent());
-    return deleteFile(parentDir);
-  }
-  
   boolean deleteDirectoryIfEmpty(File file) {
-    return deleteFile(file);
+    if (deleteFile(file)) {
+      logger.info("Directory " + file + " deleted");
+      return true;
+    } else {
+      logger.warn("Directory " + file + " failed to be deleted");
+      return false;
+    }
   }
   
   @SuppressWarnings("unused ")
@@ -124,7 +127,7 @@ class FileHelper {
         listOfBytes.add(scanner.nextLine().getBytes());
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error("Not able to locate file or read form it  " + file, e);
     }
     return listOfBytes;
   }
@@ -136,7 +139,7 @@ class FileHelper {
         stringList.add(scanner.nextLine());
       }
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      logger.error("Not able to locate file or read form it  " + file, e);
     }
     return stringList;
   }
@@ -186,11 +189,5 @@ class FileHelper {
       default:
         return givenDirectory.listFiles();
     }
-  }
-  
-  public boolean isEmpty(File dir) {
-    int numberOfDirs = listDirContent(dir, 1).length;
-    int numberOfFiles = listDirContent(dir, 2).length;
-    return numberOfDirs + numberOfFiles == 0;
   }
 }
