@@ -89,7 +89,7 @@ class FileHelper {
         return false;
       }
     } catch (Exception e) {
-      logger.error("Not able to locate or delete: " + file, e);
+      logger.error("Not able to locate or delete " + file, e);
       e.printStackTrace();
       return false;
     }

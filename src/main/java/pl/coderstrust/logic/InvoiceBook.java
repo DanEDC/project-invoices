@@ -76,10 +76,9 @@ public class InvoiceBook {
     List<Invoice> invoices;
     invoices = database.getAllInvoices();
     if (invoices.isEmpty()) {
-      logger.info("All invoices returned");
-    } else {
       logger.warn("Returned empty list of invoices");
     }
+    logger.info("All invoices returned");
     return invoices;
   }
 
