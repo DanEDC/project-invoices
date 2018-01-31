@@ -26,7 +26,7 @@
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
 //@AutoConfigureMockMvc
-//public class HttpRequestTest {
+//public class HttpRequestTest { //TODO Make this test with mockMvc!
 //
 //  @Autowired
 //  private MockMvc mockMvc;
