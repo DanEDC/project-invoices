@@ -1,36 +1,48 @@
 package pl.coderstrust.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Company {
+  
+  private static Logger logger = LoggerFactory.getLogger(Company.class);
 
   private String name;
   private String vatId;
 
   public Company() {
+    logger.info("Company created");
   }
 
   public Company(String name, String vatId) {
+    logger.info("Company created");
     this.name = name;
     this.vatId = vatId;
   }
 
   public String getName() {
+    logger.debug("getName called");
     return name;
   }
 
   public void setName(String name) {
+    logger.debug("getName called");
     this.name = name;
   }
 
   public String getVatId() {
+    logger.debug("getVatId called");
     return vatId;
   }
 
   public void setVatId(String vatId) {
+    logger.debug("setVatId called");
     this.vatId = vatId;
   }
 
   @Override
   public boolean equals(Object object) {
+    logger.debug("equals called");
     if (this == object) {
       return true;
     }
@@ -46,6 +58,7 @@ public class Company {
 
   @Override
   public int hashCode() {
+    logger.debug("hashCode called");
     int result = getName() != null ? getName().hashCode() : 0;
     result =
         31 * result + (getVatId() != null ? getVatId()
@@ -56,6 +69,7 @@ public class Company {
 
   @Override
   public String toString() {
+    logger.debug("toString called");
     return name + ".co";
 
   }
