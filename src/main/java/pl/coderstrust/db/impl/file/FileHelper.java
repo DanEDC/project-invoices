@@ -62,7 +62,6 @@ class FileHelper {
       }
     } catch (FileNotFoundException e1) {
       logger.warn("Not able to append " + file + " with " + stringList, e1);
-  
     }
   }
   
