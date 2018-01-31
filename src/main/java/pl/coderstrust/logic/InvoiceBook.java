@@ -98,7 +98,7 @@ public class InvoiceBook {
     return database.getInvoicesFromDateToDate(since, to);
   }
 
-  public int getInvNum(LocalDate yesterday) {
+  public int getYesterdayInvoicesNo(LocalDate yesterday) {
     return getInvoicesFromDateToDate(yesterday, yesterday).size();
   }
   
