@@ -1,6 +1,11 @@
 package pl.coderstrust.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Item {
+  
+  private static Logger logger = LoggerFactory.getLogger(Item.class);
 
   private Integer itemId;
   private String description;
@@ -8,9 +13,11 @@ public class Item {
   private Vat vat;
 
   public Item() {
+    logger.info("Item created");
   }
 
   public Item(String description, double value, Vat vat) {
+    logger.info("Item created");
     this.itemId = null;
     this.description = description;
     this.value = value;
@@ -18,27 +25,33 @@ public class Item {
   }
 
   public Integer getItemId() {
+    logger.debug("getItemId called");
     return itemId;
   }
 
   public final void setItemId(Integer itemId) {
+    logger.debug("setItemId called");
     this.itemId = itemId;
   }
 
   public String getDescription() {
+    logger.debug("getDescription called");
     return description;
   }
 
   public double getValue() {
+    logger.debug("getValue called");
     return value;
   }
 
   public Vat getVat() {
+    logger.debug("getVat called");
     return vat;
   }
 
   @Override
   public boolean equals(Object object) {
+    logger.debug("equals called");
     if (this == object) {
       return true;
     }
@@ -59,6 +72,7 @@ public class Item {
 
   @Override
   public int hashCode() {
+    logger.debug("hashCode called");
     int result;
     long temp;
     result = description != null ? description.hashCode() : 0;
@@ -70,6 +84,7 @@ public class Item {
 
   @Override
   public String toString() {
+    logger.debug("toString called");
     return itemId
         + ":" + description
         + "," + value
