@@ -11,11 +11,11 @@ public class Company {
   private String vatId;
 
   public Company() {
-    logger.info("Company created");
+    logger.debug("Company created");
   }
 
   public Company(String name, String vatId) {
-    logger.info("Company created");
+    logger.debug("Company created");
     this.name = name;
     this.vatId = vatId;
   }

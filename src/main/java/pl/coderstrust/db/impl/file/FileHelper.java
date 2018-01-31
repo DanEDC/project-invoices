@@ -11,33 +11,26 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 @Service
 class FileHelper {
   
   private static Logger logger = LoggerFactory.getLogger(FileHelper.class);
   
-  private Set<File> filesSet;
-  private Set<File> dirSet;
   
   public FileHelper() {
-    this.filesSet = new HashSet<>();
-    this.dirSet = new HashSet<>();
     logger.debug("File helper initiated");
   }
   
   void createNewDir(String path) {
     File dir = new File(path);
-    if (dirSet.contains(dir)) {
+    if (dir.exists()) {
       logger.info("Directory " + dir + " already exists");
     } else {
       if (dir.mkdir()) {
         logger.info("Directory " + dir + " created");
-        dirSet.add(dir);
       } else {
         logger.warn("Directory " + dir + " failed to create");
       }
@@ -65,7 +58,6 @@ class FileHelper {
     }
   }
   
-  
   void overwriteFile(File file, String string) {
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, false))) {
@@ -91,11 +83,6 @@ class FileHelper {
     try {
       if (file.delete()) {
         logger.info("File " + file + " deleted");
-        if (file.isDirectory()) {
-          dirSet.remove(file);
-        } else if (file.isFile()) {
-          filesSet.remove(file);
-        }
         return true;
       } else {
         logger.warn("Not able to delete " + file);

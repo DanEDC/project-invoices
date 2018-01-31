@@ -165,7 +165,7 @@ public class InFile implements Database {
    * Supporting Methods
    */
   private boolean removeInvoiceFromFile(File file, Integer invoiceId) {
-    logger.debug("removeAllInvoices called");
+    logger.debug("removeInvoiceFromFile called");
     boolean result = false;
     List<String> stringList = fileHelper.readAsStringList(file);
     for (String string : stringList) {
@@ -180,12 +180,14 @@ public class InFile implements Database {
   }
   
   private File getFileByInvoice(Invoice invoice) {
+    logger.debug("getFileByInvoice called");
     String dir = path + "\\" + fileNameManager.getFileLocation(invoice);
     fileHelper.createNewDir(dir);
     return new File(dir + "\\" + fileNameManager.getFileName(invoice));
   }
   
   private boolean deleteAllInvoiceFiles() {
+    logger.debug("deleteAllInvoiceFiles called");
     List<File> fileList = fileHelper.listSubDirContent(database);
     fileList.forEach(file -> fileHelper.clearFile(file));
     fileList.forEach(file -> fileHelper.deleteFile(file));
@@ -194,6 +196,7 @@ public class InFile implements Database {
   }
   
   private boolean deleteDirectoriesIfEmpty(File[] files) {
+    logger.debug("deleteDirectoriesIfEmpty called");
     if (files != null) {
       int deleted = 0;
       int failed = 0;
@@ -205,17 +208,20 @@ public class InFile implements Database {
         }
       }
       if (deleted == 0) {
-        logger.info("Summary: deleted " + deleted + " out of " + deleted + failed + " directors");
+        logger.info("Summary: deleted " + deleted
+            + " out of " + deleted + failed + " directors");
       } else {
         logger.warn(
-            "Summary: deleted " + deleted + " out of " + deleted + failed + " directors; " + deleted
-                + " failed to delete");
+            "Summary: deleted " + deleted
+                + " out of " + deleted + failed
+                + " directors; " + deleted + " failed to delete");
       }
     }
     return false;
   }
   
   private void deleteFiles(File[] files) {
+    logger.debug("deleteFiles called");
     if (files != null) {
       for (File file : files) {
         fileHelper.deleteFile(file);
@@ -225,6 +231,7 @@ public class InFile implements Database {
   
   
   private Invoice getInvoiceFromFile(Integer invoiceId, File file) {
+    logger.debug("getInvoiceFromFile called");
     Invoice invoice = null;
     List<String> stringList = fileHelper.readAsStringList(file);
     for (String string : stringList) {
@@ -241,15 +248,17 @@ public class InFile implements Database {
   }
   
   private File findFileByInvoiceId(Integer invoiceId) {
+    logger.debug("findFileByInvoiceId called");
     List<File> fileList = fileHelper.listSubDirContent(database);
     return findFileByInvoiceId(fileList, invoiceId);
   }
   
   private File findFileByInvoiceId(List<File> listOfFiles, Integer invoiceId) {
+    logger.debug("findFileByInvoiceId called");
     File theFile = null;
     for (File candidate : listOfFiles) {
       if (findIdInFile(candidate, invoiceId)) {
-        logger.info("Invoice of id " + invoiceId + " found in file " + candidate);
+        logger.info("id " + invoiceId + " found in file " + candidate);
         theFile = candidate;
       }
     }
@@ -257,6 +266,7 @@ public class InFile implements Database {
   }
   
   private boolean findIdInFile(File file, Integer invoiceId) {
+    logger.debug("findIdInFile called");
     boolean answer;
     List<String> stringList = fileHelper.readAsStringList(file);
     answer = findIdInJsonList(invoiceId, stringList);
@@ -264,12 +274,13 @@ public class InFile implements Database {
   }
   
   private boolean findIdInJsonList(Integer invoiceId, List<String> stringList) {
+    logger.debug("findIdInJsonList called");
     Integer candidateId;
     boolean answer = false;
     for (String string : stringList) {
       candidateId = jsonConverter.stringToInvoice(string).getInvoiceId();
       if (candidateId.equals(invoiceId)) {
-        logger.info("Invoice of id " + invoiceId + "found");
+        logger.info("Invoice of id " + invoiceId + " exists");
         answer = true;
         break;
       }
