@@ -20,6 +20,7 @@ public class InvoiceBook {
 
   public InvoiceBook(Database database) {
     this.database = database;
+    logger.info("InvoiceBook initiated");
   }
   
   public Integer saveInvoice(Invoice invoice) {

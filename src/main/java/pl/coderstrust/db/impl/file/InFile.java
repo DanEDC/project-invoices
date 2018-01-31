@@ -48,8 +48,7 @@ public class InFile implements Database {
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
-    logger.debug("Database: in File implementation initiated");
-  
+    logger.info("InFile Database initiated");
   }
   
   @Override
