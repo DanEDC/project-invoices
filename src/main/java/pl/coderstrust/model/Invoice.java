@@ -1,5 +1,8 @@
 package pl.coderstrust.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class Invoice implements Comparable<LocalDate> {
-
+  
+  private static Logger logger = LoggerFactory.getLogger(Invoice.class);
+  
   private Integer invoiceId;
   private LocalDate date;
   private Company seller;
@@ -16,62 +21,72 @@ public class Invoice implements Comparable<LocalDate> {
   private List<Item> items = new ArrayList<>();
 
   public Invoice() {
+    logger.info("Invoice created");
   }
-
-
 
   public Invoice(LocalDate date, Company seller, Company buyer,
       List<Item> items) {
+    logger.info("Invoice created");
     this.invoiceId = null;
     this.date = date;
     this.seller = seller;
     this.buyer = buyer;
     this.items.addAll(items);
-
-  }
-
-  public final void setInvoiceId(Integer invoiceId) {
-    this.invoiceId = invoiceId;
   }
 
   public Integer getInvoiceId() {
+    logger.debug("getInvoiceId called");
     return invoiceId;
   }
-
+  
+  public final void setInvoiceId(Integer invoiceId) {
+    logger.debug("setInvoiceId called");
+    this.invoiceId = invoiceId;
+  }
+  
   public LocalDate getDate() {
+    logger.debug("getDate called");
     return date;
   }
 
+  public void setDate(LocalDate date) {
+    logger.debug("setDate called");
+    this.date = date;
+  }
+  
   public Company getSeller() {
+    logger.debug("getSeller called");
     return seller;
   }
-
+  
+  public void setSeller(Company seller) {
+    logger.debug("setSeller called");
+    this.seller = seller;
+  }
+  
   public Company getBuyer() {
+    logger.debug("getBuyer called");
     return buyer;
   }
-
+  
+  public void setBuyer(Company buyer) {
+    logger.debug("setBuyer called");
+    this.buyer = buyer;
+  }
+  
   public Collection<Item> getItems() {
+    logger.debug("getItems called");
     return items;
   }
 
-  public void setDate(LocalDate date) {
-    this.date = date;
-  }
-
-  public void setSeller(Company seller) {
-    this.seller = seller;
-  }
-
-  public void setBuyer(Company buyer) {
-    this.buyer = buyer;
-  }
-
   public void setItems(List<Item> items) {
+    logger.debug("setItems called");
     this.items = items;
   }
   
   @Override
   public String toString() {
+    logger.debug("toString called");
     return "\n"
         + invoiceId
         + "," + date
@@ -82,6 +97,7 @@ public class Invoice implements Comparable<LocalDate> {
   
   @Override
   public boolean equals(Object object) {
+    logger.debug("equals called");
     if (this == object) {
       return true;
     }
@@ -98,13 +114,14 @@ public class Invoice implements Comparable<LocalDate> {
   
   @Override
   public int hashCode() {
-    
+    logger.debug("hashCode called");
     return Objects.hash(getInvoiceId(), getDate(), getSeller(), getBuyer(), getItems());
   }
   
  
   @Override
   public int compareTo(LocalDate date) {
+    logger.debug("compareTo called");
     return this.getDate().compareTo(date);
   }
 }
