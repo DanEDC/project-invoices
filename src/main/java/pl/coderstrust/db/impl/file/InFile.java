@@ -57,6 +57,7 @@ public class InFile implements Database {
   
   @Override
   public Integer getNextInvoiceId() {
+    logger.debug("getNextInvoiceId called");
     fileHelper.createNewDir(path);
     inFileId = new File(path + "\\LastID.txt");
     
@@ -77,6 +78,7 @@ public class InFile implements Database {
   
   @Override
   public boolean saveInvoice(Invoice invoice) {
+    logger.debug("saveInvoice called");
     File invoicesFile = getFileByInvoice(invoice);
     String invoiceAsString = jsonConverter.objectToJson(invoice);
     fileHelper.appendFile(invoicesFile, invoiceAsString);
@@ -85,16 +87,19 @@ public class InFile implements Database {
   
   @Override
   public Invoice getInvoiceById(Integer invoiceId) {
+    logger.debug("getInvoiceById called");
     File file = findFileByInvoiceId(invoiceId);
     if (file != null) {
       return getInvoiceFromFile(invoiceId, file);
     } else {
+      logger.info("Invoice of id " + invoiceId + " not found");
       return null;
     }
   }
   
   @Override//TODO: optimize this method, so it reads only files from given range of dates (not ALL!)
   public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to) {
+    logger.debug("getInvoicesFromDateToDate called");
     List<Invoice> resultList = new ArrayList<>();
     List<Invoice> candidateList = this.getAllInvoices();
     for (Invoice invoice : candidateList) {
@@ -103,11 +108,11 @@ public class InFile implements Database {
       }
     }
     return resultList;
-
   }
   
   @Override
   public List<Invoice> getAllInvoices() {
+    logger.debug("getAllInvoices called");
     List<File> fileList = fileHelper.listSubDirContent(database);
   
     List<String> stringList = new ArrayList<>();
@@ -120,6 +125,7 @@ public class InFile implements Database {
   
   @Override
   public Invoice removeInvoiceById(Integer invoiceId) {
+    logger.debug("removeInvoiceById called");
     Invoice invoice = this.getInvoiceById(invoiceId);
     if (invoice != null) {
       if (removeInvoiceFromFile(getFileByInvoice(invoice), invoiceId)) {
@@ -131,13 +137,19 @@ public class InFile implements Database {
   
   @Override
   public List<Invoice> removeAllInvoices() {
+    logger.debug("removeAllInvoices called");
     List<Invoice> invoices = this.getAllInvoices();
-    deleteAllInvoiceFiles();
+    if (deleteAllInvoiceFiles()) {
+      logger.info("Delete all invoice files succeed");
+    } else {
+      logger.warn("Delete all invoice files failed");
+    }
     return invoices;
   }
   
   @Override
   public List<Integer> getAllIds() {
+    logger.debug("getAllIds called");
     List<Invoice> invoices = this.getAllInvoices();
     List<Integer> idList = new ArrayList<>();
     invoices.forEach(invoice -> idList.add(invoice.getInvoiceId()));
@@ -146,6 +158,7 @@ public class InFile implements Database {
   
   @Override
   public boolean dropDatabase() {
+    logger.debug("dropDatabase called");
     this.removeAllInvoices();
     File[] files = database.listFiles();
     deleteFiles(files);
@@ -156,6 +169,7 @@ public class InFile implements Database {
    * Supporting Methods
    */
   private boolean removeInvoiceFromFile(File file, Integer invoiceId) {
+    logger.debug("removeAllInvoices called");
     boolean result = false;
     List<String> stringList = fileHelper.readAsStringList(file);
     for (String string : stringList) {
@@ -185,12 +199,21 @@ public class InFile implements Database {
   
   private boolean deleteDirectoriesIfEmpty(File[] files) {
     if (files != null) {
+      int deleted = 0;
+      int failed = 0;
       for (File file : files) {
         if (fileHelper.deleteDirectoryIfEmpty(file)) {
-          System.out.println("INFO directory " + file + " deleted!");
+          deleted++;
         } else {
-          return true;
+          failed++;
         }
+      }
+      if (deleted == 0) {
+        logger.info("Summary: deleted " + deleted + " out of " + deleted + failed + " directors");
+      } else {
+        logger.warn(
+            "Summary: deleted " + deleted + " out of " + deleted + failed + " directors; " + deleted
+                + " failed to delete");
       }
     }
     return false;
@@ -199,9 +222,7 @@ public class InFile implements Database {
   private void deleteFiles(File[] files) {
     if (files != null) {
       for (File file : files) {
-        if (file.delete()) {
-          System.out.println("File " + file + " deleted.");
-        }
+        fileHelper.deleteFile(file);
       }
     }
   }
@@ -218,7 +239,7 @@ public class InFile implements Database {
       }
     }
     if (invoice == null) {
-      System.out.println("404 not found");
+      logger.error("");
     }
     return invoice;
   }
@@ -232,10 +253,10 @@ public class InFile implements Database {
     File theFile = null;
     for (File candidate : listOfFiles) {
       if (findIdInFile(candidate, invoiceId)) {
+        logger.info("Invoice of id " + invoiceId + " found in file " + candidate);
         theFile = candidate;
       }
     }
-
     return theFile;
   }
   
@@ -252,6 +273,7 @@ public class InFile implements Database {
     for (String string : stringList) {
       candidateId = jsonConverter.stringToInvoice(string).getInvoiceId();
       if (candidateId.equals(invoiceId)) {
+        logger.info("Invoice of id " + invoiceId + "found");
         answer = true;
         break;
       }
