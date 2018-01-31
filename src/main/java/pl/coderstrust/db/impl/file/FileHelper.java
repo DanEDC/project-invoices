@@ -50,7 +50,7 @@ class FileHelper {
         new FileOutputStream(file, true))) {
       outputStream.println(string);
     } catch (FileNotFoundException e1) {
-      logger.warn("Not able to append " + string + " into file " + file, e1);
+      logger.warn("Not able to append " + file + " with " + string, e1);
     }
   }
   
@@ -61,7 +61,7 @@ class FileHelper {
         outputStream.println(string);
       }
     } catch (FileNotFoundException e1) {
-      logger.warn("Not able to append " + stringList + " into file " + file, e1);
+      logger.warn("Not able to append " + file + " with " + stringList, e1);
   
     }
   }
@@ -72,7 +72,7 @@ class FileHelper {
         new FileOutputStream(file, false))) {
       outputStream.println(string);
     } catch (FileNotFoundException e1) {
-      logger.warn("Not able to overwrite " + string + " into file " + file, e1);
+      logger.warn("Not able to overwrite file" + file + " with " + string, e1);
     }
   }
   
@@ -83,7 +83,7 @@ class FileHelper {
       logger.info("File " + file + " flushed");
       return true;
     } catch (FileNotFoundException e) {
-      logger.warn("Not able to clear file " + file, e);
+      logger.warn("Not able to clear: " + file, e);
       return false;
     }
   }
@@ -99,11 +99,11 @@ class FileHelper {
         }
         return true;
       } else {
-        logger.warn("Not able to delete file " + file);
+        logger.warn("Not able to delete " + file);
         return false;
       }
     } catch (Exception e) {
-      logger.error("Not able to locate file or delete it  " + file, e);
+      logger.error("Not able to locate or delete: " + file, e);
       e.printStackTrace();
       return false;
     }
@@ -127,7 +127,7 @@ class FileHelper {
         listOfBytes.add(scanner.nextLine().getBytes());
       }
     } catch (IOException e) {
-      logger.error("Not able to locate file or read form it  " + file, e);
+      logger.error("Not able to locate or read form: " + file, e);
     }
     return listOfBytes;
   }
@@ -139,7 +139,7 @@ class FileHelper {
         stringList.add(scanner.nextLine());
       }
     } catch (FileNotFoundException e) {
-      logger.error("Not able to locate file or read form it  " + file, e);
+      logger.error("Not able to locate file or read form: " + file, e);
     }
     return stringList;
   }
