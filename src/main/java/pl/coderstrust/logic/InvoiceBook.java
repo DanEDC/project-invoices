@@ -94,7 +94,7 @@ public class InvoiceBook {
     logger.debug("removeInvoiceById called");
     Invoice invoice = database.removeInvoiceById(invoiceId);
     if (invoice != null) {
-      logger.info("Invoice " + invoiceId + " deleted");
+      logger.info("Invoice " + invoiceId + " returned");
       return invoice;
     } else {
       logger.info("Invoice " + invoiceId + " failed to delete");

@@ -68,7 +68,7 @@ public class InvoiceController {
   }
 
   @DeleteMapping(value = "/invoices/{id}")
-  public Invoice removeInvoice(@PathVariable int id) {
+  public Invoice removeInvoiceById(@PathVariable int id) {
     logger.debug("removeInvoice called");
     return invoiceBook.removeInvoiceById(id);
   }

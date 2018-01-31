@@ -125,6 +125,7 @@ public class InFile implements Database {
     Invoice invoice = this.getInvoiceById(invoiceId);
     if (invoice != null) {
       if (removeInvoiceFromFile(getFileByInvoice(invoice), invoiceId)) {
+        logger.info("Invoice " + invoiceId + " deleted");
         return invoice;
       }
     }
