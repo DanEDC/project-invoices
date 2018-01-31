@@ -91,7 +91,7 @@ public abstract class DatabaseTest {
     for (int loop = 0; loop < number; loop++) {
       assertEquals(invoices.get(loop).getInvoiceId(),
           database.getInvoiceById((loop + 1)).getInvoiceId());
-      assertEquals(invoices.get(loop).toString(), database.getInvoiceById(loop + 1).toString());
+      assertEquals(invoices.get(loop), database.getInvoiceById(loop + 1));
     }
     database.dropDatabase();
   }
@@ -137,7 +137,7 @@ public abstract class DatabaseTest {
     List<Invoice> shouldGetNone = database.getInvoicesFromDateToDate(latestDate, oldestDate);
     
     // then
-    assertEquals(database.getAllInvoices().toString(), shouldGetAll.toString());
+    assertEquals(database.getAllInvoices(), shouldGetAll);
     if (!oldestDate.equals(latestDate)) {
       assertEquals(new ArrayList<Invoice>(), shouldGetNone);
     }
@@ -159,7 +159,7 @@ public abstract class DatabaseTest {
     
     // then
     assertEquals(invoices.size(), invoicesAll.size());
-    assertEquals(invoices.toString(), invoicesAll.toString());
+    assertEquals(invoices, invoicesAll);
     database.dropDatabase();
   
   }
@@ -184,7 +184,7 @@ public abstract class DatabaseTest {
       database.saveInvoice(removedInvoice);
   
       // then
-      assertEquals(toBeRemovedInvoice.toString(), removedInvoice.toString());
+      assertEquals(toBeRemovedInvoice, removedInvoice);
       assertNull(shouldBeNull);
       assertEquals(database.getAllInvoices().size(), number);
     }
@@ -211,7 +211,7 @@ public abstract class DatabaseTest {
       // then
       assertNull(database.getInvoiceById(id));
       assertEquals(database.getAllInvoices().size(), number - id);
-      assertEquals(toBeRemovedInvoice.toString(), removedInvoice.toString());
+      assertEquals(toBeRemovedInvoice, removedInvoice);
     }
     database.dropDatabase();
   }
@@ -229,7 +229,7 @@ public abstract class DatabaseTest {
     List<Invoice> removedInvoices = database.removeAllInvoices();
 
     //then
-    assertEquals(invoices.toString(),removedInvoices.toString());
+    assertEquals(invoices,removedInvoices);
     assertEquals(0,database.getAllInvoices().size());
     database.dropDatabase();
   }

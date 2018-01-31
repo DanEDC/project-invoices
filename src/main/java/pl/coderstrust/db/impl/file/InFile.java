@@ -182,8 +182,8 @@ public class InFile implements Database {
   
   private File getFileByInvoice(Invoice invoice) {
     logger.debug("getFileByInvoice called");
-    String dir = path + "\\" + fileNameManager.getFileLocation(invoice);
-    fileHelper.createNewDir(dir);
+    String dir = path + "\\" + fileNameManager.getFileLocation(invoice);//TODO remove if redundant
+    fileHelper.createNewDir(dir);                                       //TODO remove if redundant
     return new File(dir + "\\" + fileNameManager.getFileName(invoice));
   }
   

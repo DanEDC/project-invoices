@@ -3,6 +3,8 @@ package pl.coderstrust.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 public class Item {
   
   private static Logger logger = LoggerFactory.getLogger(Item.class);
@@ -48,28 +50,22 @@ public class Item {
     logger.debug("getVat called");
     return vat;
   }
-
+  
   @Override
-  public boolean equals(Object object) {
-    logger.debug("equals called");
-    if (this == object) {
+  public boolean equals(Object o) {
+    if (this == o) {
       return true;
     }
-    if (!(object instanceof Item)) {
+    if (!(o instanceof Item)) {
       return false;
     }
-
-    Item that = (Item) object;
-
-    if (Double.compare(that.value, value) != 0) {
-      return false;
-    }
-    if (vat != that.vat) {
-      return false;
-    }
-    return description != null ? description.equals(that.description) : that.description == null;
+    Item item = (Item) o;
+    return Double.compare(item.getValue(), getValue()) == 0 &&
+        Objects.equals(getItemId(), item.getItemId()) &&
+        Objects.equals(getDescription(), item.getDescription()) &&
+        getVat() == item.getVat();
   }
-
+  
   @Override
   public int hashCode() {
     logger.debug("hashCode called");
