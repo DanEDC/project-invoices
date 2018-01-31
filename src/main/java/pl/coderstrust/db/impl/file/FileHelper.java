@@ -80,7 +80,7 @@ class FileHelper {
     try {
       PrintWriter printWriter = new PrintWriter(file.getPath());
       printWriter.close();
-      System.out.println("Info: file  " + file + " emptied");
+      logger.info("File " + file + " flushed");
       return true;
     } catch (FileNotFoundException e) {
       logger.warn("Not able to clear file " + file, e);
