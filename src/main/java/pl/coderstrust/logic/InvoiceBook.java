@@ -28,7 +28,7 @@ public class InvoiceBook {
     Integer id = database.getNextInvoiceId();
     invoice.setInvoiceId(id);
     if (database.saveInvoice(invoice)) {
-      logger.info("Invoice " + id + "saved");
+      logger.info("Invoice " + id + " saved");
       return id;
     } else {
       logger.info("Failed to save Invoice " + id);
@@ -63,7 +63,7 @@ public class InvoiceBook {
     logger.debug("getInvoiceById called");
     Invoice invoice = database.getInvoiceById(invoiceId);
     if (invoice != null) {
-      logger.info("Invoice " + invoiceId + " found");
+      logger.info("Invoice " + invoiceId + " returned");
       return invoice;
     } else {
       logger.warn("Invoice " + invoiceId + " not found");
