@@ -1,5 +1,7 @@
 package pl.coderstrust.db.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ import java.util.concurrent.atomic.AtomicReference;
 @ConditionalOnProperty(name = "pl.coderstrust.db.impl.DatabaseImpl", havingValue = "inFile")
 
 public class InFile implements Database {
+  
+  private static Logger logger = LoggerFactory.getLogger(InFile.class);
+  
   
   private final AtomicReference<Integer> invoiceId =
       new AtomicReference<>(0);
@@ -46,6 +51,8 @@ public class InFile implements Database {
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
+    logger.debug("Database: in File implementation initiated");
+  
   }
   
   @Override

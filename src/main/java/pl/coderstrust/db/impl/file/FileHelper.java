@@ -1,5 +1,7 @@
 package pl.coderstrust.db.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -17,24 +19,27 @@ import java.util.Set;
 @Service
 class FileHelper {
   
+  private static Logger logger = LoggerFactory.getLogger(FileHelper.class);
+  
   private Set<File> filesSet;
   private Set<File> dirSet;
   
   public FileHelper() {
     this.filesSet = new HashSet<>();
     this.dirSet = new HashSet<>();
+    logger.debug("File helper initiated");
   }
   
   void createNewDir(String path) {
     File dir = new File(path);
     if (dirSet.contains(dir)) {
-      System.out.println("Info: directory " + dir + " already exists");
+      logger.info("Directory " + dir + " already exists");
     } else {
       if (dir.mkdir()) {
-        System.out.println("Info: directory " + dir + " created");
+        logger.info("Directory " + dir + " created");
         dirSet.add(dir);
       } else {
-        System.out.println("Error: directory " + dir + " failed to create");
+        logger.warn("Directory " + dir + " failed to create");
       }
     }
   
