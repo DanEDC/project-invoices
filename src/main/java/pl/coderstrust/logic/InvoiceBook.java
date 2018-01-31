@@ -23,6 +23,7 @@ public class InvoiceBook {
   }
   
   public Integer saveInvoice(Invoice invoice) {
+    logger.debug("saveInvoice called");
     Integer id = database.getNextInvoiceId();
     invoice.setInvoiceId(id);
     if (database.saveInvoice(invoice)) {
@@ -35,51 +36,95 @@ public class InvoiceBook {
   }
   
   public List<Integer> saveInvoices(Collection<Invoice> invoices) {
+    logger.debug("saveInvoices called");
     List<Integer> ids = new ArrayList<>();
+    List<Invoice> notSavedInvoices = new ArrayList<>();
+  
+    Integer currentId;
     for (Invoice invoice : invoices) {
-      ids.add(saveInvoice(invoice));
+      currentId = this.saveInvoice(invoice);
+      if (currentId == 0) {
+        notSavedInvoices.add(invoice);
+      } else {
+        ids.add(currentId);
+      }
+    }
+  
+    if (notSavedInvoices.isEmpty()) {
+      logger.info("All invoices saved with id: " + ids);
+    } else {
+      logger.error("Following Invoices failed to save: " + notSavedInvoices);
     }
     return ids;
   }
   
   public Invoice getInvoiceById(Integer invoiceId) {
-    return database.getInvoiceById(invoiceId);
+    logger.debug("getInvoiceById called");
+    Invoice invoice = database.getInvoiceById(invoiceId);
+    if (invoice != null) {
+      logger.info("Invoice " + invoiceId + " found");
+      return invoice;
+    } else {
+      logger.warn("Invoice " + invoiceId + " not found");
+      return null;
+    }
   }
   
   public List<Invoice> getAllInvoices() {
-    return database.getAllInvoices();
+    logger.debug("getAllInvoices called");
+    List<Invoice> invoices;
+    invoices = database.getAllInvoices();
+    if (invoices.isEmpty()) {
+      logger.info("All invoices returned");
+    } else {
+      logger.warn("Returned empty list of invoices");
+    }
+    return invoices;
   }
 
   public List<Invoice> getListOfInvoiceById(Collection<Integer> orderedInvoicesId) {
+    logger.debug("getListOfInvoiceById called");
     List<Invoice> list = new ArrayList<>();
     orderedInvoicesId.forEach(id -> list.add(this.getInvoiceById(id)));
     return list;
   }
   
-  public Invoice removeInvoice(Integer invoiceId) {
-    return database.removeInvoiceById(invoiceId);
+  public Invoice removeInvoiceById(Integer invoiceId) {
+    logger.debug("removeInvoiceById called");
+    Invoice invoice = database.removeInvoiceById(invoiceId);
+    if (invoice != null) {
+      logger.info("Invoice " + invoiceId + " deleted");
+      return invoice;
+    } else {
+      logger.info("Invoice " + invoiceId + " failed to delete");
+      return null;
+    }
   }
 
   public List<Invoice> removeAllInvoices() {
+    logger.debug("removeAllInvoices called");
     return database.removeAllInvoices();
   }
   
   public List<Invoice> removeInvoicesById(Collection<Integer> toBeRemovedInvoicesId) {
+    logger.debug("removeInvoicesById called");
     List<Invoice> results = new ArrayList<>();
     for (Integer integer : toBeRemovedInvoicesId) {
-      results.add(this.removeInvoice(integer));
+      results.add(this.removeInvoiceById(integer));
     }
     return results;
   }
   
   @Override
   public String toString() {
+    logger.debug("toString called");
     return this.getClass().getSimpleName()
         + database;
   }
 
   @Override
   public boolean equals(Object object) {
+    logger.debug("equals called");
     if (this == object) {
       return true;
     }
@@ -95,6 +140,7 @@ public class InvoiceBook {
 
   @Override
   public int hashCode() {
+    logger.debug("hashCode called");
     return database != null ? database.hashCode() : 0;
   }
   

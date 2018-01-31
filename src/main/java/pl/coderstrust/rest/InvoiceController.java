@@ -60,7 +60,7 @@ public class InvoiceController {
 
   @DeleteMapping(value = "/invoices/{id}")
   public Invoice removeInvoice(@PathVariable int id) {
-    return invoiceBook.removeInvoice(id);
+    return invoiceBook.removeInvoiceById(id);
   }
   
   @DeleteMapping(value = "/invoices/")
