@@ -21,12 +21,12 @@ public class Invoice implements Comparable<LocalDate> {
   private List<Item> items = new ArrayList<>();
 
   public Invoice() {
-    logger.info("Invoice created");
+    logger.debug("Invoice created");
   }
 
   public Invoice(LocalDate date, Company seller, Company buyer,
       List<Item> items) {
-    logger.info("Invoice created");
+    logger.debug("Invoice created");
     this.invoiceId = null;
     this.date = date;
     this.seller = seller;

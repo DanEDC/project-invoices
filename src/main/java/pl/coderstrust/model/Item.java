@@ -13,11 +13,11 @@ public class Item {
   private Vat vat;
 
   public Item() {
-    logger.info("Item created");
+    logger.debug("Item created");
   }
 
   public Item(String description, double value, Vat vat) {
-    logger.info("Item created");
+    logger.debug("Item created");
     this.itemId = null;
     this.description = description;
     this.value = value;
