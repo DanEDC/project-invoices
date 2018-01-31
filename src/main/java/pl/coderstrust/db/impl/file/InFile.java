@@ -259,7 +259,7 @@ public class InFile implements Database {
     File theFile = null;
     for (File candidate : listOfFiles) {
       if (findIdInFile(candidate, invoiceId)) {
-        logger.info("id " + invoiceId + " found in file " + candidate);
+        logger.info("Invoice " + invoiceId + " found in " + candidate);
         theFile = candidate;
       }
     }
@@ -281,7 +281,7 @@ public class InFile implements Database {
     for (String string : stringList) {
       candidateId = jsonConverter.stringToInvoice(string).getInvoiceId();
       if (candidateId.equals(invoiceId)) {
-        logger.info("Invoice of id " + invoiceId + " exists");
+        logger.info("Invoice " + invoiceId + " exists");
         answer = true;
         break;
       }
