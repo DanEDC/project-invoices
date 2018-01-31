@@ -1,6 +1,8 @@
 package pl.coderstrust.rest;
 
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,22 +24,26 @@ import java.util.List;
 @RestController
 @SuppressWarnings("unused")
 public class InvoiceController {
-
+  
+  private static Logger logger = LoggerFactory.getLogger(InvoiceController.class);
 
   private InvoiceBook invoiceBook;
 
   @Autowired
   public InvoiceController(InvoiceBook invoiceBook) {
+    logger.info("InvoiceController initiated");
     this.invoiceBook = invoiceBook;
   }
   
   @GetMapping(value = "/invoices")
   public List<Invoice> getAllInvoices() {
+    logger.debug("getAllInvoices called");
     return invoiceBook.getAllInvoices();
   }
 
   @GetMapping(value = "/invoices/{id}")
   public Invoice getInvoiceById(@PathVariable int id) {
+    logger.debug("getInvoiceById called");
     return invoiceBook.getInvoiceById(id);
   }
   
@@ -45,26 +51,31 @@ public class InvoiceController {
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
       @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
+    logger.debug("getInvoicesFromDateToDate called");
     return invoiceBook.getInvoicesFromDateToDate(since, to);
   }
   
   @PostMapping(value = "/invoices")
   public Integer saveInvoice(@RequestBody Invoice invoice) {
+    logger.debug("saveInvoice called");
     return invoiceBook.saveInvoice(invoice);
   }
   
   @PostMapping(value = "/invoices/invoicesList")
   public List<Integer> saveInvoices(@RequestBody Collection<Invoice> invoices) {
+    logger.debug("saveInvoices called");
     return invoiceBook.saveInvoices(invoices);
   }
 
   @DeleteMapping(value = "/invoices/{id}")
   public Invoice removeInvoice(@PathVariable int id) {
+    logger.debug("removeInvoice called");
     return invoiceBook.removeInvoiceById(id);
   }
   
   @DeleteMapping(value = "/invoices/")
   public List<Invoice> removeAllInvoices() {
+    logger.debug("removeAllInvoices called");
     return invoiceBook.removeAllInvoices();
   }
 }
