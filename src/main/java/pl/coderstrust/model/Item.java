@@ -52,18 +52,18 @@ public class Item {
   }
   
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object object) {
+    if (this == object) {
       return true;
     }
-    if (!(o instanceof Item)) {
+    if (!(object instanceof Item)) {
       return false;
     }
-    Item item = (Item) o;
-    return Double.compare(item.getValue(), getValue()) == 0 &&
-        Objects.equals(getItemId(), item.getItemId()) &&
-        Objects.equals(getDescription(), item.getDescription()) &&
-        getVat() == item.getVat();
+    Item item = (Item) object;
+    return Double.compare(item.getValue(), getValue()) == 0
+        && Objects.equals(getItemId(), item.getItemId())
+        && Objects.equals(getDescription(), item.getDescription())
+        && getVat() == item.getVat();
   }
   
   @Override
