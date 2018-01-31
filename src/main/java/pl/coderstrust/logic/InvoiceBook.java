@@ -1,6 +1,7 @@
 package pl.coderstrust.logic;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
@@ -12,7 +13,9 @@ import java.util.List;
 
 @Service
 public class InvoiceBook {
-
+  
+  private static Logger logger = LoggerFactory.getLogger(InvoiceBook.class);
+  
   private Database database;
 
   public InvoiceBook(Database database) {
@@ -23,10 +26,10 @@ public class InvoiceBook {
     Integer id = database.getNextInvoiceId();
     invoice.setInvoiceId(id);
     if (database.saveInvoice(invoice)) {
-      System.out.println("Invoice saved");
+      logger.info("Invoice " + id + "saved");
       return id;
     } else {
-      System.out.println("Invoice not saved");
+      logger.info("Failed to save Invoice " + id);
       return 0;
     }
   }

@@ -22,16 +22,13 @@ public class InFile implements Database {
   
   private static Logger logger = LoggerFactory.getLogger(InFile.class);
   
-  
   private final AtomicReference<Integer> invoiceId =
       new AtomicReference<>(0);
-  
   
   private final String path;
   private final File database;
   private File inFileId;
 
-  
   /**
    * Supporting classes
    */
