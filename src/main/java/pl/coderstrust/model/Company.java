@@ -11,11 +11,9 @@ public class Company {
   private String vatId;
 
   public Company() {
-    logger.debug("Company created");
   }
 
   public Company(String name, String vatId) {
-    logger.debug("Company created");
     this.name = name;
     this.vatId = vatId;
   }
@@ -38,7 +36,6 @@ public class Company {
 
   @Override
   public boolean equals(Object object) {
-    logger.debug("equals called");
     if (this == object) {
       return true;
     }
@@ -54,19 +51,15 @@ public class Company {
 
   @Override
   public int hashCode() {
-    logger.debug("hashCode called");
     int result = getName() != null ? getName().hashCode() : 0;
-    result =
-        31 * result + (getVatId() != null ? getVatId()
-            .hashCode()
-            : 0);
+    result = 31 * result + (getVatId() != null ? getVatId()
+        .hashCode() : 0);
     return result;
   }
 
   @Override
   public String toString() {
-    logger.debug("toString called");
-    return name + ".co";
-
+    return this.name + ".co " +
+        "(" + this.vatId + ")";
   }
 }
