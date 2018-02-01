@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+
 @Api(value = "/invoices", description = "Operations on invoices")
 
 @RestController
@@ -31,13 +33,17 @@ public class InvoiceController {
 
   private InvoiceBook invoiceBook;
   private EmailService invoiceInfoMail;
-
+  private String emailRecipient;
+  
   @Autowired
-  public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail) {
+  public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail,
+      @Value("${pl.coderstrust.rest.recipientAddress}") String address) {
+  
     logger.info("InvoiceController initiated");
 
     this.invoiceBook = invoiceBook;
     this.invoiceInfoMail = invoiceInfoMail;
+    this.emailRecipient = address;
   }
 
   @GetMapping(value = "/invoices")
@@ -68,6 +74,7 @@ public class InvoiceController {
         "Invoice ID: " + invoiceId + "\n- Buyer: " + invoice.getBuyer()
             + "\n- Seller: " + invoice.getSeller() + "\n- Items:\n" + invoice.getItems();
     invoiceInfoMail.sendSimpleMessage("mdzielinski@gmail.com", "Invoice Added", invoiceMessage);
+    logger.info("mail sent to " + emailRecipient);
     return invoiceId;
   }
 

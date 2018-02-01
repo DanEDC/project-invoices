@@ -38,13 +38,15 @@ class FileHelper {
   
   }
   
-  void appendFile(File file, String string) {
+  boolean appendFile(File file, String string) {
     logger.debug("appendFile called");
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, true))) {
       outputStream.println(string);
+      return true;
     } catch (FileNotFoundException e1) {
       logger.warn("Not able to append " + file + " with " + string, e1);
+      return false;
     }
   }
   

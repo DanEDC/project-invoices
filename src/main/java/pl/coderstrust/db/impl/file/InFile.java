@@ -48,15 +48,18 @@ public class InFile implements Database {
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
-    logger.info("InFile Database initiated");
+    if(this.database.exists()){
+      logger.info("InFile Database exists");
+    } else {
+      logger.info("InFile Database initiated");
+    }
   }
   
   @Override
   public Integer getNextInvoiceId() {
-    logger.debug("getNextInvoiceId called");
     fileHelper.createNewDir(path);
     inFileId = new File(path + "\\LastID.txt");
-    
+  
     Integer nextId;
     if (inFileId.exists()) {
       String id = (fileHelper.readAsStringList(inFileId).get(0));
@@ -65,7 +68,7 @@ public class InFile implements Database {
       nextId = invoiceId.get();
     }
     nextId++;
-    
+  
     String idAsString = jsonConverter.objectToJson(nextId);
     fileHelper.overwriteFile(inFileId, idAsString);
     
@@ -77,8 +80,7 @@ public class InFile implements Database {
     logger.debug("saveInvoice called");
     File invoicesFile = getFileByInvoice(invoice);
     String invoiceAsString = jsonConverter.objectToJson(invoice);
-    fileHelper.appendFile(invoicesFile, invoiceAsString);
-    return true;
+    return fileHelper.appendFile(invoicesFile, invoiceAsString);
   }
   
   @Override
@@ -88,7 +90,7 @@ public class InFile implements Database {
     if (file != null) {
       return getInvoiceFromFile(invoiceId, file);
     } else {
-      logger.info("Invoice of id " + invoiceId + " not found");
+      logger.debug("Invoice of id " + invoiceId + " not found");
       return null;
     }
   }
