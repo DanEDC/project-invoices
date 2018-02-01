@@ -24,11 +24,21 @@ public abstract class DatabaseTest {
   /**
    * Invoice in tests should be a mock?
    */
-  @SuppressWarnings("all")
   private boolean invoiceIsMock = false;
   
   private InvoiceGenerator invGen = new InvoiceGenerator();
   
+  @Test
+  public void dropDatabase() {
+    // given
+    Database database = provideImplementation();
+    
+    // when
+    boolean result = database.dropDatabase();
+    
+    // then
+    assertTrue(database.getAllInvoices().isEmpty() || database.getAllInvoices() == null);
+  }
   
   /**
    * Parameter used only to see if implementation starts with
@@ -74,7 +84,6 @@ public abstract class DatabaseTest {
     // then
     assertTrue(result);
     database.dropDatabase();
-  
   }
   
   @Test
@@ -161,7 +170,6 @@ public abstract class DatabaseTest {
     assertEquals(invoices.size(), invoicesAll.size());
     assertEquals(invoices, invoicesAll);
     database.dropDatabase();
-  
   }
   
   /**
@@ -232,17 +240,6 @@ public abstract class DatabaseTest {
     assertEquals(invoices,removedInvoices);
     assertEquals(0,database.getAllInvoices().size());
     database.dropDatabase();
-  }
-  
-  @Test
-  public void dropDatabase() {
-    // given
-    Database database = provideImplementation();
-    // when
-    boolean result = database.dropDatabase();
-    
-    // then
-    assertTrue(database.getAllInvoices().isEmpty() || database.getAllInvoices() == null);
   }
   
   /**
