@@ -89,11 +89,11 @@ public class InvoiceController {
 
   @Scheduled(cron = "0 32 17 * * ?")
   public void sendScheduledMail() {
-
+    logger.debug("sendScheduledMail called");
     String dayMessage = "Day " + LocalDate.now().minusDays(1) + ": " + invoiceBook
         .getYesterdayInvoicesNo(LocalDate.now().minusDays(1)) + " invoices added.";
-
-    invoiceInfoMail.sendSimpleMessage("mna@g.pl", "Yesterday Summary - Invoices", dayMessage);
+    invoiceInfoMail.sendSimpleMessage("mna@g.pl",
+        "Yesterday Summary - Invoices", dayMessage);
   }
 }
 
