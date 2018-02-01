@@ -1,12 +1,7 @@
 package pl.coderstrust.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class Company {
   
-  private static Logger logger = LoggerFactory.getLogger(Company.class);
-
   private String name;
   private String vatId;
 

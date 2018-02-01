@@ -63,12 +63,12 @@ public class InvoiceController {
   @PostMapping(value = "/invoices")
   public Integer saveInvoice(@RequestBody Invoice invoice) {
     logger.debug("saveInvoice called");
-
+    Integer invoiceId = invoiceBook.saveInvoice(invoice);
     String invoiceMessage =
-        "Invoice ID: " + invoice.getInvoiceId() + "\n- Buyer: " + invoice.getBuyer()
+        "Invoice ID: " + invoiceId + "\n- Buyer: " + invoice.getBuyer()
             + "\n- Seller: " + invoice.getSeller() + "\n- Items:\n" + invoice.getItems();
-    invoiceInfoMail.sendSimpleMessage("mna@g.pl", "Invoice Added", invoiceMessage);
-    return invoiceBook.saveInvoice(invoice);
+    invoiceInfoMail.sendSimpleMessage("mdzielinski@gmail.com", "Invoice Added", invoiceMessage);
+    return invoiceId;
   }
 
   @PostMapping(value = "/invoices/invoicesList")
@@ -94,7 +94,7 @@ public class InvoiceController {
     logger.debug("sendScheduledMail called");
     String dayMessage = "Day " + LocalDate.now().minusDays(1) + ": " + invoiceBook
         .getYesterdayInvoicesNo(LocalDate.now().minusDays(1)) + " invoices added.";
-    invoiceInfoMail.sendSimpleMessage("mna@g.pl",
+    invoiceInfoMail.sendSimpleMessage("mdzielinski@gmail.com",
         "Yesterday Summary - Invoices", dayMessage);
   }
 }

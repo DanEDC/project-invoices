@@ -21,12 +21,10 @@ public class Invoice implements Comparable<LocalDate> {
   private List<Item> items = new ArrayList<>();
 
   public Invoice() {
-    logger.debug("Invoice created");
   }
 
   public Invoice(LocalDate date, Company seller, Company buyer,
       List<Item> items) {
-    logger.debug("Invoice created");
     this.invoiceId = null;
     this.date = date;
     this.seller = seller;
@@ -35,17 +33,20 @@ public class Invoice implements Comparable<LocalDate> {
   }
 
   public Integer getInvoiceId() {
-    logger.debug("getInvoiceId called");
     return invoiceId;
   }
   
   public final void setInvoiceId(Integer invoiceId) {
-    logger.debug("setInvoiceId called");
+    Integer oldId = this.invoiceId;
     this.invoiceId = invoiceId;
+    if (oldId == null) {
+      logger.debug("setInvoiceId called");
+    } else {
+      logger.info("Changed Invoice Id: " + this.invoiceId + " to " + invoiceId);
+    }
   }
   
   public LocalDate getDate() {
-    logger.debug("getDate called");
     return date;
   }
 
@@ -79,7 +80,6 @@ public class Invoice implements Comparable<LocalDate> {
   
   @Override
   public String toString() {
-    logger.debug("toString called");
     return "\n"
         + invoiceId
         + "," + date
@@ -90,7 +90,6 @@ public class Invoice implements Comparable<LocalDate> {
   
   @Override
   public boolean equals(Object object) {
-    logger.debug("equals called");
     if (this == object) {
       return true;
     }
@@ -107,14 +106,11 @@ public class Invoice implements Comparable<LocalDate> {
   
   @Override
   public int hashCode() {
-    logger.debug("hashCode called");
     return Objects.hash(getInvoiceId(), getDate(), getSeller(), getBuyer(), getItems());
   }
   
- 
   @Override
   public int compareTo(LocalDate date) {
-    logger.debug("compareTo called");
     return this.getDate().compareTo(date);
   }
 }
