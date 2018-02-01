@@ -6,7 +6,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 @Service
-@SuppressWarnings("unused")
 public class MailSender {
   
   @Bean
