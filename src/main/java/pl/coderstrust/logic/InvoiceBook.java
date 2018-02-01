@@ -131,9 +131,7 @@ public class InvoiceBook {
     if (!(object instanceof InvoiceBook)) {
       return false;
     }
-
     InvoiceBook that = (InvoiceBook) object;
-
     return database != null ? database.equals(
         that.database) : that.database == null;
   }
@@ -145,10 +143,12 @@ public class InvoiceBook {
   }
   
   public List<Invoice> getInvoicesFromDateToDate(LocalDate since, LocalDate to) {
+    logger.debug("getInvoicesFromDateToDate called");
     return database.getInvoicesFromDateToDate(since, to);
   }
 
   public int getYesterdayInvoicesNo(LocalDate yesterday) {
+    logger.debug("getYesterdayInvoicesNo called");
     return getInvoicesFromDateToDate(yesterday, yesterday).size();
   }
   
