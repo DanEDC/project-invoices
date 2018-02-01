@@ -147,6 +147,10 @@ public class InvoiceBook {
   public List<Invoice> getInvoicesFromDateToDate(LocalDate since, LocalDate to) {
     return database.getInvoicesFromDateToDate(since, to);
   }
+
+  public int getYesterdayInvoicesNo(LocalDate yesterday) {
+    return getInvoicesFromDateToDate(yesterday, yesterday).size();
+  }
   
   
 }
