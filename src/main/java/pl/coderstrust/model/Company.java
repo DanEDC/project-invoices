@@ -54,7 +54,6 @@ public class Company {
 
   @Override
   public String toString() {
-    return this.name + ".co " +
-        "(" + this.vatId + ")";
+    return this.name + ".co (" + this.vatId + ")";
   }
 }

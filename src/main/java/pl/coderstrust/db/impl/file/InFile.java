@@ -48,7 +48,7 @@ public class InFile implements Database {
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
-    if(this.database.exists()){
+    if (this.database.exists()) {
       logger.info("InFile Database exists");
     } else {
       logger.info("InFile Database initiated");
