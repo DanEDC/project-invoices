@@ -14,7 +14,6 @@ public class MailSender {
     JavaMailSenderImpl emailSender = new JavaMailSenderImpl();
     emailSender.setHost("smtp.gmail.com");
     emailSender.setPort(587);
-    
     return emailSender;
   }
 }

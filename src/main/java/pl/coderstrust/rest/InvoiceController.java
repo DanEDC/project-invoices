@@ -35,6 +35,7 @@ public class InvoiceController {
   @Autowired
   public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail) {
     logger.info("InvoiceController initiated");
+
     this.invoiceBook = invoiceBook;
     this.invoiceInfoMail = invoiceInfoMail;
   }
@@ -62,6 +63,7 @@ public class InvoiceController {
   @PostMapping(value = "/invoices")
   public Integer saveInvoice(@RequestBody Invoice invoice) {
     logger.debug("saveInvoice called");
+
     String invoiceMessage =
         "Invoice ID: " + invoice.getInvoiceId() + "\n- Buyer: " + invoice.getBuyer()
             + "\n- Seller: " + invoice.getSeller() + "\n- Items:\n" + invoice.getItems();
