@@ -21,22 +21,18 @@ public class Company {
   }
 
   public String getName() {
-    logger.debug("getName called");
     return name;
   }
 
   public void setName(String name) {
     logger.debug("getName called");
-    this.name = name;
   }
 
   public String getVatId() {
-    logger.debug("getVatId called");
     return vatId;
   }
 
   public void setVatId(String vatId) {
-    logger.debug("setVatId called");
     this.vatId = vatId;
   }
 

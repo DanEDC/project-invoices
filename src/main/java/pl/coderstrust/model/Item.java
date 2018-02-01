@@ -27,32 +27,28 @@ public class Item {
   }
 
   public Integer getItemId() {
-    logger.debug("getItemId called");
     return itemId;
   }
 
   public final void setItemId(Integer itemId) {
-    logger.debug("setItemId called");
     this.itemId = itemId;
   }
 
   public String getDescription() {
-    logger.debug("getDescription called");
     return description;
   }
 
   public double getValue() {
-    logger.debug("getValue called");
     return value;
   }
 
   public Vat getVat() {
-    logger.debug("getVat called");
     return vat;
   }
   
   @Override
   public boolean equals(Object object) {
+    logger.debug("equals called");
     if (this == object) {
       return true;
     }

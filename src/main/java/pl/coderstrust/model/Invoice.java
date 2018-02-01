@@ -50,37 +50,30 @@ public class Invoice implements Comparable<LocalDate> {
   }
 
   public void setDate(LocalDate date) {
-    logger.debug("setDate called");
     this.date = date;
   }
   
   public Company getSeller() {
-    logger.debug("getSeller called");
     return seller;
   }
   
   public void setSeller(Company seller) {
-    logger.debug("setSeller called");
     this.seller = seller;
   }
   
   public Company getBuyer() {
-    logger.debug("getBuyer called");
     return buyer;
   }
   
   public void setBuyer(Company buyer) {
-    logger.debug("setBuyer called");
     this.buyer = buyer;
   }
   
   public Collection<Item> getItems() {
-    logger.debug("getItems called");
     return items;
   }
 
   public void setItems(List<Item> items) {
-    logger.debug("setItems called");
     this.items = items;
   }
   
