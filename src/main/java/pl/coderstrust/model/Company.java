@@ -25,7 +25,6 @@ public class Company {
   }
 
   public void setName(String name) {
-    logger.debug("getName called");
   }
 
   public String getVatId() {

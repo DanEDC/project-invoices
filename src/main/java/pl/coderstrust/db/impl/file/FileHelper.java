@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +20,11 @@ class FileHelper {
   
   
   public FileHelper() {
-    logger.debug("File helper initiated");
+    logger.info("File helper initiated");
   }
   
   void createNewDir(String path) {
+    logger.debug("createNewDir called");
     File dir = new File(path);
     if (dir.exists()) {
       logger.info("Directory " + dir + " already exists");
@@ -39,6 +39,7 @@ class FileHelper {
   }
   
   void appendFile(File file, String string) {
+    logger.debug("appendFile called");
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, true))) {
       outputStream.println(string);
@@ -48,6 +49,7 @@ class FileHelper {
   }
   
   void appendFile(File file, List<String> stringList) {
+    logger.debug("appendFile called");
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, true))) {
       for (String string:stringList) {
@@ -59,6 +61,7 @@ class FileHelper {
   }
   
   void overwriteFile(File file, String string) {
+    logger.debug("overwriteFile called");
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, false))) {
       outputStream.println(string);
@@ -68,6 +71,7 @@ class FileHelper {
   }
   
   boolean clearFile(File file) {
+    logger.debug("clearFile called");
     try {
       PrintWriter printWriter = new PrintWriter(file.getPath());
       printWriter.close();
@@ -80,6 +84,7 @@ class FileHelper {
   }
   
   boolean deleteFile(File file) {
+    logger.debug("deleteFile called");
     try {
       if (file.delete()) {
         logger.info("File " + file + " deleted");
@@ -96,6 +101,7 @@ class FileHelper {
   }
   
   boolean deleteDirectoryIfEmpty(File file) {
+    logger.debug("deleteDirectoryIfEmpty called");
     if (deleteFile(file)) {
       logger.info("Directory " + file + " deleted");
       return true;
@@ -104,21 +110,10 @@ class FileHelper {
       return false;
     }
   }
-  
-  @SuppressWarnings("unused ")
-  List<byte[]> readAsListOfByteArray(File file) {
-    List<byte[]> listOfBytes = new ArrayList<>();
-    try (Scanner scanner = new Scanner(file)) {
-      while (scanner.hasNextLine()) {
-        listOfBytes.add(scanner.nextLine().getBytes());
-      }
-    } catch (IOException e) {
-      logger.error("Not able to locate or read form: " + file, e);
-    }
-    return listOfBytes;
-  }
+
   
   List<String> readAsStringList(File file) {
+    logger.debug("readAsStringList called");
     List<String> stringList = new ArrayList<>();
     try (Scanner scanner = new Scanner(file)) {
       while (scanner.hasNextLine()) {
@@ -151,6 +146,7 @@ class FileHelper {
    * |  FileInGivenDir      <-will IGNORE!
    */
   public List<File> listSubDirContent(File dir) {
+    logger.debug("listSubDirContent called");
     List<File> fileList = new ArrayList<>();
     
     File[] subDirs = listDirContent(dir, 1);
@@ -165,6 +161,7 @@ class FileHelper {
   }
   
   public File[] listDirContent(File givenDirectory, int all0Dir1File2) {
+    logger.debug("listDirContent called");
     switch (all0Dir1File2) {
       case 0:
         return givenDirectory.listFiles();
