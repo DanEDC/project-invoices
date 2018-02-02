@@ -37,13 +37,13 @@ public class InvoiceController {
   
   @Autowired
   public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail,
-      @Value("${pl.coderstrust.rest.recipientAddress}") String address) {
+      @Value("${pl.coderstrust.rest.recipientAddress}") String emailRecipient) {
   
     logger.info("InvoiceController initiated");
 
     this.invoiceBook = invoiceBook;
     this.invoiceInfoMail = invoiceInfoMail;
-    this.emailRecipient = address;
+    this.emailRecipient = emailRecipient;
   }
 
   @GetMapping(value = "/invoices/")
@@ -52,19 +52,19 @@ public class InvoiceController {
     return invoiceBook.getAllInvoices();
   }
 
-  //  @GetMapping(value = "/invoices/{id}")
-  //  public Invoice getInvoiceById(@PathVariable int id) {
-  //    logger.debug("getInvoiceById called");
-  //    return invoiceBook.getInvoiceById(id);
-  //  }
+    @GetMapping(value = "/invoices/{id}")
+    public Invoice getInvoiceById(@PathVariable int id) {
+      logger.debug("getInvoiceById called");
+      return invoiceBook.getInvoiceById(id);
+    }
   
-  @GetMapping(value = "/invoices/{ids}")
+  @GetMapping(value = "/invoices/list/{ids}")
   public List<Invoice> getListOfInvoiceById(@RequestBody Collection<Integer> ids) {
     logger.debug("getListOfInvoiceById called");
     return invoiceBook.getListOfInvoiceById(ids);
   }
 
-  @GetMapping(value = "/invoices/?FromDateToDate")
+  @GetMapping(value = "/invoices/list?FromDateToDate")
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
       @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
@@ -72,7 +72,7 @@ public class InvoiceController {
     return invoiceBook.getInvoicesFromDateToDate(since, to);
   }
 
-  @PostMapping(value = "/invoices")//TODO move creating message to some else class. No Logic here.
+  @PostMapping(value = "/invoices/single/")//TODO move creating message to some else class. No Logic here.
   public Integer saveInvoice(@RequestBody Invoice invoice) {
     logger.debug("saveInvoice called");
     Integer invoiceId = invoiceBook.saveInvoice(invoice);
@@ -85,7 +85,7 @@ public class InvoiceController {
     return invoiceId;
   }
 
-  @PostMapping(value = "/invoices/invoicesList")
+  @PostMapping(value = "/invoices/list/invoicesList")
   public List<Integer> saveInvoices(@RequestBody Collection<Invoice> invoices) {
     logger.debug("saveInvoices called");
     return invoiceBook.saveInvoices(invoices);
