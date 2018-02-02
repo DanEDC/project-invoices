@@ -209,14 +209,14 @@ public class InFile implements Database {
           failed++;
         }
       }
-      if (deleted == 0) {
-        logger.debug("Summary: deleted " + deleted
-            + " out of " + deleted + failed + " directors");
+      if (failed == 0) {
+        logger.debug("Success: deleted " + deleted
+            + " out of " + (deleted + failed) + " directors");
       } else {
         logger.warn(
-            "Summary: deleted " + deleted
+            "Warning: deleted " + deleted
                 + " out of " + (deleted + failed)
-                + " directors; " + deleted + " failed to delete");
+                + " directors; failed to delete" + failed);
       }
     }
     return false;
