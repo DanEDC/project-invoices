@@ -37,14 +37,14 @@ public class InvoiceController {
   
   @Autowired
   public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail,
-      @Value("${pl.coderstrust.rest.recipientAddress}") String address) {
+      @Value("${pl.coderstrust.rest.recipientAddress}") String emailRecipient) {
     logger.info("InvoiceController initiated");
     this.invoiceBook = invoiceBook;
     this.invoiceInfoMail = invoiceInfoMail;
-    this.emailRecipient = address;
+    this.emailRecipient = emailRecipient;
   }
 
-  @GetMapping(value = "/invoices/")
+  @GetMapping(value = "/invoices")
   public List<Invoice> getAllInvoices() {
     logger.debug("getAllInvoices called");
     return invoiceBook.getAllInvoices();
@@ -56,7 +56,7 @@ public class InvoiceController {
     return invoiceBook.getInvoiceById(id);
   }
 
-  @GetMapping(value = "/invoices?byDate?fromTo")
+  @GetMapping(value = "/invoices/")
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
       @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
@@ -64,9 +64,7 @@ public class InvoiceController {
     return invoiceBook.getInvoicesFromDateToDate(since, to);
   }
 
-  
-  
-  @PostMapping(value = "/invoices/single/")//TODO move creating message to some else class. No Logic here.
+  @PostMapping(value = "/invoices")
   public Integer saveInvoice(@RequestBody Invoice invoice) {
     logger.debug("saveInvoice called");
     Integer invoiceId = invoiceBook.saveInvoice(invoice);
@@ -79,7 +77,7 @@ public class InvoiceController {
     return invoiceId;
   }
 
-  @PostMapping(value = "/invoices/list/invoicesList")
+  @PostMapping(value = "/invoices/invoicesList")
   public List<Integer> saveInvoices(@RequestBody Collection<Invoice> invoices) {
     logger.debug("saveInvoices called");
     return invoiceBook.saveInvoices(invoices);
@@ -107,7 +105,7 @@ public class InvoiceController {
     logger.debug("sendScheduledMail called");
     String dayMessage = "Day " + LocalDate.now().minusDays(1) + ": " + invoiceBook
         .getYesterdayInvoicesNo(LocalDate.now().minusDays(1)) + " invoices added.";
-    invoiceInfoMail.sendSimpleMessage("mdzielinski@gmail.com",
+    invoiceInfoMail.sendSimpleMessage("emailRecipient",
         "Yesterday Summary - Invoices", dayMessage);
   }
 }
