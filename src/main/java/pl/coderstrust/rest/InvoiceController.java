@@ -52,7 +52,7 @@ public class InvoiceController {
   
   @GetMapping(value = "/invoices/{id}")
   public Invoice getInvoiceById(@PathVariable int id) {
-      logger.debug("getInvoiceById called");
+    logger.debug("getInvoiceById called");
     return invoiceBook.getInvoiceById(id);
   }
 
