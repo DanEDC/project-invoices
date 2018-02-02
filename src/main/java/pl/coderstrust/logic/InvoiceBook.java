@@ -78,7 +78,7 @@ public class InvoiceBook {
     if (invoices.isEmpty()) {
       logger.warn("Returned empty list of invoices");
     } else {
-      logger.info("Returned all invoices");
+      logger.info("Returned all invoices in number: " + invoices.size());
     }
     return invoices;
   }
@@ -110,17 +110,19 @@ public class InvoiceBook {
     logger.debug("removeInvoiceById called");
     Invoice invoice = database.removeInvoiceById(invoiceId);
     if (invoice != null) {
-      logger.info("Invoice " + invoiceId + " returned");
+      logger.info("Deleted and returned Invoice: " + invoiceId);
       return invoice;
     } else {
-      logger.info("Invoice " + invoiceId + " failed to delete");
+      logger.info("Failed to delete Invoice " + invoiceId);
       return null;
     }
   }
 
   public List<Invoice> removeAllInvoices() {
     logger.debug("removeAllInvoices called");
-    return database.removeAllInvoices();
+    List<Invoice> removedInvoices = database.removeAllInvoices();
+    logger.info("Removed all Invoices in a number: " + removedInvoices.size());
+    return removedInvoices;
   }
   
   public List<Invoice> removeInvoicesById(Collection<Integer> toBeRemovedInvoicesId) {
@@ -161,6 +163,9 @@ public class InvoiceBook {
   
   public List<Invoice> getInvoicesFromDateToDate(LocalDate since, LocalDate to) {
     logger.debug("getInvoicesFromDateToDate called");
+    List<Invoice> invoicesFound = database.getInvoicesFromDateToDate(since, to);
+    logger.info("Returned " + invoicesFound.size() + " invoices from period: "
+        + since + " to " + to);
     return database.getInvoicesFromDateToDate(since, to);
   }
 

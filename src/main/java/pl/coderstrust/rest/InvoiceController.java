@@ -37,13 +37,11 @@ public class InvoiceController {
   
   @Autowired
   public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail,
-      @Value("${pl.coderstrust.rest.recipientAddress}") String emailRecipient) {
-  
+      @Value("${pl.coderstrust.rest.recipientAddress}") String address) {
     logger.info("InvoiceController initiated");
-
     this.invoiceBook = invoiceBook;
     this.invoiceInfoMail = invoiceInfoMail;
-    this.emailRecipient = emailRecipient;
+    this.emailRecipient = address;
   }
 
   @GetMapping(value = "/invoices/")
@@ -51,20 +49,14 @@ public class InvoiceController {
     logger.debug("getAllInvoices called");
     return invoiceBook.getAllInvoices();
   }
-
-    @GetMapping(value = "/invoices/{id}")
-    public Invoice getInvoiceById(@PathVariable int id) {
-      logger.debug("getInvoiceById called");
-      return invoiceBook.getInvoiceById(id);
-    }
   
-  @GetMapping(value = "/invoices/list/{ids}")
-  public List<Invoice> getListOfInvoiceById(@RequestBody Collection<Integer> ids) {
-    logger.debug("getListOfInvoiceById called");
-    return invoiceBook.getListOfInvoiceById(ids);
+  @GetMapping(value = "/invoices/{id}")
+  public Invoice getInvoiceById(@PathVariable int id) {
+      logger.debug("getInvoiceById called");
+    return invoiceBook.getInvoiceById(id);
   }
 
-  @GetMapping(value = "/invoices/list?FromDateToDate")
+  @GetMapping(value = "/invoices/?FromDateToDate")
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
       @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {

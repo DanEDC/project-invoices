@@ -215,7 +215,7 @@ public class InFile implements Database {
       } else {
         logger.warn(
             "Summary: deleted " + deleted
-                + " out of " + deleted + failed
+                + " out of " + (deleted + failed)
                 + " directors; " + deleted + " failed to delete");
       }
     }
