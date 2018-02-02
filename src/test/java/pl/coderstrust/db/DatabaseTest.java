@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.helpers.InvoiceGenerator;
@@ -20,13 +22,14 @@ import java.util.List;
 public abstract class DatabaseTest {
   
   public abstract Database provideImplementation();
-  
+
   /**
    * Invoice in tests should be a mock?
    */
   private boolean invoiceIsMock = false;
   
   private InvoiceGenerator invGen = new InvoiceGenerator();
+  private Database database;
   
   @Test
   public void dropDatabase() {
@@ -69,7 +72,6 @@ public abstract class DatabaseTest {
       database.dropDatabase();
     }
   }
-  
   
   @Test
   public void shouldReturnTrueAfterSavingInvoice() {

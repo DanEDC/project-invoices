@@ -127,7 +127,6 @@ public class InFile implements Database {
     Invoice invoice = this.getInvoiceById(invoiceId);
     if (invoice != null) {
       if (removeInvoiceFromFile(getFileByInvoice(invoice), invoiceId)) {
-        logger.info("Invoice " + invoiceId + " deleted");
         return invoice;
       }
     }
@@ -139,7 +138,7 @@ public class InFile implements Database {
     logger.debug("removeAllInvoices called");
     List<Invoice> invoices = this.getAllInvoices();
     if (deleteAllInvoiceFiles()) {
-      logger.info("Delete all invoice files succeed");
+      logger.debug("Delete all invoice files succeed");
     } else {
       logger.warn("Delete all invoice files failed");
     }
@@ -211,7 +210,7 @@ public class InFile implements Database {
         }
       }
       if (deleted == 0) {
-        logger.info("Summary: deleted " + deleted
+        logger.debug("Summary: deleted " + deleted
             + " out of " + deleted + failed + " directors");
       } else {
         logger.warn(
@@ -261,7 +260,7 @@ public class InFile implements Database {
     File theFile = null;
     for (File candidate : listOfFiles) {
       if (findIdInFile(candidate, invoiceId)) {
-        logger.info("Invoice " + invoiceId + " found in " + candidate);
+        logger.debug("Invoice " + invoiceId + " found in " + candidate);
         theFile = candidate;
       }
     }
@@ -283,7 +282,7 @@ public class InFile implements Database {
     for (String string : stringList) {
       candidateId = jsonConverter.stringToInvoice(string).getInvoiceId();
       if (candidateId.equals(invoiceId)) {
-        logger.info("Invoice " + invoiceId + " exists");
+        logger.debug("Invoice " + invoiceId + " exists");
         answer = true;
         break;
       }

@@ -46,19 +46,25 @@ public class InvoiceController {
     this.emailRecipient = address;
   }
 
-  @GetMapping(value = "/invoices")
+  @GetMapping(value = "/invoices/")
   public List<Invoice> getAllInvoices() {
     logger.debug("getAllInvoices called");
     return invoiceBook.getAllInvoices();
   }
 
-  @GetMapping(value = "/invoices/{id}")
-  public Invoice getInvoiceById(@PathVariable int id) {
+  @GetMapping(value = "/invoices/{id_cosTam}")
+  public Invoice getInvoiceById(@PathVariable(name="id_cosTam") int id) {
     logger.debug("getInvoiceById called");
     return invoiceBook.getInvoiceById(id);
   }
+  
+  @GetMapping(value = "/invoices/jakasInnaSciezka/{parametr}")
+  public List<Invoice> getListOfInvoiceById(@RequestBody Collection<Integer> ids) {
+    logger.debug("getListOfInvoiceById called");
+    return invoiceBook.getListOfInvoiceById(ids);
+  }
 
-  @GetMapping(value = "/invoices/")
+  @GetMapping(value = "/invoices")//TODO swagger annotations about paramteres
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
       @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {

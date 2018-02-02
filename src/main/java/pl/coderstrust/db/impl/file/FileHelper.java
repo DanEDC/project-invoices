@@ -89,7 +89,7 @@ class FileHelper {
     logger.debug("deleteFile called");
     try {
       if (file.delete()) {
-        logger.info("File " + file + " deleted");
+        logger.debug("File " + file + " deleted");
         return true;
       } else {
         logger.warn("Not able to delete " + file);
@@ -105,7 +105,7 @@ class FileHelper {
   boolean deleteDirectoryIfEmpty(File file) {
     logger.debug("deleteDirectoryIfEmpty called");
     if (deleteFile(file)) {
-      logger.info("Directory " + file + " deleted");
+      logger.debug("Directory " + file + " deleted");
       return true;
     } else {
       logger.warn("Directory " + file + " failed to be deleted");
