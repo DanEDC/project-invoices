@@ -52,19 +52,19 @@ public class InvoiceController {
     return invoiceBook.getAllInvoices();
   }
 
-  @GetMapping(value = "/invoices/{id_cosTam}")
-  public Invoice getInvoiceById(@PathVariable(name="id_cosTam") int id) {
-    logger.debug("getInvoiceById called");
-    return invoiceBook.getInvoiceById(id);
-  }
+  //  @GetMapping(value = "/invoices/{id}")
+  //  public Invoice getInvoiceById(@PathVariable int id) {
+  //    logger.debug("getInvoiceById called");
+  //    return invoiceBook.getInvoiceById(id);
+  //  }
   
-  @GetMapping(value = "/invoices/jakasInnaSciezka/{parametr}")
+  @GetMapping(value = "/invoices/{ids}")
   public List<Invoice> getListOfInvoiceById(@RequestBody Collection<Integer> ids) {
     logger.debug("getListOfInvoiceById called");
     return invoiceBook.getListOfInvoiceById(ids);
   }
 
-  @GetMapping(value = "/invoices")//TODO swagger annotations about paramteres
+  @GetMapping(value = "/invoices/?FromDateToDate")
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
       @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
@@ -72,14 +72,15 @@ public class InvoiceController {
     return invoiceBook.getInvoicesFromDateToDate(since, to);
   }
 
-  @PostMapping(value = "/invoices")
+  @PostMapping(value = "/invoices")//TODO move creating message to some else class. No Logic here.
   public Integer saveInvoice(@RequestBody Invoice invoice) {
     logger.debug("saveInvoice called");
     Integer invoiceId = invoiceBook.saveInvoice(invoice);
-    String invoiceMessage =
-        "Invoice ID: " + invoiceId + "\n- Buyer: " + invoice.getBuyer()
-            + "\n- Seller: " + invoice.getSeller() + "\n- Items:\n" + invoice.getItems();
-    invoiceInfoMail.sendSimpleMessage("mdzielinski@gmail.com", "Invoice Added", invoiceMessage);
+    String invoiceMessage = "Invoice ID: " + invoiceId
+            + "\n- Buyer: " + invoice.getBuyer()
+            + "\n- Seller: " + invoice.getSeller()
+            + "\n- Items:\n" + invoice.getItems();
+    invoiceInfoMail.sendSimpleMessage(emailRecipient, "Invoice Added", invoiceMessage);
     logger.info("mail sent to " + emailRecipient);
     return invoiceId;
   }
@@ -101,7 +102,10 @@ public class InvoiceController {
     logger.debug("removeAllInvoices called");
     return invoiceBook.removeAllInvoices();
   }
-
+  
+  /**
+   * This method sends email with daily summary - not available to user
+   */
   @Scheduled(cron = "0 32 17 * * ?")
   public void sendScheduledMail() {
     logger.debug("sendScheduledMail called");

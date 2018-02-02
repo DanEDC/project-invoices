@@ -27,15 +27,14 @@ class FileHelper {
     logger.debug("createNewDir called");
     File dir = new File(path);
     if (dir.exists()) {
-      logger.info("Directory " + dir + " already exists");
+      logger.debug("Directory " + dir + " already exists");
     } else {
       if (dir.mkdir()) {
-        logger.info("Directory " + dir + " created");
+        logger.debug("Directory " + dir + " created");
       } else {
         logger.warn("Directory " + dir + " failed to create");
       }
     }
-  
   }
   
   boolean appendFile(File file, String string) {
@@ -45,7 +44,7 @@ class FileHelper {
       outputStream.println(string);
       return true;
     } catch (FileNotFoundException e1) {
-      logger.warn("Not able to append " + file + " with " + string, e1);
+      logger.error("Not able to append " + file + " with " + string, e1);
       return false;
     }
   }
@@ -58,7 +57,7 @@ class FileHelper {
         outputStream.println(string);
       }
     } catch (FileNotFoundException e1) {
-      logger.warn("Not able to append " + file + " with " + stringList, e1);
+      logger.error("Not able to append " + file + " with " + stringList, e1);
     }
   }
   
@@ -68,7 +67,7 @@ class FileHelper {
         new FileOutputStream(file, false))) {
       outputStream.println(string);
     } catch (FileNotFoundException e1) {
-      logger.warn("Not able to overwrite file" + file + " with " + string, e1);
+      logger.error("Not able to overwrite file" + file + " with " + string, e1);
     }
   }
   
@@ -77,10 +76,10 @@ class FileHelper {
     try {
       PrintWriter printWriter = new PrintWriter(file.getPath());
       printWriter.close();
-      logger.info("File " + file + " flushed");
+      logger.debug("File " + file + " flushed");
       return true;
     } catch (FileNotFoundException e) {
-      logger.warn("Not able to clear: " + file, e);
+      logger.error("Not able to clear: " + file, e);
       return false;
     }
   }
