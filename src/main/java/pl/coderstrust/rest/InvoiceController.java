@@ -56,7 +56,7 @@ public class InvoiceController {
     return invoiceBook.getInvoiceById(id);
   }
 
-  @GetMapping(value = "/invoices/?FromDateToDate")
+  @GetMapping(value = "/invoices?byDate?fromTo")
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
       @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
@@ -64,6 +64,8 @@ public class InvoiceController {
     return invoiceBook.getInvoicesFromDateToDate(since, to);
   }
 
+  
+  
   @PostMapping(value = "/invoices/single/")//TODO move creating message to some else class. No Logic here.
   public Integer saveInvoice(@RequestBody Invoice invoice) {
     logger.debug("saveInvoice called");
@@ -83,6 +85,8 @@ public class InvoiceController {
     return invoiceBook.saveInvoices(invoices);
   }
 
+  
+  
   @DeleteMapping(value = "/invoices/{id}")
   public Invoice removeInvoiceById(@PathVariable int id) {
     logger.debug("removeInvoice called");
