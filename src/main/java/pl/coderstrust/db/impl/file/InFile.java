@@ -199,15 +199,16 @@ public class InFile implements Database {
           failed++;
         }
       }
-      if (failed == 0) {
-        logger.debug("Success: deleted " + deleted
-            + " out of " + (deleted + failed) + " directors");
-      } else {
+      if (failed != 0) {
         logger.warn(
             "Warning: deleted " + deleted
                 + " out of " + (deleted + failed)
                 + " directors; failed to delete" + failed);
       }
+      System.out.println("THIS IS IT!");
+      System.out.println("Warning: deleted " + deleted
+          + " out of " + (deleted + failed)
+          + " directors; failed to delete" + failed);
     }
     return false;
   }
