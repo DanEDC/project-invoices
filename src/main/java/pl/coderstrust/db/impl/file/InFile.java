@@ -150,7 +150,7 @@ public class InFile implements Database {
   
   @Override
   public boolean dropDatabase() {
-    logger.debug("dropDatabase called");
+    logger.warn("dropDatabase called");
     this.removeAllInvoices();
     File[] files = database.listFiles();
     deleteFiles(files);
@@ -161,7 +161,6 @@ public class InFile implements Database {
    * Supporting Methods
    */
   private boolean removeInvoiceFromFile(File file, Integer invoiceId) {
-    logger.debug("removeInvoiceFromFile called");
     boolean result = false;
     List<String> stringList = fileHelper.readAsStringList(file);
     for (String string : stringList) {
@@ -176,14 +175,12 @@ public class InFile implements Database {
   }
   
   private File getFileByInvoice(Invoice invoice) {
-    logger.debug("getFileByInvoice called");
     String dir = path + "\\" + fileNameManager.getFileLocation(invoice);//TODO remove if redundant
     fileHelper.createNewDir(dir);                                       //TODO remove if redundant
     return new File(dir + "\\" + fileNameManager.getFileName(invoice));
   }
   
   private boolean deleteAllInvoiceFiles() {
-    logger.debug("deleteAllInvoiceFiles called");
     List<File> fileList = fileHelper.listSubDirContent(database);
     fileList.forEach(file -> fileHelper.clearFile(file));
     fileList.forEach(file -> fileHelper.deleteFile(file));
@@ -192,7 +189,6 @@ public class InFile implements Database {
   }
   
   private boolean deleteDirectoriesIfEmpty(File[] files) {
-    logger.debug("deleteDirectoriesIfEmpty called");
     if (files != null) {
       int deleted = 0;
       int failed = 0;
