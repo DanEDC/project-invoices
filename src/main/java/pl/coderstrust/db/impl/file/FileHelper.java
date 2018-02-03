@@ -26,7 +26,7 @@ class FileHelper {
   void createNewDir(String path) {
     File dir = new File(path);
     if (!dir.mkdir() && !dir.exists()) {
-        logger.warn("Directory " + dir + " failed to create");
+      logger.warn("Directory " + dir + " failed to create");
     }
   }
   
@@ -65,12 +65,13 @@ class FileHelper {
     try {
       PrintWriter printWriter = new PrintWriter(file.getPath());
       printWriter.close();
-      logger.debug("File " + file + " flushed");
-      return true;
+      if (readAsStringList(file).isEmpty()) {
+        return true;
+      }
     } catch (FileNotFoundException e) {
       logger.error("Not able to clear: " + file, e);
-      return false;
     }
+    return false;
   }
   
   boolean deleteFile(File file) {
@@ -90,7 +91,6 @@ class FileHelper {
   
   boolean deleteDirectoryIfEmpty(File file) {
     if (deleteFile(file)) {
-      logger.debug("Directory " + file + " deleted");
       return true;
     } else {
       logger.warn("Directory " + file + " failed to be deleted");

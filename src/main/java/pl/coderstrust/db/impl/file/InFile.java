@@ -77,7 +77,6 @@ public class InFile implements Database {
   
   @Override
   public boolean saveInvoice(Invoice invoice) {
-    logger.debug("saveInvoice called");
     File invoicesFile = getFileByInvoice(invoice);
     String invoiceAsString = jsonConverter.objectToJson(invoice);
     return fileHelper.appendFile(invoicesFile, invoiceAsString);
@@ -133,7 +132,7 @@ public class InFile implements Database {
   public List<Invoice> removeAllInvoices() {
     List<Invoice> invoices = this.getAllInvoices();
     if (!deleteAllInvoiceFiles()) {
-      logger.warn("Couldn't delete following Invoice files:"
+      logger.warn("Couldn't delete following Invoice files: "
           + fileHelper.listSubDirContent(database));
     }
     return invoices;
@@ -141,7 +140,6 @@ public class InFile implements Database {
   
   @Override
   public List<Integer> getAllIds() {
-    logger.debug("getAllIds called");
     List<Invoice> invoices = this.getAllInvoices();
     List<Integer> idList = new ArrayList<>();
     invoices.forEach(invoice -> idList.add(invoice.getInvoiceId()));
@@ -192,23 +190,23 @@ public class InFile implements Database {
     boolean fail = false;
     int numberOfFilesToDelete = files.length;
     List<File> failedToDelete = new ArrayList<>();
-      for (File file : files) {
-        if (!fileHelper.deleteDirectoryIfEmpty(file)) {
-          failedToDelete.add(file);
-          fail = true;
-        }
+    for (File file : files) {
+      if (!fileHelper.deleteDirectoryIfEmpty(file)) {
+        failedToDelete.add(file);
+        fail = true;
       }
-      if (fail) {
-        logger.warn("Directories: [total/deleted/failed to delete]: ["
-            + numberOfFilesToDelete + "/"
-            + (numberOfFilesToDelete - failedToDelete.size()) + "/"
-            + failedToDelete.size() + "]");
-      }
+    }
+    if (fail) {
+      logger.warn("Directories: [total/deleted/failed to delete]: ["
+          + numberOfFilesToDelete + "/"
+          + (numberOfFilesToDelete - failedToDelete.size()) + "/"
+          + failedToDelete.size() + "]");
+    }
     return !fail;
   }
   
+  
   private void deleteFiles(File[] files) {
-    logger.debug("deleteFiles called");
     if (files != null) {
       for (File file : files) {
         fileHelper.deleteFile(file);
@@ -218,7 +216,6 @@ public class InFile implements Database {
   
   
   private Invoice getInvoiceFromFile(Integer invoiceId, File file) {
-    logger.debug("getInvoiceFromFile called");
     Invoice invoice = null;
     List<String> stringList = fileHelper.readAsStringList(file);
     for (String string : stringList) {
@@ -228,24 +225,18 @@ public class InFile implements Database {
         break;
       }
     }
-    if (invoice == null) {
-      logger.error("");
-    }
     return invoice;
   }
   
   private File findFileByInvoiceId(Integer invoiceId) {
-    logger.debug("findFileByInvoiceId called");
     List<File> fileList = fileHelper.listSubDirContent(database);
     return findFileByInvoiceId(fileList, invoiceId);
   }
   
   private File findFileByInvoiceId(List<File> listOfFiles, Integer invoiceId) {
-    logger.debug("findFileByInvoiceId called");
     File theFile = null;
     for (File candidate : listOfFiles) {
       if (findIdInFile(candidate, invoiceId)) {
-        logger.debug("Invoice " + invoiceId + " found in " + candidate);
         theFile = candidate;
       }
     }
@@ -253,7 +244,6 @@ public class InFile implements Database {
   }
   
   private boolean findIdInFile(File file, Integer invoiceId) {
-    logger.debug("findIdInFile called");
     boolean answer;
     List<String> stringList = fileHelper.readAsStringList(file);
     answer = findIdInJsonList(invoiceId, stringList);
@@ -261,13 +251,11 @@ public class InFile implements Database {
   }
   
   private boolean findIdInJsonList(Integer invoiceId, List<String> stringList) {
-    logger.debug("findIdInJsonList called");
     Integer candidateId;
     boolean answer = false;
     for (String string : stringList) {
       candidateId = jsonConverter.stringToInvoice(string).getInvoiceId();
       if (candidateId.equals(invoiceId)) {
-        logger.debug("Invoice " + invoiceId + " exists");
         answer = true;
         break;
       }
