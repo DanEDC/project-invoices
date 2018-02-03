@@ -189,28 +189,25 @@ public class InFile implements Database {
   }
   
   private boolean deleteDirectoriesIfEmpty(File[] files) {
+    boolean fail = false;
+    int numberOfFilesToDelte = files.length;
+    List<File> failedToDelete = new ArrayList<>();
     if (files != null) {
-      int deleted = 0;
-      int failed = 0;
       for (File file : files) {
         if (fileHelper.deleteDirectoryIfEmpty(file)) {
-          deleted++;
         } else {
-          failed++;
+          failedToDelete.add(file);
+          fail = true;
         }
       }
-      if (failed != 0) {
-        logger.warn(
-            "Warning: deleted " + deleted
-                + " out of " + (deleted + failed)
-                + " directors; failed to delete" + failed);
+      if (fail) {
+        logger.warn("Directories: [total/deleted/failed to delete]: ["
+            + numberOfFilesToDelte + "/"
+            + (numberOfFilesToDelte - failedToDelete.size()) + "/"
+            + failedToDelete.size() + "]");
       }
-      System.out.println("THIS IS IT!");
-      System.out.println("Warning: deleted " + deleted
-          + " out of " + (deleted + failed)
-          + " directors; failed to delete" + failed);
     }
-    return false;
+    return !fail;
   }
   
   private void deleteFiles(File[] files) {
