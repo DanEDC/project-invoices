@@ -190,7 +190,7 @@ public class InFile implements Database {
   
   private boolean deleteDirectoriesIfEmpty(File[] files) {
     boolean fail = false;
-    int numberOfFilesToDelte = files.length;
+    int numberOfFilesToDelete = files.length;
     List<File> failedToDelete = new ArrayList<>();
     if (files != null) {
       for (File file : files) {
@@ -202,8 +202,8 @@ public class InFile implements Database {
       }
       if (fail) {
         logger.warn("Directories: [total/deleted/failed to delete]: ["
-            + numberOfFilesToDelte + "/"
-            + (numberOfFilesToDelte - failedToDelete.size()) + "/"
+            + numberOfFilesToDelete + "/"
+            + (numberOfFilesToDelete - failedToDelete.size()) + "/"
             + failedToDelete.size() + "]");
       }
     }
