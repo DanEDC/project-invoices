@@ -192,10 +192,8 @@ public class InFile implements Database {
     boolean fail = false;
     int numberOfFilesToDelete = files.length;
     List<File> failedToDelete = new ArrayList<>();
-    if (files != null) {
       for (File file : files) {
-        if (fileHelper.deleteDirectoryIfEmpty(file)) {
-        } else {
+        if (!fileHelper.deleteDirectoryIfEmpty(file)) {
           failedToDelete.add(file);
           fail = true;
         }
@@ -206,7 +204,6 @@ public class InFile implements Database {
             + (numberOfFilesToDelete - failedToDelete.size()) + "/"
             + failedToDelete.size() + "]");
       }
-    }
     return !fail;
   }
   

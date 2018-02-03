@@ -6,8 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.helpers.InvoiceGenerator;
@@ -29,7 +27,6 @@ public abstract class DatabaseTest {
   private boolean invoiceIsMock = false;
   
   private InvoiceGenerator invGen = new InvoiceGenerator();
-  private Database database;
   
   @Test
   public void dropDatabase() {
@@ -49,7 +46,7 @@ public abstract class DatabaseTest {
    */
   @Test
   @SuppressWarnings("unused")
-  @Parameters({"1", "3"})
+  @Parameters({"1", "3", "33"})
   public void shouldGetNextInvoiceId(int param) {
     for (int loop = 0; loop <= param; loop++) {
       // given

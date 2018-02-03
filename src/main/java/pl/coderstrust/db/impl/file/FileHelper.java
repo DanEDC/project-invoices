@@ -24,21 +24,13 @@ class FileHelper {
   }
   
   void createNewDir(String path) {
-    logger.debug("createNewDir called");
     File dir = new File(path);
-    if (dir.exists()) {
-      logger.debug("Directory " + dir + " already exists");
-    } else {
-      if (dir.mkdir()) {
-        logger.debug("Directory " + dir + " created");
-      } else {
+    if (!dir.mkdir() && !dir.exists()) {
         logger.warn("Directory " + dir + " failed to create");
-      }
     }
   }
   
   boolean appendFile(File file, String string) {
-    logger.debug("appendFile called");
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, true))) {
       outputStream.println(string);
@@ -50,19 +42,17 @@ class FileHelper {
   }
   
   void appendFile(File file, List<String> stringList) {
-    logger.debug("appendFile called");
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, true))) {
       for (String string:stringList) {
         outputStream.println(string);
       }
     } catch (FileNotFoundException e1) {
-      logger.error("Not able to append " + file + " with " + stringList, e1);
+      logger.error("Not able to append file " + file + " with " + stringList, e1);
     }
   }
   
   void overwriteFile(File file, String string) {
-    logger.debug("overwriteFile called");
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, false))) {
       outputStream.println(string);
