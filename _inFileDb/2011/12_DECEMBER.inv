@@ -1,2 +1,0 @@
-{"invoiceId":3,"date":"2011-12-13","seller":{"name":"Op","vatId":"987"},"buyer":{"name":"MD","vatId":"123"},"items":[{"itemId":null,"description":"Stone","value":5.0,"vat":"vat8"}]}
-{"invoiceId":4,"date":"2011-12-13","seller":{"name":"Op","vatId":"987"},"buyer":{"name":"MD","vatId":"123"},"items":[{"itemId":null,"description":"Stone","value":5.0,"vat":"vat8"}]}
