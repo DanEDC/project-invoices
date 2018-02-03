@@ -88,7 +88,6 @@ public class InFile implements Database {
     if (file != null) {
       return getInvoiceFromFile(invoiceId, file);
     } else {
-      logger.warn("Invoice of id " + invoiceId + " not found");
       return null;
     }
   }

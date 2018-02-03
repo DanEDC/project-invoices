@@ -59,13 +59,12 @@ public class InvoiceBook {
   
   public Invoice getInvoiceById(Integer invoiceId) {
     Invoice invoice = database.getInvoiceById(invoiceId);
-    if (invoice != null) {
-      logger.info("Invoice returned: " + invoiceId);
-      return invoice;
+    if (invoice == null) {
+      logger.info("Invoice not found: " + invoiceId);
     } else {
-      logger.warn("Invoice not found: " + invoiceId);
-      return null;
+      logger.info("Invoice returned: " + invoiceId);
     }
+      return invoice;
   }
   
   public List<Invoice> getAllInvoices() {
