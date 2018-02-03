@@ -85,19 +85,17 @@ public class InFile implements Database {
   
   @Override
   public Invoice getInvoiceById(Integer invoiceId) {
-    logger.debug("getInvoiceById called");
     File file = findFileByInvoiceId(invoiceId);
     if (file != null) {
       return getInvoiceFromFile(invoiceId, file);
     } else {
-      logger.debug("Invoice of id " + invoiceId + " not found");
+      logger.warn("Invoice of id " + invoiceId + " not found");
       return null;
     }
   }
   
   @Override//TODO: optimize this method, so it reads only files from given range of dates (not ALL!)
   public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to) {
-    logger.debug("getInvoicesFromDateToDate called");
     List<Invoice> resultList = new ArrayList<>();
     List<Invoice> candidateList = this.getAllInvoices();
     for (Invoice invoice : candidateList) {
@@ -110,7 +108,6 @@ public class InFile implements Database {
   
   @Override
   public List<Invoice> getAllInvoices() {
-    logger.debug("getAllInvoices called");
     List<File> fileList = fileHelper.listSubDirContent(database);
   
     List<String> stringList = new ArrayList<>();
@@ -123,7 +120,6 @@ public class InFile implements Database {
   
   @Override
   public Invoice removeInvoiceById(Integer invoiceId) {
-    logger.debug("removeInvoiceById called");
     Invoice invoice = this.getInvoiceById(invoiceId);
     if (invoice != null) {
       if (removeInvoiceFromFile(getFileByInvoice(invoice), invoiceId)) {
@@ -135,12 +131,10 @@ public class InFile implements Database {
   
   @Override
   public List<Invoice> removeAllInvoices() {
-    logger.debug("removeAllInvoices called");
     List<Invoice> invoices = this.getAllInvoices();
-    if (deleteAllInvoiceFiles()) {
-      logger.debug("Delete all invoice files succeed");
-    } else {
-      logger.warn("Delete all invoice files failed");
+    if (!deleteAllInvoiceFiles()) {
+      logger.warn("Couldn't delete following Invoice files:"
+          + fileHelper.listSubDirContent(database));
     }
     return invoices;
   }
