@@ -1,25 +1,18 @@
 package pl.coderstrust.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Objects;
 
 public class Item {
   
-  private static Logger logger = LoggerFactory.getLogger(Item.class);
-
   private Integer itemId;
   private String description;
   private double value;
   private Vat vat;
 
   public Item() {
-    logger.debug("Item created");
   }
 
   public Item(String description, double value, Vat vat) {
-    logger.debug("Item created");
     this.itemId = null;
     this.description = description;
     this.value = value;
@@ -48,7 +41,6 @@ public class Item {
   
   @Override
   public boolean equals(Object object) {
-    logger.debug("equals called");
     if (this == object) {
       return true;
     }
@@ -64,7 +56,6 @@ public class Item {
   
   @Override
   public int hashCode() {
-    logger.debug("hashCode called");
     int result;
     long temp;
     result = description != null ? description.hashCode() : 0;
@@ -76,7 +67,6 @@ public class Item {
 
   @Override
   public String toString() {
-    logger.debug("toString called");
     return itemId
         + ":" + description
         + "," + value

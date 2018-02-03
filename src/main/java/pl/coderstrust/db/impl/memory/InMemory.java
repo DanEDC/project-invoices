@@ -22,7 +22,7 @@ public class InMemory implements Database {
   private Integer invoiceId = 0;
   
   public InMemory() {
-    logger.info("InFile Database initiated");
+    logger.info("InMemory Database initiated");
   }
   
   @Override

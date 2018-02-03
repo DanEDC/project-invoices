@@ -24,7 +24,6 @@ public class InvoiceBook {
   }
   
   public Integer saveInvoice(Invoice invoice) {
-    logger.debug("saveInvoice called");
     Integer id = database.getNextInvoiceId();
     invoice.setInvoiceId(id);
     if (database.saveInvoice(invoice)) {
@@ -37,7 +36,6 @@ public class InvoiceBook {
   }
   
   public List<Integer> saveInvoices(Collection<Invoice> invoices) {
-    logger.debug("saveInvoices called");
     List<Integer> savedInvoicesIdList = new ArrayList<>();
     List<Invoice> notSavedInvoicesLsit = new ArrayList<>();
   
@@ -60,7 +58,6 @@ public class InvoiceBook {
   }
   
   public Invoice getInvoiceById(Integer invoiceId) {
-    logger.debug("getInvoiceById called");
     Invoice invoice = database.getInvoiceById(invoiceId);
     if (invoice != null) {
       logger.info("Invoice returned: " + invoiceId);
@@ -72,19 +69,15 @@ public class InvoiceBook {
   }
   
   public List<Invoice> getAllInvoices() {
-    logger.debug("getAllInvoices called");
     List<Invoice> invoices;
     invoices = database.getAllInvoices();
     if (invoices.isEmpty()) {
-      logger.warn("Returned empty list of invoices");
-    } else {
       logger.info("Returned all invoices in number: " + invoices.size());
     }
     return invoices;
   }
 
   public List<Invoice> getListOfInvoiceById(Collection<Integer> orderedInvoicesId) {
-    logger.debug("getListOfInvoiceById called");
     List<Invoice> foundInvoicesList = new ArrayList<>();
     List<Integer> notFoundInvoices = new ArrayList<>();
     Invoice currentInvoice;
@@ -98,16 +91,14 @@ public class InvoiceBook {
     }
   
     if (notFoundInvoices.isEmpty()) {
-      logger.debug("All invoices found");
+      logger.info("Returned ordered invoices in number: " + foundInvoicesList.size());
     } else {
       logger.warn("Failed to find following Invoices " + notFoundInvoices);
     }
-  
     return foundInvoicesList;
   }
   
   public Invoice removeInvoiceById(Integer invoiceId) {
-    logger.debug("removeInvoiceById called");
     Invoice invoice = database.removeInvoiceById(invoiceId);
     if (invoice != null) {
       logger.info("Deleted and returned Invoice: " + invoiceId);
@@ -119,9 +110,8 @@ public class InvoiceBook {
   }
 
   public List<Invoice> removeAllInvoices() {
-    logger.debug("removeAllInvoices called");
     List<Invoice> removedInvoices = database.removeAllInvoices();
-    logger.info("Removed all Invoices in a number: " + removedInvoices.size());
+    logger.info("Removed and returned all Invoices in a number: " + removedInvoices.size());
     return removedInvoices;
   }
   
@@ -136,14 +126,12 @@ public class InvoiceBook {
   
   @Override
   public String toString() {
-    logger.debug("toString called");
     return this.getClass().getSimpleName()
         + database;
   }
 
   @Override
   public boolean equals(Object object) {
-    logger.debug("equals called");
     if (this == object) {
       return true;
     }
@@ -157,12 +145,10 @@ public class InvoiceBook {
 
   @Override
   public int hashCode() {
-    logger.debug("hashCode called");
     return database != null ? database.hashCode() : 0;
   }
   
   public List<Invoice> getInvoicesFromDateToDate(LocalDate since, LocalDate to) {
-    logger.debug("getInvoicesFromDateToDate called");
     List<Invoice> invoicesFound = database.getInvoicesFromDateToDate(since, to);
     logger.info("Returned " + invoicesFound.size() + " invoices from period: "
         + since + " to " + to);
@@ -170,7 +156,6 @@ public class InvoiceBook {
   }
 
   public int getYesterdayInvoicesNo(LocalDate yesterday) {
-    logger.debug("getYesterdayInvoicesNo called");
     return getInvoicesFromDateToDate(yesterday, yesterday).size();
   }
   

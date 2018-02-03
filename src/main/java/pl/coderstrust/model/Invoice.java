@@ -39,14 +39,8 @@ public class Invoice implements Comparable<LocalDate> {
   public final void setInvoiceId(Integer invoiceId) {
     Integer oldId = this.invoiceId;
     this.invoiceId = invoiceId;
-    if (oldId == null) {
-      logger.debug("setInvoiceId called");
-    } else {
-      if (oldId == 0) {
-        logger.info("Set Invoice Id to: " + invoiceId);
-      } else {
+    if (oldId != null && oldId != 0) {
         logger.info("Changed Invoice Id: " + oldId + " to " + invoiceId);
-      }
     }
   }
   

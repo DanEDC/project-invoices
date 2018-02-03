@@ -20,7 +20,7 @@ class FileHelper {
   
   
   public FileHelper() {
-    logger.info("File helper initiated");
+    logger.debug("File helper initiated");
   }
   
   void createNewDir(String path) {

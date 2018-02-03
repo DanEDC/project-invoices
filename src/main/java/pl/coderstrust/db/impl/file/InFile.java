@@ -183,7 +183,7 @@ public class InFile implements Database {
     fileList.forEach(file -> fileHelper.clearFile(file));
     fileList.forEach(file -> fileHelper.deleteFile(file));
     File[] files = fileHelper.listDirContent(database, 1);
-    return files == null || !deleteDirectoriesIfEmpty(files);
+    return files == null || deleteDirectoriesIfEmpty(files);
   }
   
   private boolean deleteDirectoriesIfEmpty(File[] files) {

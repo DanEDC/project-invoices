@@ -19,12 +19,11 @@ class JsonConverter {
   private ObjectMapper objectMapper;
   
   public JsonConverter(ObjectMapperProvider objectMapperProvider) {
-    logger.debug("JsonConverter called");
+    logger.debug("JsonConverter initiated");
     this.objectMapper = objectMapperProvider.objectMapper();
   }
 
   String objectToJson(Object object) {
-    logger.debug("JsonConverter called");
     String json = null;
     objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     try {
@@ -36,7 +35,6 @@ class JsonConverter {
   }
   
   Invoice stringToInvoice(String string) {
-    logger.debug("JsonConverter called");
     Invoice invoice = null;
     try {
       invoice = objectMapper.readValue(string, Invoice.class);
