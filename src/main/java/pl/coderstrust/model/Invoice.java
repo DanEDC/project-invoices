@@ -40,7 +40,7 @@ public class Invoice implements Comparable<LocalDate> {
     Integer oldId = this.invoiceId;
     this.invoiceId = invoiceId;
     if (oldId != null && oldId != 0) {
-        logger.info("Changed Invoice Id: " + oldId + " to " + invoiceId);
+      logger.info("Changed Invoice Id: " + oldId + " to " + invoiceId);
     }
   }
   

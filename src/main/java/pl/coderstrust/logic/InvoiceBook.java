@@ -64,7 +64,7 @@ public class InvoiceBook {
     } else {
       logger.info("Invoice returned: " + invoiceId);
     }
-      return invoice;
+    return invoice;
   }
   
   public List<Invoice> getAllInvoices() {
