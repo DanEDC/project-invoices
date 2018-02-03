@@ -71,9 +71,7 @@ public class InvoiceBook {
   public List<Invoice> getAllInvoices() {
     List<Invoice> invoices;
     invoices = database.getAllInvoices();
-    if (invoices.isEmpty()) {
-      logger.info("Returned all invoices in number: " + invoices.size());
-    }
+    logger.info("Returned all invoices in number: " + invoices.size());
     return invoices;
   }
 
