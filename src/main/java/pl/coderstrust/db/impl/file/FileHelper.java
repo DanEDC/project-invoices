@@ -62,7 +62,6 @@ class FileHelper {
   }
   
   boolean clearFile(File file) {
-    logger.debug("clearFile called");
     try {
       PrintWriter printWriter = new PrintWriter(file.getPath());
       printWriter.close();
@@ -75,10 +74,8 @@ class FileHelper {
   }
   
   boolean deleteFile(File file) {
-    logger.debug("deleteFile called");
     try {
       if (file.delete()) {
-        logger.debug("File " + file + " deleted");
         return true;
       } else {
         logger.warn("Not able to delete " + file);
@@ -92,7 +89,6 @@ class FileHelper {
   }
   
   boolean deleteDirectoryIfEmpty(File file) {
-    logger.debug("deleteDirectoryIfEmpty called");
     if (deleteFile(file)) {
       logger.debug("Directory " + file + " deleted");
       return true;
@@ -104,7 +100,6 @@ class FileHelper {
 
   
   List<String> readAsStringList(File file) {
-    logger.debug("readAsStringList called");
     List<String> stringList = new ArrayList<>();
     try (Scanner scanner = new Scanner(file)) {
       while (scanner.hasNextLine()) {
@@ -137,7 +132,6 @@ class FileHelper {
    * |  FileInGivenDir      <-will IGNORE!
    */
   public List<File> listSubDirContent(File dir) {
-    logger.debug("listSubDirContent called");
     List<File> fileList = new ArrayList<>();
     
     File[] subDirs = listDirContent(dir, 1);
@@ -152,7 +146,6 @@ class FileHelper {
   }
   
   public File[] listDirContent(File givenDirectory, int all0Dir1File2) {
-    logger.debug("listDirContent called");
     switch (all0Dir1File2) {
       case 0:
         return givenDirectory.listFiles();
