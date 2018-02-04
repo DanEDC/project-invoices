@@ -1,7 +1,9 @@
 package pl.coderstrust.model;
 
-public class Item {
+import java.util.Objects;
 
+public class Item {
+  
   private Integer itemId;
   private String description;
   private double value;
@@ -36,7 +38,7 @@ public class Item {
   public Vat getVat() {
     return vat;
   }
-
+  
   @Override
   public boolean equals(Object object) {
     if (this == object) {
@@ -45,18 +47,13 @@ public class Item {
     if (!(object instanceof Item)) {
       return false;
     }
-
-    Item that = (Item) object;
-
-    if (Double.compare(that.value, value) != 0) {
-      return false;
-    }
-    if (vat != that.vat) {
-      return false;
-    }
-    return description != null ? description.equals(that.description) : that.description == null;
+    Item item = (Item) object;
+    return Double.compare(item.getValue(), getValue()) == 0
+        && Objects.equals(getItemId(), item.getItemId())
+        && Objects.equals(getDescription(), item.getDescription())
+        && getVat() == item.getVat();
   }
-
+  
   @Override
   public int hashCode() {
     int result;

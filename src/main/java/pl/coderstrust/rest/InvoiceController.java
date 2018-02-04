@@ -1,7 +1,10 @@
 package pl.coderstrust.rest;
 
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,29 +22,37 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+
 @Api(value = "/invoices", description = "Operations on invoices")
 
 @RestController
 @SuppressWarnings("unused")
 public class InvoiceController {
-
+  
+  private static Logger logger = LoggerFactory.getLogger(InvoiceController.class);
 
   private InvoiceBook invoiceBook;
   private EmailService invoiceInfoMail;
-
+  private String emailRecipient;
+  
   @Autowired
-  public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail) {
+  public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail,
+      @Value("${pl.coderstrust.rest.recipientAddress}") String emailRecipient) {
+    logger.info("InvoiceController initiated");
     this.invoiceBook = invoiceBook;
     this.invoiceInfoMail = invoiceInfoMail;
+    this.emailRecipient = emailRecipient;
   }
 
   @GetMapping(value = "/invoices")
   public List<Invoice> getAllInvoices() {
+    logger.debug("getAllInvoices called");
     return invoiceBook.getAllInvoices();
   }
-
+  
   @GetMapping(value = "/invoices/{id}")
   public Invoice getInvoiceById(@PathVariable int id) {
+    logger.debug("getInvoiceById called");
     return invoiceBook.getInvoiceById(id);
   }
 
@@ -49,40 +60,53 @@ public class InvoiceController {
   public List<Invoice> getInvoicesFromDateToDate(
       @RequestParam("since") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate since,
       @RequestParam("to") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
+    logger.debug("getInvoicesFromDateToDate called");
     return invoiceBook.getInvoicesFromDateToDate(since, to);
   }
 
   @PostMapping(value = "/invoices")
   public Integer saveInvoice(@RequestBody Invoice invoice) {
-    String invoiceMessage =
-        "Invoice ID: " + invoice.getInvoiceId() + "\n- Buyer: " + invoice.getBuyer()
-            + "\n- Seller: " + invoice.getSeller() + "\n- Items:\n" + invoice.getItems();
-    invoiceInfoMail.sendSimpleMessage("mna@g.pl", "Invoice Added", invoiceMessage);
-    return invoiceBook.saveInvoice(invoice);
+    logger.debug("saveInvoice called");
+    Integer invoiceId = invoiceBook.saveInvoice(invoice);
+    String invoiceMessage = "Invoice ID: " + invoiceId
+            + "\n- Buyer: " + invoice.getBuyer()
+            + "\n- Seller: " + invoice.getSeller()
+            + "\n- Items:\n" + invoice.getItems();
+    invoiceInfoMail.sendSimpleMessage(emailRecipient, "Invoice Added", invoiceMessage);
+    logger.info("mail sent to " + emailRecipient);
+    return invoiceId;
   }
 
   @PostMapping(value = "/invoices/invoicesList")
   public List<Integer> saveInvoices(@RequestBody Collection<Invoice> invoices) {
+    logger.debug("saveInvoices called");
     return invoiceBook.saveInvoices(invoices);
   }
 
+  
+  
   @DeleteMapping(value = "/invoices/{id}")
-  public Invoice removeInvoice(@PathVariable int id) {
-    return invoiceBook.removeInvoice(id);
+  public Invoice removeInvoiceById(@PathVariable int id) {
+    logger.debug("removeInvoice called");
+    return invoiceBook.removeInvoiceById(id);
   }
 
   @DeleteMapping(value = "/invoices/")
   public List<Invoice> removeAllInvoices() {
+    logger.debug("removeAllInvoices called");
     return invoiceBook.removeAllInvoices();
   }
-
+  
+  /**
+   * This method sends email with daily summary - not available to user
+   */
   @Scheduled(cron = "0 32 17 * * ?")
   public void sendScheduledMail() {
-
+    logger.debug("sendScheduledMail called");
     String dayMessage = "Day " + LocalDate.now().minusDays(1) + ": " + invoiceBook
         .getYesterdayInvoicesNo(LocalDate.now().minusDays(1)) + " invoices added.";
-
-    invoiceInfoMail.sendSimpleMessage("mna@g.pl", "Yesterday Summary - Invoices", dayMessage);
+    invoiceInfoMail.sendSimpleMessage("emailRecipient",
+        "Yesterday Summary - Invoices", dayMessage);
   }
 }
 

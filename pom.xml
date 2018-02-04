@@ -162,7 +162,8 @@
                     </limit>
                   </limits>
                   <excludes>
-                    <exclude>database.impl.ConfigurationProvider</exclude>
+                    <exclude>pl.coderstrust.config.SwaggerConfig</exclude>
+                    <exclude>pl.coderstrust.Application</exclude>
                   </excludes>
                 </rule>
               </rules>

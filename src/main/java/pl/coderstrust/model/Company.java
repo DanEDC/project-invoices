@@ -1,7 +1,7 @@
 package pl.coderstrust.model;
 
 public class Company {
-
+  
   private String name;
   private String vatId;
 
@@ -47,16 +47,13 @@ public class Company {
   @Override
   public int hashCode() {
     int result = getName() != null ? getName().hashCode() : 0;
-    result =
-        31 * result + (getVatId() != null ? getVatId()
-            .hashCode()
-            : 0);
+    result = 31 * result + (getVatId() != null ? getVatId()
+        .hashCode() : 0);
     return result;
   }
 
   @Override
   public String toString() {
-    return name + ".co";
-
+    return this.name + ".co (" + this.vatId + ")";
   }
 }

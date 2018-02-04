@@ -1,24 +1,25 @@
-package pl.coderstrust.model;
+package pl.coderstrust;
 
-import org.junit.Ignore;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import pl.coderstrust.rest.InvoiceController;
 
-@Ignore//TODO: WHEN TEST IS READY REMOVE
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ApplicationTest {
-
+public class SmokeTest {
+  
   @Autowired
-  private MockMvc mockMvc;//TODO: do this test properly
-
+  private InvoiceController controller;
+  
   @Test
-  public void shouldReturnDefaultMessage() throws Exception {
+  public void shouldCreateNotNullController() throws Exception {
+    assertThat(controller).isNotNull();
   }
 }

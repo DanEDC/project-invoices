@@ -136,8 +136,8 @@ public class InvoiceBookTest {
     when(database.removeInvoiceById(existingInvoiceId1)).thenReturn(null);
   
     //when
-    Invoice expectedInvoice = invoiceBook.removeInvoice(nonExistingInvoiceId0);
-    Invoice expectedNull = invoiceBook.removeInvoice(existingInvoiceId1);
+    Invoice expectedInvoice = invoiceBook.removeInvoiceById(nonExistingInvoiceId0);
+    Invoice expectedNull = invoiceBook.removeInvoiceById(existingInvoiceId1);
   
     //then
     assertEquals(invoice, expectedInvoice);

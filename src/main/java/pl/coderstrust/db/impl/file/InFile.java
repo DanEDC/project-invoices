@@ -1,5 +1,7 @@
 package pl.coderstrust.db.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
@@ -14,19 +16,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
-@ConditionalOnProperty(name = "pl.coderstrust.db.impl.file.databasePath", havingValue = "_inFileDb")
+@ConditionalOnProperty(name = "pl.coderstrust.db.impl.DatabaseImpl", havingValue = "inFile")
 
 public class InFile implements Database {
   
+  private static Logger logger = LoggerFactory.getLogger(InFile.class);
+  
   private final AtomicReference<Integer> invoiceId =
       new AtomicReference<>(0);
-  
   
   private final String path;
   private final File database;
   private File inFileId;
 
-  
   /**
    * Supporting classes
    */
@@ -46,13 +48,18 @@ public class InFile implements Database {
     this.fileHelper = fileHelper;
     this.fileNameManager = fileNameManager;
     this.jsonConverter = jsonConverter;
+    if (this.database.exists()) {
+      logger.info("InFile Database exists");
+    } else {
+      logger.info("InFile Database initiated");
+    }
   }
   
   @Override
   public Integer getNextInvoiceId() {
     fileHelper.createNewDir(path);
     inFileId = new File(path + "\\LastID.txt");
-    
+  
     Integer nextId;
     if (inFileId.exists()) {
       String id = (fileHelper.readAsStringList(inFileId).get(0));
@@ -61,7 +68,7 @@ public class InFile implements Database {
       nextId = invoiceId.get();
     }
     nextId++;
-    
+  
     String idAsString = jsonConverter.objectToJson(nextId);
     fileHelper.overwriteFile(inFileId, idAsString);
     
@@ -72,8 +79,7 @@ public class InFile implements Database {
   public boolean saveInvoice(Invoice invoice) {
     File invoicesFile = getFileByInvoice(invoice);
     String invoiceAsString = jsonConverter.objectToJson(invoice);
-    fileHelper.appendFile(invoicesFile, invoiceAsString);
-    return true;
+    return fileHelper.appendFile(invoicesFile, invoiceAsString);
   }
   
   @Override
@@ -96,7 +102,6 @@ public class InFile implements Database {
       }
     }
     return resultList;
-
   }
   
   @Override
@@ -125,7 +130,10 @@ public class InFile implements Database {
   @Override
   public List<Invoice> removeAllInvoices() {
     List<Invoice> invoices = this.getAllInvoices();
-    deleteAllInvoiceFiles();
+    if (!deleteAllInvoiceFiles()) {
+      logger.warn("Couldn't delete following Invoice files: "
+          + fileHelper.listSubDirContent(database));
+    }
     return invoices;
   }
   
@@ -139,6 +147,7 @@ public class InFile implements Database {
   
   @Override
   public boolean dropDatabase() {
+    logger.warn("dropDatabase called");
     this.removeAllInvoices();
     File[] files = database.listFiles();
     deleteFiles(files);
@@ -163,8 +172,8 @@ public class InFile implements Database {
   }
   
   private File getFileByInvoice(Invoice invoice) {
-    String dir = path + "\\" + fileNameManager.getFileLocation(invoice);
-    fileHelper.createNewDir(dir);
+    String dir = path + "\\" + fileNameManager.getFileLocation(invoice);//TODO remove if redundant
+    fileHelper.createNewDir(dir);                                       //TODO remove if redundant
     return new File(dir + "\\" + fileNameManager.getFileName(invoice));
   }
   
@@ -173,28 +182,33 @@ public class InFile implements Database {
     fileList.forEach(file -> fileHelper.clearFile(file));
     fileList.forEach(file -> fileHelper.deleteFile(file));
     File[] files = fileHelper.listDirContent(database, 1);
-    return files == null || !deleteDirectoriesIfEmpty(files);
+    return files == null || deleteDirectoriesIfEmpty(files);
   }
   
   private boolean deleteDirectoriesIfEmpty(File[] files) {
-    if (files != null) {
-      for (File file : files) {
-        if (fileHelper.deleteDirectoryIfEmpty(file)) {
-          System.out.println("INFO directory " + file + " deleted!");
-        } else {
-          return true;
-        }
+    boolean fail = false;
+    int numberOfFilesToDelete = files.length;
+    List<File> failedToDelete = new ArrayList<>();
+    for (File file : files) {
+      if (!fileHelper.deleteDirectoryIfEmpty(file)) {
+        failedToDelete.add(file);
+        fail = true;
       }
     }
-    return false;
+    if (fail) {
+      logger.warn("Directories: [total/deleted/failed to delete]: ["
+          + numberOfFilesToDelete + "/"
+          + (numberOfFilesToDelete - failedToDelete.size()) + "/"
+          + failedToDelete.size() + "]");
+    }
+    return !fail;
   }
+  
   
   private void deleteFiles(File[] files) {
     if (files != null) {
       for (File file : files) {
-        if (file.delete()) {
-          System.out.println("File " + file + " deleted.");
-        }
+        fileHelper.deleteFile(file);
       }
     }
   }
@@ -209,9 +223,6 @@ public class InFile implements Database {
         invoice = candidate;
         break;
       }
-    }
-    if (invoice == null) {
-      System.out.println("404 not found");
     }
     return invoice;
   }
@@ -228,7 +239,6 @@ public class InFile implements Database {
         theFile = candidate;
       }
     }
-
     return theFile;
   }
   

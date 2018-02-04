@@ -1,5 +1,7 @@
 package pl.coderstrust.db.impl.memory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.db.Database;
@@ -11,23 +13,27 @@ import java.util.Collections;
 import java.util.List;
 
 @Repository
-@ConditionalOnProperty(name = "pl.coderstrust.db.impl.file.databasePath", havingValue = "inMemory")
+@ConditionalOnProperty(name = "pl.coderstrust.db.impl.DatabaseImpl", havingValue = "inMemory")
 public class InMemory implements Database {
-
+  
+  private static Logger logger = LoggerFactory.getLogger(InMemory.class);
+  
   private List<Invoice> database = new ArrayList<>();
   private Integer invoiceId = 0;
-
+  
+  public InMemory() {
+    logger.info("InMemory Database initiated");
+  }
+  
   @Override
   public final Integer getNextInvoiceId() {
     return ++invoiceId;
   }
-
-
+  
   @Override
   public boolean saveInvoice(Invoice invoice) {
     return database.add(invoice);
   }
-
 
   @Override
   public Invoice getInvoiceById(Integer invoiceId) {
@@ -57,7 +63,6 @@ public class InMemory implements Database {
     return database;
   }
 
-
   @Override
   public Invoice removeInvoiceById(Integer invoiceId) {
     int index = database.indexOf(this.getInvoiceById(invoiceId));
@@ -85,7 +90,6 @@ public class InMemory implements Database {
     this.removeAllInvoices();
     return this.getAllInvoices().size() == 0;
   }
-  
   
   @Override
   public String toString() {

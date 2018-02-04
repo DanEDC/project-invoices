@@ -1,51 +1,43 @@
 package pl.coderstrust.db.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 @Service
 class FileHelper {
   
-  private Set<File> filesSet;
-  private Set<File> dirSet;
+  private static Logger logger = LoggerFactory.getLogger(FileHelper.class);
+  
   
   public FileHelper() {
-    this.filesSet = new HashSet<>();
-    this.dirSet = new HashSet<>();
+    logger.debug("File helper initiated");
   }
   
   void createNewDir(String path) {
     File dir = new File(path);
-    if (dirSet.contains(dir)) {
-      System.out.println("Info: directory " + dir + " already exists");
-    } else {
-      if (dir.mkdir()) {
-        System.out.println("Info: directory " + dir + " created");
-        dirSet.add(dir);
-      } else {
-        System.out.println("Error: directory " + dir + " failed to create");
-      }
+    if (!dir.mkdir() && !dir.exists()) {
+      logger.warn("Directory " + dir + " failed to create");
     }
-  
   }
   
-  void appendFile(File file, String string) {
+  boolean appendFile(File file, String string) {
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, true))) {
       outputStream.println(string);
+      return true;
     } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
+      logger.error("Not able to append " + file + " with " + string, e1);
+      return false;
     }
   }
   
@@ -56,17 +48,16 @@ class FileHelper {
         outputStream.println(string);
       }
     } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
+      logger.error("Not able to append file " + file + " with " + stringList, e1);
     }
   }
-  
   
   void overwriteFile(File file, String string) {
     try (PrintWriter outputStream = new PrintWriter(
         new FileOutputStream(file, false))) {
       outputStream.println(string);
     } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
+      logger.error("Not able to overwrite file" + file + " with " + string, e1);
     }
   }
   
@@ -74,55 +65,39 @@ class FileHelper {
     try {
       PrintWriter printWriter = new PrintWriter(file.getPath());
       printWriter.close();
-      System.out.println("Info: file  " + file + " emptied");
-      return true;
+      if (readAsStringList(file).isEmpty()) {
+        return true;
+      }
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
-      return false;
+      logger.error("Not able to clear: " + file, e);
     }
+    return false;
   }
   
   boolean deleteFile(File file) {
     try {
       if (file.delete()) {
-        System.out.println(file.getName() + " deleted!");
-        if (file.isDirectory()) {
-          dirSet.remove(file);
-        } else if (file.isFile()) {
-          filesSet.remove(file);
-        }
         return true;
       } else {
-        System.out.println("Delete operation failed.");
+        logger.warn("Not able to delete " + file);
         return false;
       }
     } catch (Exception e) {
+      logger.error("Not able to locate or delete " + file, e);
       e.printStackTrace();
       return false;
     }
   }
   
-  boolean deleteParentDirectoryIfEmpty(File file) {
-    File parentDir = new File(file.getParent());
-    return deleteFile(parentDir);
-  }
-  
   boolean deleteDirectoryIfEmpty(File file) {
-    return deleteFile(file);
-  }
-  
-  @SuppressWarnings("unused ")
-  List<byte[]> readAsListOfByteArray(File file) {
-    List<byte[]> listOfBytes = new ArrayList<>();
-    try (Scanner scanner = new Scanner(file)) {
-      while (scanner.hasNextLine()) {
-        listOfBytes.add(scanner.nextLine().getBytes());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+    if (deleteFile(file)) {
+      return true;
+    } else {
+      logger.warn("Directory " + file + " failed to be deleted");
+      return false;
     }
-    return listOfBytes;
   }
+
   
   List<String> readAsStringList(File file) {
     List<String> stringList = new ArrayList<>();
@@ -131,7 +106,7 @@ class FileHelper {
         stringList.add(scanner.nextLine());
       }
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      logger.error("Not able to locate file or read form: " + file, e);
     }
     return stringList;
   }
@@ -181,11 +156,5 @@ class FileHelper {
       default:
         return givenDirectory.listFiles();
     }
-  }
-  
-  public boolean isEmpty(File dir) {
-    int numberOfDirs = listDirContent(dir, 1).length;
-    int numberOfFiles = listDirContent(dir, 2).length;
-    return numberOfDirs + numberOfFiles == 0;
   }
 }

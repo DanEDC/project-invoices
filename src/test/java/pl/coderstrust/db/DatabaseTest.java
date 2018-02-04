@@ -20,15 +20,25 @@ import java.util.List;
 public abstract class DatabaseTest {
   
   public abstract Database provideImplementation();
-  
+
   /**
    * Invoice in tests should be a mock?
    */
-  @SuppressWarnings("all")
   private boolean invoiceIsMock = false;
   
   private InvoiceGenerator invGen = new InvoiceGenerator();
   
+  @Test
+  public void dropDatabase() {
+    // given
+    Database database = provideImplementation();
+    
+    // when
+    boolean result = database.dropDatabase();
+    
+    // then
+    assertTrue(database.getAllInvoices().isEmpty() || database.getAllInvoices() == null);
+  }
   
   /**
    * Parameter used only to see if implementation starts with
@@ -36,7 +46,7 @@ public abstract class DatabaseTest {
    */
   @Test
   @SuppressWarnings("unused")
-  @Parameters({"1", "3"})
+  @Parameters({"1", "3", "33"})
   public void shouldGetNextInvoiceId(int param) {
     for (int loop = 0; loop <= param; loop++) {
       // given
@@ -60,7 +70,6 @@ public abstract class DatabaseTest {
     }
   }
   
-  
   @Test
   public void shouldReturnTrueAfterSavingInvoice() {
     // given
@@ -74,7 +83,6 @@ public abstract class DatabaseTest {
     // then
     assertTrue(result);
     database.dropDatabase();
-  
   }
   
   @Test
@@ -91,7 +99,7 @@ public abstract class DatabaseTest {
     for (int loop = 0; loop < number; loop++) {
       assertEquals(invoices.get(loop).getInvoiceId(),
           database.getInvoiceById((loop + 1)).getInvoiceId());
-      assertEquals(invoices.get(loop).toString(), database.getInvoiceById(loop + 1).toString());
+      assertEquals(invoices.get(loop), database.getInvoiceById(loop + 1));
     }
     database.dropDatabase();
   }
@@ -137,7 +145,7 @@ public abstract class DatabaseTest {
     List<Invoice> shouldGetNone = database.getInvoicesFromDateToDate(latestDate, oldestDate);
     
     // then
-    assertEquals(database.getAllInvoices().toString(), shouldGetAll.toString());
+    assertEquals(database.getAllInvoices(), shouldGetAll);
     if (!oldestDate.equals(latestDate)) {
       assertEquals(new ArrayList<Invoice>(), shouldGetNone);
     }
@@ -159,9 +167,8 @@ public abstract class DatabaseTest {
     
     // then
     assertEquals(invoices.size(), invoicesAll.size());
-    assertEquals(invoices.toString(), invoicesAll.toString());
+    assertEquals(invoices, invoicesAll);
     database.dropDatabase();
-  
   }
   
   /**
@@ -184,7 +191,7 @@ public abstract class DatabaseTest {
       database.saveInvoice(removedInvoice);
   
       // then
-      assertEquals(toBeRemovedInvoice.toString(), removedInvoice.toString());
+      assertEquals(toBeRemovedInvoice, removedInvoice);
       assertNull(shouldBeNull);
       assertEquals(database.getAllInvoices().size(), number);
     }
@@ -211,7 +218,7 @@ public abstract class DatabaseTest {
       // then
       assertNull(database.getInvoiceById(id));
       assertEquals(database.getAllInvoices().size(), number - id);
-      assertEquals(toBeRemovedInvoice.toString(), removedInvoice.toString());
+      assertEquals(toBeRemovedInvoice, removedInvoice);
     }
     database.dropDatabase();
   }
@@ -229,20 +236,9 @@ public abstract class DatabaseTest {
     List<Invoice> removedInvoices = database.removeAllInvoices();
 
     //then
-    assertEquals(invoices.toString(),removedInvoices.toString());
+    assertEquals(invoices,removedInvoices);
     assertEquals(0,database.getAllInvoices().size());
     database.dropDatabase();
-  }
-  
-  @Test
-  public void dropDatabase() {
-    // given
-    Database database = provideImplementation();
-    // when
-    boolean result = database.dropDatabase();
-    
-    // then
-    assertTrue(database.getAllInvoices().isEmpty() || database.getAllInvoices() == null);
   }
   
   /**

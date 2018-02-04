@@ -1,4 +1,5 @@
 /.idea
 /*.iml
 /target
-/resources
+/src/main/resources/logging/
+/src/test/resources/logging/
