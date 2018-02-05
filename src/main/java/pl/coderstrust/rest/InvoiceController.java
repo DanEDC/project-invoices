@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,13 +29,13 @@ import java.util.List;
 @RestController
 @SuppressWarnings("unused")
 public class InvoiceController {
-  
+
   private static Logger logger = LoggerFactory.getLogger(InvoiceController.class);
 
   private InvoiceBook invoiceBook;
   private EmailService invoiceInfoMail;
   private String emailRecipient;
-  
+
   @Autowired
   public InvoiceController(InvoiceBook invoiceBook, EmailService invoiceInfoMail,
       @Value("${pl.coderstrust.rest.recipientAddress}") String emailRecipient) {
@@ -49,7 +50,7 @@ public class InvoiceController {
     logger.debug("getAllInvoices called");
     return invoiceBook.getAllInvoices();
   }
-  
+
   @GetMapping(value = "/invoices/{id}")
   public Invoice getInvoiceById(@PathVariable int id) {
     logger.debug("getInvoiceById called");
@@ -69,9 +70,9 @@ public class InvoiceController {
     logger.debug("saveInvoice called");
     Integer invoiceId = invoiceBook.saveInvoice(invoice);
     String invoiceMessage = "Invoice ID: " + invoiceId
-            + "\n- Buyer: " + invoice.getBuyer()
-            + "\n- Seller: " + invoice.getSeller()
-            + "\n- Items:\n" + invoice.getItems();
+        + "\n- Buyer: " + invoice.getBuyer()
+        + "\n- Seller: " + invoice.getSeller()
+        + "\n- Items:\n" + invoice.getItems();
     invoiceInfoMail.sendSimpleMessage(emailRecipient, "Invoice Added", invoiceMessage);
     logger.info("mail sent to " + emailRecipient);
     return invoiceId;
@@ -83,8 +84,7 @@ public class InvoiceController {
     return invoiceBook.saveInvoices(invoices);
   }
 
-  
-  
+
   @DeleteMapping(value = "/invoices/{id}")
   public Invoice removeInvoiceById(@PathVariable int id) {
     logger.debug("removeInvoice called");
@@ -96,7 +96,7 @@ public class InvoiceController {
     logger.debug("removeAllInvoices called");
     return invoiceBook.removeAllInvoices();
   }
-  
+
   /**
    * This method sends email with daily summary - not available to user
    */
@@ -107,6 +107,13 @@ public class InvoiceController {
         .getYesterdayInvoicesNo(LocalDate.now().minusDays(1)) + " invoices added.";
     invoiceInfoMail.sendSimpleMessage("emailRecipient",
         "Yesterday Summary - Invoices", dayMessage);
+  }
+
+  @PutMapping(value = "/invoices/{id}")
+  public void updateInvoice(@RequestBody Invoice invoice, @PathVariable int id) {
+    logger.debug("updateInvoiceById called");
+    invoiceBook.updateInvoice(invoice, id);
+
   }
 }
 

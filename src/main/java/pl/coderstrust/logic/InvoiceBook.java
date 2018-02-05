@@ -155,6 +155,22 @@ public class InvoiceBook {
   public int getYesterdayInvoicesNo(LocalDate yesterday) {
     return getInvoicesFromDateToDate(yesterday, yesterday).size();
   }
-  
-  
+
+  public void updateInvoice(Invoice invoice, int id) {
+    for (int i = 0; i < getAllInvoices().size(); i++) {
+      Invoice invoiceToUpdate = database.getInvoiceById(id);
+      if (invoiceToUpdate.getInvoiceId().equals(id)) {
+        database.removeInvoiceById(id);
+        Invoice overwriteInvoice = new Invoice();
+        overwriteInvoice.setInvoiceId(invoice.getInvoiceId());
+        overwriteInvoice.setDate(invoice.getDate());
+        overwriteInvoice.setBuyer(invoice.getBuyer());
+        overwriteInvoice.setSeller(invoice.getSeller());
+        overwriteInvoice.setItems(invoice.getItems());
+        database.saveInvoice(overwriteInvoice);
+        return;
+      }
+    }
+  }
+
 }

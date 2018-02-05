@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,8 +66,8 @@ public class Invoice implements Comparable<LocalDate> {
   public void setBuyer(Company buyer) {
     this.buyer = buyer;
   }
-  
-  public Collection<Item> getItems() {
+
+  public List<Item> getItems() {
     return items;
   }
 
