@@ -4,18 +4,25 @@ import io.spring.guides.gs_producing_web_service.Invoice;
 import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import pl.coderstrust.logic.InvoiceBook;
 
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class InvoiceRepository {
 
-  private static final Map<String, Invoice> invoices = new HashMap<>();
+  public Function<InvoiceRepository, InvoiceBook> =new Function<InvoiceRepository, InvoiceBook>()
 
-  @PostConstruct
-  public void initData() {
+  {
+    public
+
+    private static final Map<String, Invoice> invoices = new HashMap<>();
+
+    @PostConstruct
+    public void initData() {
     Invoice invoice = new Invoice();
     invoice.setInvoiceID(1);
     invoice.setDate(2002 - 09 - 24);
