@@ -1,5 +1,7 @@
 package pl.coderstrust.logic;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,11 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@XmlType
 @Service
 public class InvoiceBook {
   
   private static Logger logger = LoggerFactory.getLogger(InvoiceBook.class);
-  
+  @XmlElement
   private Database database;
 
   public InvoiceBook(Database database) {
@@ -56,7 +59,7 @@ public class InvoiceBook {
     }
     return savedInvoicesIdList;
   }
-  
+
   public Invoice getInvoiceById(Integer invoiceId) {
     Invoice invoice = database.getInvoiceById(invoiceId);
     if (invoice == null) {

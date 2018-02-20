@@ -1,9 +1,14 @@
 package pl.coderstrust.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 import java.util.Objects;
 
+@XmlType
 public class Item {
-  
+
+  @XmlElement
   private Integer itemId;
   private String description;
   private double value;

@@ -5,7 +5,7 @@
   <xs:element name="getInvoiceByIDRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoiceID" type="xs:int"/>
+        <xs:element name="invoiceID" type="xs:integer"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -20,7 +20,7 @@
 
   <xs:complexType name="Invoice">
     <xs:sequence>
-      <xs:element name="invoiceID" type="xs:int"/>
+      <xs:element name="invoiceID" type="xs:integer"/>
       <xs:element name="date" type="xs:date"/>
       <xs:element name="seller" type="tns:company"/>
       <xs:element name="buyer" type="tns:company"/>
@@ -30,7 +30,7 @@
 
   <xs:complexType name="items">
     <xs:sequence>
-      <xs:element name="itemID" type="xs:int"/>
+      <xs:element name="itemID" type="xs:integer"/>
       <xs:element name="description" type="xs:string"/>
       <xs:element name="value" type="xs:double"/>
       <xs:element name="vat" type="tns:vat"/>

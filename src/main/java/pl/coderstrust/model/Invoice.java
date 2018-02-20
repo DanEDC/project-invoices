@@ -1,5 +1,7 @@
 package pl.coderstrust.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@XmlType
 public class Invoice implements Comparable<LocalDate> {
   
   private static Logger logger = LoggerFactory.getLogger(Invoice.class);
-  
+  @XmlElement
   private Integer invoiceId;
   private LocalDate date;
   private Company seller;

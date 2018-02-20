@@ -7,6 +7,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import pl.coderstrust.model.Company;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.function.Function;
 
@@ -57,8 +58,15 @@ public class ClassConverter {
 
       return xcal;
     }
+
+//   public Integer bigIntegerToIntegerConverter(BigInteger big) {
+//     return big.intValue();
   }
 }
+
+  public Integer bigIntegerToIntegerConverter(BigInteger invoiceID) {
+    return invoiceID.intValue();
+  }
 }
 
 
