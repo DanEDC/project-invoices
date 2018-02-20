@@ -9,6 +9,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import pl.coderstrust.logic.InvoiceBook;
+import pl.coderstrust.model.Invoice;
 
 @Endpoint
 public class InvoiceEndpoint {
@@ -26,8 +27,8 @@ public class InvoiceEndpoint {
   @ResponsePayload
   public GetInvoiceByIDResponse getInvoiceByID(@RequestPayload GetInvoiceByIDRequest request) {
     GetInvoiceByIDResponse response = new GetInvoiceByIDResponse();
-    response.setInvoice(invoiceBook.getInvoiceById(request.getInvoiceID()));
-
+    Invoice invoice = invoiceBook.getInvoiceById(request.getInvoiceID().intValue());
+    response.setInvoice(ClassConverter.convertInvoicToSoap.apply(invoice));
     return response;
   }
 }

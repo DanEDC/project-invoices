@@ -24,7 +24,7 @@
       <xs:element name="date" type="xs:date"/>
       <xs:element name="seller" type="tns:company"/>
       <xs:element name="buyer" type="tns:company"/>
-      <xs:element name="items" type="tns:items"/>
+      <xs:element name="items" type="tns:items" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
