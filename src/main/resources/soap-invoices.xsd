@@ -1,8 +1,8 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:tns="http://spring.io/guides/gs-producing-web-service"
-  targetNamespace="http://spring.io/guides/gs-producing-web-service" elementFormDefault="qualified">
+<xs:schema xmlns:tns="http://spring.io/guides/gs-producing-web-service"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified" targetNamespace="http://spring.io/guides/gs-producing-web-service">
 
-  <xs:element name="getInvoiceByIDRequest">
+  <xs:element name="getInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="invoiceID" type="xs:integer"/>
@@ -10,7 +10,55 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="getInvoiceByIDResponse">
+  <xs:element name="getInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="postInvoiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="postInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deleteInvoiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoiceID" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deleteInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateInvoiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoiceID" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateInvoiceResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="Invoice" type="tns:Invoice"/>
@@ -24,7 +72,7 @@
       <xs:element name="date" type="xs:date"/>
       <xs:element name="seller" type="tns:company"/>
       <xs:element name="buyer" type="tns:company"/>
-      <xs:element name="items" type="tns:items" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="items" type="tns:items"/>
     </xs:sequence>
   </xs:complexType>
 

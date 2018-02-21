@@ -16,7 +16,7 @@ import java.util.List;
 @XmlType
 @Service
 public class InvoiceBook {
-  
+
   private static Logger logger = LoggerFactory.getLogger(InvoiceBook.class);
   @XmlElement
   private Database database;
@@ -25,7 +25,7 @@ public class InvoiceBook {
     this.database = database;
     logger.info("InvoiceBook initiated");
   }
-  
+
   public Integer saveInvoice(Invoice invoice) {
     Integer id = database.getNextInvoiceId();
     invoice.setInvoiceId(id);
@@ -37,11 +37,11 @@ public class InvoiceBook {
       return 0;
     }
   }
-  
+
   public List<Integer> saveInvoices(Collection<Invoice> invoices) {
     List<Integer> savedInvoicesIdList = new ArrayList<>();
     List<Invoice> notSavedInvoicesLsit = new ArrayList<>();
-  
+
     Integer currentId;
     for (Invoice invoice : invoices) {
       currentId = this.saveInvoice(invoice);
@@ -51,7 +51,7 @@ public class InvoiceBook {
         savedInvoicesIdList.add(currentId);
       }
     }
-  
+
     if (notSavedInvoicesLsit.isEmpty()) {
       logger.info("All invoices saved with id: " + savedInvoicesIdList);
     } else {
@@ -69,7 +69,7 @@ public class InvoiceBook {
     }
     return invoice;
   }
-  
+
   public List<Invoice> getAllInvoices() {
     List<Invoice> invoices;
     invoices = database.getAllInvoices();
@@ -81,7 +81,7 @@ public class InvoiceBook {
     List<Invoice> foundInvoicesList = new ArrayList<>();
     List<Integer> notFoundInvoices = new ArrayList<>();
     Invoice currentInvoice;
-  
+
     for (Integer id : orderedInvoicesId) {
       currentInvoice = this.getInvoiceById(id);
       if (currentInvoice == null) {
@@ -89,7 +89,7 @@ public class InvoiceBook {
       }
       foundInvoicesList.add(currentInvoice);
     }
-  
+
     if (notFoundInvoices.isEmpty()) {
       logger.info("Returned ordered invoices in number: " + foundInvoicesList.size());
     } else {
@@ -97,7 +97,7 @@ public class InvoiceBook {
     }
     return foundInvoicesList;
   }
-  
+
   public Invoice removeInvoiceById(Integer invoiceId) {
     Invoice invoice = database.removeInvoiceById(invoiceId);
     if (invoice != null) {
@@ -114,7 +114,7 @@ public class InvoiceBook {
     logger.info("Removed and returned all Invoices in a number: " + removedInvoices.size());
     return removedInvoices;
   }
-  
+
   public List<Invoice> removeInvoicesById(Collection<Integer> toBeRemovedInvoicesId) {
     logger.debug("removeInvoicesById called");
     List<Invoice> results = new ArrayList<>();
@@ -123,7 +123,7 @@ public class InvoiceBook {
     }
     return results;
   }
-  
+
   @Override
   public String toString() {
     return this.getClass().getSimpleName()
@@ -147,7 +147,7 @@ public class InvoiceBook {
   public int hashCode() {
     return database != null ? database.hashCode() : 0;
   }
-  
+
   public List<Invoice> getInvoicesFromDateToDate(LocalDate since, LocalDate to) {
     List<Invoice> invoicesFound = database.getInvoicesFromDateToDate(since, to);
     logger.info("Returned " + invoicesFound.size() + " invoices from period: "

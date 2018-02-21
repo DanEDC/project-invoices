@@ -1,14 +1,11 @@
 package pl.coderstrust.model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
 import java.util.Objects;
 
-@XmlType
+
 public class Item {
 
-  @XmlElement
+
   private Integer itemId;
   private String description;
   private double value;
@@ -36,14 +33,22 @@ public class Item {
     return description;
   }
 
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   public double getValue() {
     return value;
+  }
+
+  public void setValue(double value) {
+    this.value = value;
   }
 
   public Vat getVat() {
     return vat;
   }
-  
+
   @Override
   public boolean equals(Object object) {
     if (this == object) {
@@ -58,7 +63,7 @@ public class Item {
         && Objects.equals(getDescription(), item.getDescription())
         && getVat() == item.getVat();
   }
-  
+
   @Override
   public int hashCode() {
     int result;

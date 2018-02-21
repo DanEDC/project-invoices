@@ -1,12 +1,8 @@
 package pl.coderstrust.model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-
-@XmlType
 public class Company {
 
-  @XmlElement
+
   private String name;
   private String vatId;
 

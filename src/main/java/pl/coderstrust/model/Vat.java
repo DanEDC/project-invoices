@@ -1,10 +1,8 @@
 package pl.coderstrust.model;
 
-import javax.xml.bind.annotation.XmlType;
-
 import java.math.BigDecimal;
 
-@XmlType
+
 public enum Vat {
   vatFree(new BigDecimal(0)),
   vat5(new BigDecimal(5)),
