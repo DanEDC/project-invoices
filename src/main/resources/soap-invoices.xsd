@@ -18,7 +18,7 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="postInvoiceRequest">
+  <xs:element name="addInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="Invoice" type="tns:Invoice"/>
@@ -26,10 +26,10 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="postInvoiceResponse">
+  <xs:element name="addInvoiceResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Invoice" type="tns:Invoice"/>
+        <xs:element name="invoiceID" type="xs:integer"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -53,6 +53,7 @@
   <xs:element name="updateInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
         <xs:element name="invoiceID" type="xs:integer"/>
       </xs:sequence>
     </xs:complexType>

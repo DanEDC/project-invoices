@@ -1,4 +1,4 @@
-package soap;
+package pl.coderstrust.soap;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -24,7 +24,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     return new ServletRegistrationBean(servlet, "/ws/*");
   }
 
-  @Bean(name = "soap-invoices")
+  @Bean(name = "invoices")
   public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema invoicesSchema) {
     DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
     wsdl11Definition.setPortTypeName("InvoicesPort");

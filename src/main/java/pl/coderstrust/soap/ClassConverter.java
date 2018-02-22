@@ -1,4 +1,4 @@
-package soap;
+package pl.coderstrust.soap;
 
 import io.spring.guides.gs_producing_web_service.Invoice;
 import io.spring.guides.gs_producing_web_service.Items;
