@@ -1,5 +1,4 @@
 
-
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
   xmlns:gs="http://spring.io/guides/gs-producing-web-service">
   <soapenv:Header/>
@@ -9,3 +8,69 @@
     </gs:getInvoiceRequest>
   </soapenv:Body>
 </soapenv:Envelope>
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+<soapenv:Header/>
+<soapenv:Body>
+  <ns2:addInvoiceRequest xmlns:ns2="http://spring.io/guides/gs-producing-web-service">
+    <ns2:Invoice>
+      <ns2:invoiceID>27</ns2:invoiceID>
+      <ns2:date>2018-01-30</ns2:date>
+      <ns2:seller>
+        <ns2:name>string</ns2:name>
+        <ns2:vatID>string</ns2:vatID>
+      </ns2:seller>
+      <ns2:buyer>
+        <ns2:name>string</ns2:name>
+        <ns2:vatID>string</ns2:vatID>
+      </ns2:buyer>
+      <ns2:items>
+        <ns2:itemID>1</ns2:itemID>
+        <ns2:description>string</ns2:description>
+        <ns2:value>0.0</ns2:value>
+        <ns2:vat>0</ns2:vat>
+      </ns2:items>
+    </ns2:Invoice>
+  </ns2:addInvoiceRequest>
+</soapenv:Body>
+</soapenv:Envelope>
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:gs="http://spring.io/guides/gs-producing-web-service">
+<soapenv:Header/>
+<soapenv:Body>
+<gs:deleteInvoiceRequest>
+<gs:invoiceID>1</gs:invoiceID>
+</gs:deleteInvoiceRequest>
+</soapenv:Body>
+</soapenv:Envelope>
+
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <ns2:updateInvoiceRequest xmlns:ns2="http://spring.io/guides/gs-producing-web-service">
+      <ns2:Invoice>
+        <ns2:invoiceID>27</ns2:invoiceID>
+        <ns2:date>2018-01-30</ns2:date>
+        <ns2:seller>
+          <ns2:name>string</ns2:name>
+          <ns2:vatID>string</ns2:vatID>
+        </ns2:seller>
+        <ns2:buyer>
+          <ns2:name>string</ns2:name>
+          <ns2:vatID>string</ns2:vatID>
+        </ns2:buyer>
+        <ns2:items>
+          <ns2:itemID>1</ns2:itemID>
+          <ns2:description>produkt</ns2:description>
+          <ns2:value>23</ns2:value>
+          <ns2:vat>5</ns2:vat>
+        </ns2:items>
+      </ns2:Invoice>
+      <ns2:invoiceID>27</ns2:invoiceID>
+    </ns2:updateInvoiceRequest>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

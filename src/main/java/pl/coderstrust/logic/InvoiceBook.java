@@ -1,24 +1,21 @@
 package pl.coderstrust.logic;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-@XmlType
 @Service
 public class InvoiceBook {
 
   private static Logger logger = LoggerFactory.getLogger(InvoiceBook.class);
-  @XmlElement
+
   private Database database;
 
   public InvoiceBook(Database database) {
@@ -159,21 +156,24 @@ public class InvoiceBook {
     return getInvoicesFromDateToDate(yesterday, yesterday).size();
   }
 
-  public void updateInvoice(Invoice invoice, int id) {
+  public Invoice updateInvoice(Invoice invoice, int id) {
+    Invoice overwriteInvoice = null;
     for (int i = 0; i < getAllInvoices().size(); i++) {
       Invoice invoiceToUpdate = database.getInvoiceById(id);
       if (invoiceToUpdate.getInvoiceId().equals(id)) {
         database.removeInvoiceById(id);
-        Invoice overwriteInvoice = new Invoice();
+        overwriteInvoice = new Invoice();
         overwriteInvoice.setInvoiceId(invoice.getInvoiceId());
         overwriteInvoice.setDate(invoice.getDate());
         overwriteInvoice.setBuyer(invoice.getBuyer());
         overwriteInvoice.setSeller(invoice.getSeller());
         overwriteInvoice.setItems(invoice.getItems());
         database.saveInvoice(overwriteInvoice);
-        return;
-      }
-    }
-  }
 
+      }
+
+    }
+
+    return overwriteInvoice;
+  }
 }

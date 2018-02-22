@@ -17,8 +17,6 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import pl.coderstrust.logic.InvoiceBook;
 import pl.coderstrust.model.Invoice;
 
-import java.math.BigInteger;
-
 @Endpoint
 public class InvoiceEndpoint {
 
@@ -44,9 +42,8 @@ public class InvoiceEndpoint {
   @ResponsePayload
   public AddInvoiceResponse addInvoice(@RequestPayload AddInvoiceRequest request) {
     AddInvoiceResponse response = new AddInvoiceResponse();
-    Integer id = invoiceBook
-        .saveInvoice(ClassConverter.convertFromSoapToInvoice.apply(request.getInvoice()));
-    response.setInvoiceID(BigInteger.valueOf(id));
+    Integer invoiceID = invoiceBook.saveInvoice(ClassConverter.convertFromSoapToInvoice.apply(request.getInvoice()));
+    response.setName("Invoice has been created");
     return response;
   }
 
@@ -55,8 +52,8 @@ public class InvoiceEndpoint {
   public UpdateInvoiceResponse updateInvoice(@RequestPayload UpdateInvoiceRequest request) {
     UpdateInvoiceResponse response = new UpdateInvoiceResponse();
     Invoice invoice = invoiceBook.getInvoiceById(request.getInvoiceID().intValue());
-    invoiceBook.updateInvoice(invoice, (request.getInvoiceID().intValue()));
-    response.setInvoice(ClassConverter.convertFromInvoiceToSoap.apply(invoice));
+    Invoice updatedInvoice = invoiceBook.updateInvoice(invoice, (request.getInvoiceID().intValue()));
+    response.setInvoice(ClassConverter.convertFromInvoiceToSoap.apply(updatedInvoice));
     return response;
   }
 
@@ -65,7 +62,7 @@ public class InvoiceEndpoint {
   public DeleteInvoiceResponse deleteInvoice(@RequestPayload DeleteInvoiceRequest request) {
     DeleteInvoiceResponse response = new DeleteInvoiceResponse();
     Invoice invoice = invoiceBook.removeInvoiceById(request.getInvoiceID().intValue());
-    response.setInvoice(ClassConverter.convertFromInvoiceToSoap.apply(invoice));
+    response.setName("Invoice has been deleted");
     return response;
   }
 }

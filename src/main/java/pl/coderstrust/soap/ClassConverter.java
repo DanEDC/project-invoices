@@ -85,10 +85,10 @@ public class ClassConverter {
 
   private static Items convertFromItemToSoap(pl.coderstrust.model.Item item) {
     Items generatedItems = new Items();
-    generatedItems.setItemID(BigInteger.valueOf(item.getItemId()));
+    //generatedItems.setItemID(BigInteger.valueOf(item.getItemId()));
     generatedItems.setDescription(item.getDescription());
     generatedItems.setValue(item.getValue());
-    generatedItems.setVat(item.getVat().getVat());
+    //generatedItems.setVat(item.getVat().getVat());
     return generatedItems;
   }
 
