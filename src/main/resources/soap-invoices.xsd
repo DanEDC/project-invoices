@@ -82,7 +82,7 @@
       <xs:element name="itemID" type="xs:integer"/>
       <xs:element name="description" type="xs:string"/>
       <xs:element name="value" type="xs:double"/>
-      <xs:element name="vat" type="xs:decimal"/>
+      <xs:element name="vat" type="tns:vat"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -93,12 +93,12 @@
     </xs:sequence>
   </xs:complexType>
 
-  <!--<xs:simpleType name="vat">-->
-    <!--<xs:restriction base="xs:decimal">-->
-      <!--<xs:enumeration value="xs:0"/>-->
-      <!--<xs:enumeration value="xs:5"/>-->
-      <!--<xs:enumeration value="xs:8"/>-->
-      <!--<xs:enumeration value="xs:23"/>-->
-    <!--</xs:restriction>-->
-  <!--</xs:simpleType>-->
+  <xs:simpleType name="vat">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="xs:0"/>
+      <xs:enumeration value="xs:5"/>
+      <xs:enumeration value="xs:8"/>
+      <xs:enumeration value="xs:23"/>
+    </xs:restriction>
+  </xs:simpleType>
 </xs:schema>

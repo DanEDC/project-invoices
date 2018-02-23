@@ -49,6 +49,10 @@ public class Item {
     return vat;
   }
 
+  public void setVat(Vat vat) {
+    this.vat = vat;
+  }
+
   @Override
   public boolean equals(Object object) {
     if (this == object) {
@@ -80,6 +84,7 @@ public class Item {
     return itemId
         + ":" + description
         + "," + value
-        + "$," + vat + "%";
+        + ":" + vat;
   }
+
 }
