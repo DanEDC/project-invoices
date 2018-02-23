@@ -42,7 +42,8 @@ public class InvoiceEndpoint {
   @ResponsePayload
   public AddInvoiceResponse addInvoice(@RequestPayload AddInvoiceRequest request) {
     AddInvoiceResponse response = new AddInvoiceResponse();
-    Integer invoiceID = invoiceBook.saveInvoice(ClassConverter.convertFromSoapToInvoice.apply(request.getInvoice()));
+    Integer invoiceID = invoiceBook
+        .saveInvoice(ClassConverter.convertFromSoapToInvoice.apply(request.getInvoice()));
     response.setName("Invoice has been created");
     return response;
   }
@@ -51,7 +52,9 @@ public class InvoiceEndpoint {
   @ResponsePayload
   public UpdateInvoiceResponse updateInvoice(@RequestPayload UpdateInvoiceRequest request) {
     UpdateInvoiceResponse response = new UpdateInvoiceResponse();
-    Invoice updatedInvoice = invoiceBook.updateInvoice(ClassConverter.convertFromSoapToInvoice.apply(request.getInvoice()), (request.getInvoiceID().intValue()));
+    Invoice updatedInvoice = invoiceBook
+        .updateInvoice(ClassConverter.convertFromSoapToInvoice.apply(request.getInvoice()),
+            (request.getInvoiceID().intValue()));
     response.setInvoice(ClassConverter.convertFromInvoiceToSoap.apply(updatedInvoice));
     return response;
   }

@@ -5,7 +5,6 @@ import static org.mockito.Mockito.mock;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.Item;
-import pl.coderstrust.model.Vat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -69,10 +68,10 @@ public class InvoiceGenerator {
   }
   
   private List<Item> getItems() {
-    Item item1 = new Item("Gold", 100., Vat.vatFree);
-    Item item2 = new Item("Wood", 5., Vat.vat5);
-    Item item3 = new Item("Stone", 10., Vat.vat8);
-    Item item4 = new Item("Sulfur", 25., Vat.vat23);
+    Item item1 = new Item("Gold", 100., "0");
+    Item item2 = new Item("Wood", 5., "5");
+    Item item3 = new Item("Stone", 10., "8");
+    Item item4 = new Item("Sulfur", 25., "23");
     List<Item> items = new ArrayList<>();
     items.add(item1);
     items.add(item2);

@@ -2,17 +2,15 @@ package pl.coderstrust.soap;
 
 import io.spring.guides.gs_producing_web_service.Invoice;
 import io.spring.guides.gs_producing_web_service.Items;
-import io.spring.guides.gs_producing_web_service.Vat;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Item;
-
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ClassConverter {
 
@@ -82,7 +80,7 @@ public class ClassConverter {
     generatedItems.setItemID(BigInteger.valueOf(item.getItemId()));
     generatedItems.setDescription(item.getDescription());
     generatedItems.setValue(item.getValue());
-    generatedItems.setVat(Vat.fromValue(item.getVat().getVat()));
+    generatedItems.setVat(item.getVat());
 
     return generatedItems;
   }
@@ -92,19 +90,9 @@ public class ClassConverter {
     modelItem.setItemId(items.getItemID().intValue());
     modelItem.setDescription(items.getDescription());
     modelItem.setValue(items.getValue());
-    modelItem.setVat(convertFromSoapToVat.apply(items.getVat()));
+    modelItem.setVat(items.getVat());
     return modelItem;
   }
-
-  public static Function<Vat, pl.coderstrust.model.Vat> convertFromSoapToVat =
-      new Function<Vat, pl.coderstrust.model.Vat>() {
-        @Override
-        public pl.coderstrust.model.Vat apply(Vat vat) {
-          pl.coderstrust.model.Vat modelVat = pl.coderstrust.model.Vat.vatFree;
-          modelVat.setVat(String.valueOf(Vat.values()));
-          return modelVat;
-        }
-      };
 
   private static XMLGregorianCalendar convertFromDateToSoap(LocalDate date)
       throws DatatypeConfigurationException {

@@ -9,12 +9,12 @@ public class Item {
   private Integer itemId;
   private String description;
   private double value;
-  private Vat vat;
+  private String vat;
 
   public Item() {
   }
 
-  public Item(String description, double value, Vat vat) {
+  public Item(String description, double value, String vat) {
     this.itemId = null;
     this.description = description;
     this.value = value;
@@ -45,11 +45,11 @@ public class Item {
     this.value = value;
   }
 
-  public Vat getVat() {
+  public String getVat() {
     return vat;
   }
 
-  public void setVat(Vat vat) {
+  public void setVat(String vat) {
     this.vat = vat;
   }
 
