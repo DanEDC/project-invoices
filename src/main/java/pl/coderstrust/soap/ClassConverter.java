@@ -7,7 +7,6 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Item;
-import pl.coderstrust.model.Vat;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -76,19 +75,15 @@ public class ClassConverter {
           return modelInvoice;
         }
       };
-  Function<Vat, Items> convertFromVatToSoap = new Function<Vat, Items>() {
-    @Override
-    public Items apply(Vat vat) {
-      return null;
-    }
-  };
+
 
   private static Items convertFromItemToSoap(pl.coderstrust.model.Item item) {
     Items generatedItems = new Items();
-    //generatedItems.setItemID(BigInteger.valueOf(item.getItemId()));
+    generatedItems.setItemID(BigInteger.valueOf(item.getItemId()));
     generatedItems.setDescription(item.getDescription());
     generatedItems.setValue(item.getValue());
-    //generatedItems.setVat(item.getVat().getVat());
+    generatedItems.setVat(item.getVat().getVat());
+
     return generatedItems;
   }
 
@@ -97,6 +92,7 @@ public class ClassConverter {
     modelItem.setItemId(items.getItemID().intValue());
     modelItem.setDescription(items.getDescription());
     modelItem.setValue(items.getValue());
+    //modelItem.set(items.getVat());
     return modelItem;
   }
 

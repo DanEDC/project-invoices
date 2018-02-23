@@ -37,17 +37,6 @@
 </soapenv:Envelope>
 
 
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-xmlns:gs="http://spring.io/guides/gs-producing-web-service">
-<soapenv:Header/>
-<soapenv:Body>
-<gs:deleteInvoiceRequest>
-<gs:invoiceID>1</gs:invoiceID>
-</gs:deleteInvoiceRequest>
-</soapenv:Body>
-</soapenv:Envelope>
-
-
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
   <SOAP-ENV:Header/>
   <SOAP-ENV:Body>
@@ -74,3 +63,14 @@ xmlns:gs="http://spring.io/guides/gs-producing-web-service">
     </ns2:updateInvoiceRequest>
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:gs="http://spring.io/guides/gs-producing-web-service">
+<soapenv:Header/>
+<soapenv:Body>
+  <gs:deleteInvoiceRequest>
+    <gs:invoiceID>1</gs:invoiceID>
+  </gs:deleteInvoiceRequest>
+</soapenv:Body>
+</soapenv:Envelope>

@@ -51,8 +51,7 @@ public class InvoiceEndpoint {
   @ResponsePayload
   public UpdateInvoiceResponse updateInvoice(@RequestPayload UpdateInvoiceRequest request) {
     UpdateInvoiceResponse response = new UpdateInvoiceResponse();
-    Invoice invoice = invoiceBook.getInvoiceById(request.getInvoiceID().intValue());
-    Invoice updatedInvoice = invoiceBook.updateInvoice(invoice, (request.getInvoiceID().intValue()));
+    Invoice updatedInvoice = invoiceBook.updateInvoice(ClassConverter.convertFromSoapToInvoice.apply(request.getInvoice()), (request.getInvoiceID().intValue()));
     response.setInvoice(ClassConverter.convertFromInvoiceToSoap.apply(updatedInvoice));
     return response;
   }
