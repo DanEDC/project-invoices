@@ -3,3 +3,4 @@
 /target
 /src/main/resources/logging/
 /src/test/resources/logging/
+/src\main/java/io/spring/guides/gs_producing_web_service
