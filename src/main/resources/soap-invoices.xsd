@@ -1,0 +1,96 @@
+<xs:schema xmlns:tns="http://spring.io/guides/gs-producing-web-service"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified" targetNamespace="http://spring.io/guides/gs-producing-web-service">
+
+  <xs:element name="getInvoiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoiceID" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="addInvoiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="addInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deleteInvoiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoiceID" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="deleteInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateInvoiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
+        <xs:element name="invoiceID" type="xs:integer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Invoice" type="tns:Invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="Invoice">
+    <xs:sequence>
+      <xs:element name="invoiceID" type="xs:integer"/>
+      <xs:element name="date" type="xs:date"/>
+      <xs:element name="seller" type="tns:company"/>
+      <xs:element name="buyer" type="tns:company"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="items" type="tns:items"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="items">
+    <xs:sequence>
+      <xs:element name="itemID" type="xs:integer"/>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="value" type="xs:double"/>
+      <xs:element name="vat" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="company">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="vatID" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

@@ -5,14 +5,14 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+
 public class Invoice implements Comparable<LocalDate> {
-  
+
   private static Logger logger = LoggerFactory.getLogger(Invoice.class);
-  
+
   private Integer invoiceId;
   private LocalDate date;
   private Company seller;
@@ -35,7 +35,7 @@ public class Invoice implements Comparable<LocalDate> {
   public Integer getInvoiceId() {
     return invoiceId;
   }
-  
+
   public final void setInvoiceId(Integer invoiceId) {
     Integer oldId = this.invoiceId;
     this.invoiceId = invoiceId;
@@ -43,7 +43,7 @@ public class Invoice implements Comparable<LocalDate> {
       logger.info("Changed Invoice Id: " + oldId + " to " + invoiceId);
     }
   }
-  
+
   public LocalDate getDate() {
     return date;
   }
@@ -51,31 +51,31 @@ public class Invoice implements Comparable<LocalDate> {
   public void setDate(LocalDate date) {
     this.date = date;
   }
-  
+
   public Company getSeller() {
     return seller;
   }
-  
+
   public void setSeller(Company seller) {
     this.seller = seller;
   }
-  
+
   public Company getBuyer() {
     return buyer;
   }
-  
+
   public void setBuyer(Company buyer) {
     this.buyer = buyer;
   }
-  
-  public Collection<Item> getItems() {
+
+  public List<Item> getItems() {
     return items;
   }
 
   public void setItems(List<Item> items) {
     this.items = items;
   }
-  
+
   @Override
   public String toString() {
     return "\n"
@@ -85,7 +85,7 @@ public class Invoice implements Comparable<LocalDate> {
         + "->" + buyer
         + ":" + items;
   }
-  
+
   @Override
   public boolean equals(Object object) {
     if (this == object) {
@@ -101,12 +101,12 @@ public class Invoice implements Comparable<LocalDate> {
         && Objects.equals(getBuyer(), invoice.getBuyer())
         && Objects.equals(getItems(), invoice.getItems());
   }
-  
+
   @Override
   public int hashCode() {
     return Objects.hash(getInvoiceId(), getDate(), getSeller(), getBuyer(), getItems());
   }
-  
+
   @Override
   public int compareTo(LocalDate date) {
     return this.getDate().compareTo(date);

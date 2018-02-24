@@ -1,7 +1,8 @@
 package pl.coderstrust.model;
 
 public class Company {
-  
+
+
   private String name;
   private String vatId;
 

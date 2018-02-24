@@ -1,28 +1,28 @@
 package pl.coderstrust.logic;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Service
 public class InvoiceBook {
-  
+
   private static Logger logger = LoggerFactory.getLogger(InvoiceBook.class);
-  
+
   private Database database;
 
   public InvoiceBook(Database database) {
     this.database = database;
     logger.info("InvoiceBook initiated");
   }
-  
+
   public Integer saveInvoice(Invoice invoice) {
     Integer id = database.getNextInvoiceId();
     invoice.setInvoiceId(id);
@@ -34,11 +34,11 @@ public class InvoiceBook {
       return 0;
     }
   }
-  
+
   public List<Integer> saveInvoices(Collection<Invoice> invoices) {
     List<Integer> savedInvoicesIdList = new ArrayList<>();
     List<Invoice> notSavedInvoicesLsit = new ArrayList<>();
-  
+
     Integer currentId;
     for (Invoice invoice : invoices) {
       currentId = this.saveInvoice(invoice);
@@ -48,7 +48,7 @@ public class InvoiceBook {
         savedInvoicesIdList.add(currentId);
       }
     }
-  
+
     if (notSavedInvoicesLsit.isEmpty()) {
       logger.info("All invoices saved with id: " + savedInvoicesIdList);
     } else {
@@ -56,7 +56,7 @@ public class InvoiceBook {
     }
     return savedInvoicesIdList;
   }
-  
+
   public Invoice getInvoiceById(Integer invoiceId) {
     Invoice invoice = database.getInvoiceById(invoiceId);
     if (invoice == null) {
@@ -66,7 +66,7 @@ public class InvoiceBook {
     }
     return invoice;
   }
-  
+
   public List<Invoice> getAllInvoices() {
     List<Invoice> invoices;
     invoices = database.getAllInvoices();
@@ -78,7 +78,7 @@ public class InvoiceBook {
     List<Invoice> foundInvoicesList = new ArrayList<>();
     List<Integer> notFoundInvoices = new ArrayList<>();
     Invoice currentInvoice;
-  
+
     for (Integer id : orderedInvoicesId) {
       currentInvoice = this.getInvoiceById(id);
       if (currentInvoice == null) {
@@ -86,7 +86,7 @@ public class InvoiceBook {
       }
       foundInvoicesList.add(currentInvoice);
     }
-  
+
     if (notFoundInvoices.isEmpty()) {
       logger.info("Returned ordered invoices in number: " + foundInvoicesList.size());
     } else {
@@ -94,7 +94,7 @@ public class InvoiceBook {
     }
     return foundInvoicesList;
   }
-  
+
   public Invoice removeInvoiceById(Integer invoiceId) {
     Invoice invoice = database.removeInvoiceById(invoiceId);
     if (invoice != null) {
@@ -111,7 +111,7 @@ public class InvoiceBook {
     logger.info("Removed and returned all Invoices in a number: " + removedInvoices.size());
     return removedInvoices;
   }
-  
+
   public List<Invoice> removeInvoicesById(Collection<Integer> toBeRemovedInvoicesId) {
     logger.debug("removeInvoicesById called");
     List<Invoice> results = new ArrayList<>();
@@ -120,7 +120,7 @@ public class InvoiceBook {
     }
     return results;
   }
-  
+
   @Override
   public String toString() {
     return this.getClass().getSimpleName()
@@ -144,7 +144,7 @@ public class InvoiceBook {
   public int hashCode() {
     return database != null ? database.hashCode() : 0;
   }
-  
+
   public List<Invoice> getInvoicesFromDateToDate(LocalDate since, LocalDate to) {
     List<Invoice> invoicesFound = database.getInvoicesFromDateToDate(since, to);
     logger.info("Returned " + invoicesFound.size() + " invoices from period: "
@@ -155,6 +155,25 @@ public class InvoiceBook {
   public int getYesterdayInvoicesNo(LocalDate yesterday) {
     return getInvoicesFromDateToDate(yesterday, yesterday).size();
   }
-  
-  
+
+  public Invoice updateInvoice(Invoice invoice, int id) {
+    Invoice overwriteInvoice = null;
+    for (int i = 0; i < getAllInvoices().size(); i++) {
+      Invoice invoiceToUpdate = database.getInvoiceById(id);
+      if (invoiceToUpdate.getInvoiceId().equals(id)) {
+        database.removeInvoiceById(id);
+        overwriteInvoice = new Invoice();
+        overwriteInvoice.setInvoiceId(invoice.getInvoiceId());
+        overwriteInvoice.setDate(invoice.getDate());
+        overwriteInvoice.setBuyer(invoice.getBuyer());
+        overwriteInvoice.setSeller(invoice.getSeller());
+        overwriteInvoice.setItems(invoice.getItems());
+        database.saveInvoice(overwriteInvoice);
+
+      }
+
+    }
+
+    return overwriteInvoice;
+  }
 }

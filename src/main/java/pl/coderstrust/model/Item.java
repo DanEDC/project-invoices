@@ -2,17 +2,19 @@ package pl.coderstrust.model;
 
 import java.util.Objects;
 
+
 public class Item {
-  
+
+
   private Integer itemId;
   private String description;
   private double value;
-  private Vat vat;
+  private String vat;
 
   public Item() {
   }
 
-  public Item(String description, double value, Vat vat) {
+  public Item(String description, double value, String vat) {
     this.itemId = null;
     this.description = description;
     this.value = value;
@@ -31,14 +33,26 @@ public class Item {
     return description;
   }
 
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   public double getValue() {
     return value;
   }
 
-  public Vat getVat() {
+  public void setValue(double value) {
+    this.value = value;
+  }
+
+  public String getVat() {
     return vat;
   }
-  
+
+  public void setVat(String vat) {
+    this.vat = vat;
+  }
+
   @Override
   public boolean equals(Object object) {
     if (this == object) {
@@ -53,7 +67,7 @@ public class Item {
         && Objects.equals(getDescription(), item.getDescription())
         && getVat() == item.getVat();
   }
-  
+
   @Override
   public int hashCode() {
     int result;
@@ -70,6 +84,7 @@ public class Item {
     return itemId
         + ":" + description
         + "," + value
-        + "$," + vat + "%";
+        + ":" + vat;
   }
+
 }
