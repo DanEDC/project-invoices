@@ -1,5 +1,8 @@
 package pl.coderstrust.model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,11 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
+@javax.persistence.Entity
 public class Invoice implements Comparable<LocalDate> {
 
   private static Logger logger = LoggerFactory.getLogger(Invoice.class);
-
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer invoiceId;
   private LocalDate date;
   private Company seller;

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.io.File;
@@ -18,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 @ConditionalOnProperty(name = "pl.coderstrust.db.impl.DatabaseImpl", havingValue = "inFile")
 
-public class InFile implements Database {
+public class InFile{ //implements Database {
   
   private static Logger logger = LoggerFactory.getLogger(InFile.class);
   
@@ -55,7 +54,7 @@ public class InFile implements Database {
     }
   }
   
-  @Override
+  //@Override
   public Integer getNextInvoiceId() {
     fileHelper.createNewDir(path);
     inFileId = new File(path + "\\LastID.txt");
@@ -75,14 +74,14 @@ public class InFile implements Database {
     return nextId;
   }
   
-  @Override
+  //@Override
   public boolean saveInvoice(Invoice invoice) {
     File invoicesFile = getFileByInvoice(invoice);
     String invoiceAsString = jsonConverter.objectToJson(invoice);
     return fileHelper.appendFile(invoicesFile, invoiceAsString);
   }
   
-  @Override
+  //@Override
   public Invoice getInvoiceById(Integer invoiceId) {
     File file = findFileByInvoiceId(invoiceId);
     if (file != null) {
@@ -92,7 +91,7 @@ public class InFile implements Database {
     }
   }
   
-  @Override//TODO: optimize this method, so it reads only files from given range of dates (not ALL!)
+  //@Override//TODO: optimize this method, so it reads only files from given range of dates (not ALL!)
   public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to) {
     List<Invoice> resultList = new ArrayList<>();
     List<Invoice> candidateList = this.getAllInvoices();
@@ -104,7 +103,7 @@ public class InFile implements Database {
     return resultList;
   }
   
-  @Override
+  //@Override
   public List<Invoice> getAllInvoices() {
     List<File> fileList = fileHelper.listSubDirContent(database);
   
@@ -116,7 +115,7 @@ public class InFile implements Database {
     return invoices;
   }
   
-  @Override
+  //@Override
   public Invoice removeInvoiceById(Integer invoiceId) {
     Invoice invoice = this.getInvoiceById(invoiceId);
     if (invoice != null) {
@@ -127,7 +126,7 @@ public class InFile implements Database {
     return null;
   }
   
-  @Override
+  //@Override
   public List<Invoice> removeAllInvoices() {
     List<Invoice> invoices = this.getAllInvoices();
     if (!deleteAllInvoiceFiles()) {
@@ -137,7 +136,7 @@ public class InFile implements Database {
     return invoices;
   }
   
-  @Override
+  //@Override
   public List<Integer> getAllIds() {
     List<Invoice> invoices = this.getAllInvoices();
     List<Integer> idList = new ArrayList<>();
@@ -145,7 +144,7 @@ public class InFile implements Database {
     return idList;
   }
   
-  @Override
+  //@Override
   public boolean dropDatabase() {
     logger.warn("dropDatabase called");
     this.removeAllInvoices();

@@ -1,0 +1,11 @@
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://3.194.43.57:5432/invoices</property>
+    <property name="hibernate.connection.username">invoices</property>
+    <property name="hibernate.connection.password">invoices</property>
+    <property name="hibernate.dialect">org.hibernate.PostgreSQL94Dialect</property>
+    <property name="show_sql">true</property>
+    <mapping class="pl.coderstrust.model.Invoice"></mapping>
+  </session-factory>
+</hibernate-configuration>
