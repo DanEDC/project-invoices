@@ -1,9 +1,12 @@
 package pl.coderstrust.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,16 +16,23 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table (name = "Invoices")
 public class Invoice implements Comparable<LocalDate> {
 
   private static Logger logger = LoggerFactory.getLogger(Invoice.class);
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column (name = "invoiceId")
   private Integer invoiceId;
+  @Column (name = "date")
   private LocalDate date;
+  @Column (name = "seller")
   private Company seller;
+  @Column (name = "buyer")
   private Company buyer;
 
+  @Column (name = "items")
+  @ManyToOne
   private List<Item> items = new ArrayList<>();
 
   public Invoice() {

@@ -1,20 +1,27 @@
 package pl.coderstrust.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import java.util.Objects;
 
 @Entity
+@Table(name = "Item")
 public class Item {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "itemId")
   private Integer itemId;
+  @Column (name = "description")
   private String description;
+  @Column (name = "value")
   private double value;
+  @Column (name = "vat")
   private String vat;
 
   public Item() {

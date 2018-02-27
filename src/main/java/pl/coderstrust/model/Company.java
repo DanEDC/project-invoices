@@ -1,16 +1,21 @@
 package pl.coderstrust.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Company")
 public class Company {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "name")
   private String name;
+  @Column (name = "vatId")
   private String vatId;
 
   public Company() {
