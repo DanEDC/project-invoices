@@ -1,14 +1,12 @@
 package pl.coderstrust.db;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 import pl.coderstrust.model.Invoice;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
-public interface Database extends CrudRepository<Invoice, Long> {
+
+public interface Database {
 
   Integer getNextInvoiceId();
 

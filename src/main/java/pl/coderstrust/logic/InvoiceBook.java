@@ -1,21 +1,23 @@
 package pl.coderstrust.logic;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 @Service
 public class InvoiceBook {
 
   private static Logger logger = LoggerFactory.getLogger(InvoiceBook.class);
-
+  @Resource
   private Database database;
 
   public InvoiceBook(Database database) {

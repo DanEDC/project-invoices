@@ -1,5 +1,6 @@
 package pl.coderstrust.model;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@javax.persistence.Entity
+@Entity
 public class Invoice implements Comparable<LocalDate> {
 
   private static Logger logger = LoggerFactory.getLogger(Invoice.class);

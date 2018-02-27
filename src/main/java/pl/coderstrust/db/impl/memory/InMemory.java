@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
+import pl.coderstrust.db.Database;
 import pl.coderstrust.model.Invoice;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Repository
 @ConditionalOnProperty(name = "pl.coderstrust.db.impl.DatabaseImpl", havingValue = "inMemory")
-public class InMemory{ //implements Database {
+public class InMemory implements Database {
   
   private static Logger logger = LoggerFactory.getLogger(InMemory.class);
   
@@ -24,17 +25,17 @@ public class InMemory{ //implements Database {
     logger.info("InMemory Database initiated");
   }
   
-  //@Override
+  @Override
   public final Integer getNextInvoiceId() {
     return ++invoiceId;
   }
   
-  //@Override
+  @Override
   public boolean saveInvoice(Invoice invoice) {
     return database.add(invoice);
   }
 
-  //@Override
+  @Override
   public Invoice getInvoiceById(Integer invoiceId) {
     Invoice invoice = null;
     for (Invoice candidate : database) {
@@ -46,7 +47,7 @@ public class InMemory{ //implements Database {
     return invoice;
   }
   
-  //@Override
+  @Override
   public List<Invoice> getInvoicesFromDateToDate(LocalDate from, LocalDate to) {
     List<Invoice> invoices = new ArrayList<>();
     for (Invoice invoice : database) {
@@ -57,18 +58,18 @@ public class InMemory{ //implements Database {
     return invoices;
   }
   
-  //@Override
+  @Override
   public List<Invoice> getAllInvoices() {
     return database;
   }
 
-  //@Override
+  @Override
   public Invoice removeInvoiceById(Integer invoiceId) {
     int index = database.indexOf(this.getInvoiceById(invoiceId));
     return database.remove(index);
   }
   
-  //@Override
+  @Override
   public List<Invoice> removeAllInvoices() {
     List<Integer> idList = this.getAllIds();
     List<Invoice> removedInvoices = new ArrayList<>();
@@ -76,7 +77,7 @@ public class InMemory{ //implements Database {
     return removedInvoices;
   }
   
-  //@Override
+  @Override
   public List<Integer> getAllIds() {
     List<Integer> idList = new ArrayList<>();
     database.forEach(invoice -> idList.add(invoice.getInvoiceId()));
@@ -84,7 +85,7 @@ public class InMemory{ //implements Database {
     return idList;
   }
   
-  //@Override
+  @Override
   public boolean dropDatabase() {
     this.removeAllInvoices();
     return this.getAllInvoices().size() == 0;
